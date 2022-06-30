@@ -53,9 +53,9 @@ spec:
               containerPort: 7282
               protocol: UDP
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.searcher.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.searcher.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /quickwit/node.yaml

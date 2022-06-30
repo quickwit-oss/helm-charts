@@ -32,22 +32,6 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1005
 
-updateStrategy:
-  type: RollingUpdate
-  #rollingUpdate:
-  #  maxUnavailable: 1
-  #  maxSurge: 0
-
-livenessProbe:
-  httpGet:
-    path: /
-    port: http
-
-readinessProbe:
-  httpGet:
-    path: /
-    port: http
-
 searcher:
   replicaCount: 3
 
