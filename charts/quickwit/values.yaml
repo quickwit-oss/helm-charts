@@ -112,7 +112,7 @@ config:
     region: us-east-1
     access_key:
     secret_key:
-  default_index_root_uri: ""
+  default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
   # indexer:
   #   split_store_max_num_bytes: 200G
