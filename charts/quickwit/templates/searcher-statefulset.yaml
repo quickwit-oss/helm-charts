@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "quickwit.fullname" . }}-searcher
+  labels:
+    {{- include "quickwit.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.searcher.replicaCount }}
+  serviceName: {{ include "quickwit.fullname" . }}-headless
+  selector:
+    matchLabels:
+      {{- include "quickwit.searcher.selectorLabels" . | nindent 6 }}
+  updateStrategy:
+    {{- toYaml .Values.searcher.updateStrategy | nindent 4 }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "quickwit.searcher.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- include "quickwit.environment" . | nindent 12 }}
+            {{- range $key, $value := .Values.searcher.extraEnv }}
+            - name: "{{ $key }}"
+              value: "{{ $value }}"
+            {{- end }}
+          args: ["run", "--service", "searcher"]
+          ports:
+            - name: http
+              containerPort: 7280
+              protocol: TCP
+            - name: grpc
+              containerPort: 7281
+              protocol: TCP
+            - name: discovery
+              containerPort: 7282
+              protocol: UDP
+          livenessProbe:
+            {{- toYaml .Values.searcher.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.searcher.readinessProbe | nindent 12 }}
+          volumeMounts:
+            - name: config
+              mountPath: /quickwit/node.yaml
+              subPath: node.yaml
+            - name: data
+              mountPath: /quickwit/qwdata
+          resources:
+            {{- toYaml .Values.searcher.resources | nindent 14 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "quickwit.fullname" . }}
+            items:
+              - key: node.yaml
+                path: node.yaml
+        {{- if not .Values.searcher.persistentVolume.enabled }}
+        - name: data
+          emptyDir: {}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.searcher.persistentVolume.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.searcher.persistentVolume.storage }}"
+      {{- if .Values.searcher.persistentVolume.storageClass }}
+        storageClassName: "{{ .Values.searcher.persistentVolume.storageClass }}"
+      {{- end }}
+    {{- end }}

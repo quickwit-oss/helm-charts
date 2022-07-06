@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  #tag: nightly
 
 imagePullSecrets: []
 nameOverride: ""
@@ -25,20 +25,106 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  fsGroup: 1005
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1005
+
+searcher:
+  replicaCount: 3
+
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  persistentVolume:
+    enabled: false
+    # storage: "1Gi"
+    # storageClass: ""
+
+  updateStrategy: {}
+    # type: RollingUpdate
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+indexer:
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  updateStrategy: {}
+    # type: RollingUpdate
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+# Quickwit configuration
+config:
+  postgres:
+    host: ""
+    port: 5432
+    database: metastore
+    username: quickwit
+    password: ""
+  s3:
+    endpoint: ""
+    region: us-east-1
+    access_key:
+    secret_key:
+  default_index_root_uri: s3://quickwit/indexes
+  # Indexer settings
+  # indexer:
+  #   split_store_max_num_bytes: 200G
+  #   split_store_max_num_splits: 10000
+  # Searcher settings
+  # searcher:
+  #   fast_field_cache_capacity: 10G
+  #   split_footer_cache_capacity: 1G
+  #   max_num_concurrent_split_streams: 100  
 
 service:
   type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false
@@ -67,13 +153,6 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 100
-  targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
 
 nodeSelector: {}
 
