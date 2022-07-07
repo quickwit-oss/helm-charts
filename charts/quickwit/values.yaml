@@ -8,7 +8,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  #tag: nightly
+  # tag: edge
 
 imagePullSecrets: []
 nameOverride: ""
@@ -32,9 +32,14 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1005
 
+# Additional global env (searcher + indexer)
+environment: {}
+  # KEY: VALUE
+
 searcher:
   replicaCount: 3
 
+  # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
 
@@ -70,6 +75,8 @@ searcher:
       port: http
 
 indexer:
+
+  # Extra env for indexer
   extraEnv: {}
     # KEY: VALUE
 
@@ -110,8 +117,8 @@ config:
   s3:
     endpoint: ""
     region: us-east-1
-    access_key:
-    secret_key:
+    access_key: ""
+    secret_key: ""
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
   # indexer:
@@ -122,6 +129,32 @@ config:
   #   fast_field_cache_capacity: 10G
   #   split_footer_cache_capacity: 1G
   #   max_num_concurrent_split_streams: 100  
+
+# Prometheus metrics
+serviceMonitor:
+  enabled: false
+  interval: 60s
+  metricRelabelings: []
+  #  - action: replace
+  #    regex: quickwit-(.*)
+  #    replacement: $1
+  #    sourceLabels: [cluster]
+  #    targetLabel: qw_cluster
+  #  - action: labeldrop
+  #    regex: (endpoint|cluster)
+  relabelings: []
+  #  - sourceLabels: [__meta_kubernetes_pod_node_name]
+  #    targetLabel: instance
+
+# Prometheus Operator alertmanager alerts
+prometheusRule:
+  enabled: false
+  rules: []
+  #  - alert: Example
+  #    expr: metric == 1
+  #    for: 1m
+  #    labels:
+  #      severity: warning
 
 service:
   type: ClusterIP

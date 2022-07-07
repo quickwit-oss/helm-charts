@@ -1,0 +1,13 @@
+{{- if and ( .Capabilities.APIVersions.Has "monitoring.coreos.com/v1" ) .Values.prometheusRule.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "quickwit.fullname" . }}
+  labels:
+    {{- include "quickwit.labels" . | nindent 4 }}
+spec:
+  groups:
+    - name: {{ include "quickwit.fullname" . }}
+      rules:
+        {{- toYaml .Values.prometheusRules.rules | nindent 8 }} 
+{{- end }} 
