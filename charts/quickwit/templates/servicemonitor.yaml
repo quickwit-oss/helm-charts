@@ -10,6 +10,7 @@ spec:
     - path: /metrics
       port: http 
       interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
       metricRelabelings:
         {{- toYaml .Values.serviceMonitor.metricRelabelings | nindent 8 }}
       relabelings:
