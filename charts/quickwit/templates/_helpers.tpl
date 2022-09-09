@@ -67,6 +67,14 @@ app.kubernetes.io/component: indexer
 {{- end }}
 
 {{/*
+Metastore Selector labels
+*/}}
+{{- define "quickwit.metastore.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: metastore
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "quickwit.serviceAccountName" -}}
@@ -114,8 +122,10 @@ Quickwit environment
 - name: QW_S3_ENDPOINT
   value: {{ .Values.config.s3.endpoint }}
 {{- end }}
+{{- if .Values.config.s3.region }}
 - name: AWS_REGION
-  value: {{ .Values.config.s3.endpoint | default "us-east-1" }}
+  value: {{ .Values.config.s3.region }}
+{{- end }}
 - name: AWS_ACCESS_KEY_ID
   value: {{ required "A valid config.s3.access_key is required!" .Values.config.s3.access_key }}
 - name: AWS_SECRET_ACCESS_KEY
@@ -127,7 +137,7 @@ Quickwit environment
   value: "$(POD_NAME)"
 - name: QW_PEER_SEEDS
   value: {{ include "quickwit.fullname" . }}-headless
-- name: QW_PUBLIC_IP
+- name: QW_ADVERTISE_ADDRESS
   value: "$(POD_IP)"
 {{- range $key, $value := .Values.environment }}
 - name: "{{ $key }}"

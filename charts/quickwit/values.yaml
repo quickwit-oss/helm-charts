@@ -2,8 +2,6 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
-
 image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
@@ -75,6 +73,7 @@ searcher:
       port: http
 
 indexer:
+  replicaCount: 1
 
   # Extra env for indexer
   extraEnv: {}
@@ -106,6 +105,35 @@ indexer:
       path: /
       port: http
 
+metastore:
+  replicaCount: 1
+
+  # Extra env for metastore
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  updateStrategy: {}
+    # type: RollingUpdate
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+
 # Quickwit configuration
 config:
   postgres:
@@ -116,7 +144,7 @@ config:
     password: ""
   s3:
     endpoint: ""
-    region: us-east-1
+    # region: us-east-1
     access_key: ""
     secret_key: ""
   default_index_root_uri: s3://quickwit/indexes
