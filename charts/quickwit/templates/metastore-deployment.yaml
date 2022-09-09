@@ -1,17 +1,15 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-metastore
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.metastore.replicaCount }}
-  serviceName: {{ include "quickwit.fullname" . }}-headless
   selector:
     matchLabels:
       {{- include "quickwit.metastore.selectorLabels" . | nindent 6 }}
-  updateStrategy:
-    {{- toYaml .Values.metastore.updateStrategy | nindent 4 }}
+  strategy: {{- toYaml .Values.metastore.strategy | nindent 4 }}
   template:
     metadata:
       annotations:
