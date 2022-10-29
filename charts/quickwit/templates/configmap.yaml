@@ -12,6 +12,7 @@ data:
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
     default_index_root_uri: {{ .Values.config.default_index_root_uri }}
+    metastore_uri: {{ .Values.config.metastore_uri }}
     {{- with .Values.config.indexer }}
     indexer:
       {{- toYaml . | nindent 6 }}
@@ -20,3 +21,11 @@ data:
     searcher:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+  {{- with .Values.config.index }}
+  index.yaml: |-
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.config.kafkaSource }}
+  kafka_source.yaml: |-
+    {{- toYaml . | nindent 4 }}
+  {{- end }}

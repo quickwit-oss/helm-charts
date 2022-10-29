@@ -43,15 +43,7 @@ spec:
             {{- end }}
           args: ["run", "--service", "searcher"]
           ports:
-            - name: http
-              containerPort: 7280
-              protocol: TCP
-            - name: grpc
-              containerPort: 7281
-              protocol: TCP
-            - name: discovery
-              containerPort: 7282
-              protocol: UDP
+            {{- include "quickwit.ports" . | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.searcher.livenessProbe | nindent 12 }}
           readinessProbe:
@@ -75,15 +67,15 @@ spec:
         - name: data
           emptyDir: {}
         {{- end }}
-      {{- with .Values.nodeSelector }}
+      {{- with .Values.searcher.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.affinity }}
+      {{- with .Values.searcher.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.tolerations }}
+      {{- with .Values.searcher.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -100,4 +92,4 @@ spec:
       {{- if .Values.searcher.persistentVolume.storageClass }}
         storageClassName: "{{ .Values.searcher.persistentVolume.storageClass }}"
       {{- end }}
-    {{- end }}
+  {{- end }}

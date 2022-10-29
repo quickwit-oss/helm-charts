@@ -59,6 +59,22 @@ app.kubernetes.io/component: searcher
 {{- end }}
 
 {{/*
+Janitor Selector labels
+*/}}
+{{- define "quickwit.janitor.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: janitor
+{{- end }}
+
+{{/*
+Metastore Selector labels
+*/}}
+{{- define "quickwit.metastore.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: metastore
+{{- end }}
+
+{{/*
 Indexer Selector labels
 */}}
 {{- define "quickwit.indexer.selectorLabels" -}}
@@ -86,6 +102,22 @@ Create the name of the service account to use
 {{- end }}
 
 {{/*
+Quickwit ports
+*/}}
+{{- define "quickwit.ports" -}}
+- name: rest
+  containerPort: 7280
+  protocol: TCP
+- name: grpc
+  containerPort: 7281
+  protocol: TCP
+- name: discovery
+  containerPort: 7282
+  protocol: UDP
+{{- end }}
+
+
+{{/*
 Quickwit environment
 */}}
 {{- define "quickwit.environment" -}}
@@ -101,6 +133,40 @@ Quickwit environment
   valueFrom:
     fieldRef:
       fieldPath: status.podIP
+- name: QW_CONFIG
+  value: node.yaml
+{{- with .Values.config.s3 }}
+- name: QW_S3_ENDPOINT
+  value: {{ .endpoint }}
+- name: AWS_REGION
+  value: {{ .region }}
+{{- if and .secret_key .access_key }}
+- name: AWS_ACCESS_KEY_ID
+  value: {{ .access_key }}
+- name: AWS_SECRET_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "quickwit.fullname" $ }}
+      key: s3.secret_key
+{{- end }}
+{{- end }}
+- name: QW_NODE_ID
+  value: "$(POD_NAME)"
+- name: QW_PEER_SEEDS
+  value: {{ include "quickwit.fullname" . }}-headless
+- name: QW_ADVERTISE_ADDRESS
+  value: "$(POD_IP)"
+{{- range $key, $value := .Values.environment }}
+- name: "{{ $key }}"
+  value: "{{ $value }}"
+{{- end }}
+{{- end }}
+
+{{/*
+Quickwit metastore environment
+*/}}
+{{- define "quickwit.metastore.environment" -}}
+{{ include "quickwit.environment" . }}
 - name: POSTGRES_HOST
   value: {{ required "A valid config.postgres.host is required!" .Values.config.postgres.host }}
 - name: POSTGRES_PORT
@@ -114,34 +180,7 @@ Quickwit environment
     secretKeyRef:
       name: {{ include "quickwit.fullname" . }}
       key: postgres.password
-- name: QW_CONFIG
-  value: node.yaml
 - name: QW_METASTORE_URI
-  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"
-{{- if .Values.config.s3.endpoint }}
-- name: QW_S3_ENDPOINT
-  value: {{ .Values.config.s3.endpoint }}
-{{- end }}
-{{- if .Values.config.s3.region }}
-- name: AWS_REGION
-  value: {{ .Values.config.s3.region }}
-{{- end }}
-- name: AWS_ACCESS_KEY_ID
-  value: {{ required "A valid config.s3.access_key is required!" .Values.config.s3.access_key }}
-- name: AWS_SECRET_ACCESS_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ include "quickwit.fullname" . }}
-      key: s3.secret_key
-- name: QW_NODE_ID
-  value: "$(POD_NAME)"
-- name: QW_PEER_SEEDS
-  value: {{ include "quickwit.fullname" . }}-headless
-- name: QW_ADVERTISE_ADDRESS
-  value: "$(POD_IP)"
-{{- range $key, $value := .Values.environment }}
-- name: "{{ $key }}"
-  value: "{{ $value }}"
-{{- end }}
+  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
 
