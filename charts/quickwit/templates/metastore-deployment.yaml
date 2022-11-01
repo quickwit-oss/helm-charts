@@ -1,17 +1,15 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: {{ include "quickwit.fullname" . }}-indexer
+  name: {{ include "quickwit.fullname" . }}-metastore
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.indexer.replicaCount }}
-  serviceName: {{ include "quickwit.fullname" . }}-headless
+  replicas: {{ .Values.metastore.replicaCount }}
   selector:
     matchLabels:
-      {{- include "quickwit.indexer.selectorLabels" . | nindent 6 }}
-  updateStrategy:
-    {{- toYaml .Values.indexer.updateStrategy | nindent 4 }}
+      {{- include "quickwit.metastore.selectorLabels" . | nindent 6 }}
+  strategy: {{- toYaml .Values.metastore.strategy | nindent 4 }}
   template:
     metadata:
       annotations:
@@ -20,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "quickwit.indexer.selectorLabels" . | nindent 8 }}
+        {{- include "quickwit.metastore.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -37,11 +35,11 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.indexer.extraEnv }}
+            {{- range $key, $value := .Values.metastore.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
-          args: ["run", "--service", "indexer"]
+          args: ["run", "--service", "metastore"]
           ports:
             - name: http
               containerPort: 7280
@@ -53,9 +51,9 @@ spec:
               containerPort: 7282
               protocol: UDP
           livenessProbe:
-            {{- toYaml .Values.indexer.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.metastore.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.indexer.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.metastore.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /quickwit/node.yaml
