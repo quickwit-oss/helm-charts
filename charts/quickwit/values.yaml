@@ -214,10 +214,12 @@ janitor:
 
   affinity: {}
 
-metastore:
-  replicaCount: 1
+# Deploy jobs to bootstrap creation of indices and sources for quickwit clusters
+bootstrap:
+  # Enable boostrap jobs
+  enabled: false
 
-  # Extra env for metastore
+  # Extra env for boostrap jobs
   extraEnv: {}
     # KEY: VALUE
 
@@ -229,21 +231,11 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  strategy:
-    type: RollingUpdate
-    # rollingUpdate:
-    #   maxUnavailable: 5%
-    #   maxSurge: 25%
+  nodeSelector: {}
 
-  livenessProbe:
-    httpGet:
-      path: /
-      port: http
+  tolerations: []
 
-  readinessProbe:
-    httpGet:
-      path: /
-      port: http
+  affinity: {}
 
 
 # Quickwit configuration
@@ -272,39 +264,41 @@ config:
   #   split_footer_cache_capacity: 1G
   #   max_num_concurrent_split_streams: 100
 
-  index: {}
-    # version: 0
-    # index_id: quickwit-fts-staging
-    # doc_mapping:
-    #   field_mappings:
-    #     - name: project_id
-    #       type: u64
-    #       fast: true
-    #     - name: session_id
-    #       type: u64
-    #       fast: true
-    #   partition_key: project_id
-    #   max_num_partitions: 100000
-    #   tag_fields: [project_id]
-    # search_settings:
-    #   default_search_fields: [text]
-    # indexing_settings:
-    #   timestamp_field: view_time
-    #   merge_policy:
-    #     type: limit_merge
-    #     max_merge_ops: 3
-    #     merge_factor: 10
-    #     max_merge_factor: 12
+  indices: []
+    # - version: 0
+    #   index_id: myindex
+    #   doc_mapping:
+    #     field_mappings:
+    #       - name: project_id
+    #         type: u64
+    #         fast: true
+    #       - name: session_id
+    #         type: u64
+    #         fast: true
+    #     partition_key: project_id
+    #     max_num_partitions: 100000
+    #     tag_fields: [project_id]
+    #   search_settings:
+    #     default_search_fields: [text]
+    #   indexing_settings:
+    #     timestamp_field: view_time
+    #     merge_policy:
+    #       type: limit_merge
+    #       max_merge_ops: 3
+    #       merge_factor: 10
+    #       max_merge_factor: 12
 
-  kafkaSource: {}
-  # source_id: kafka-source
-  # source_type: kafka
-  # num_pipelines: 1
-  # params:
-  #   topic: quickwit-topic
-  #   client_params:
-  #     bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
-  #     group.id: quickwit-group
+  sources: []
+    # - index: myindex
+    #   source: 
+    #     source_id: mysource
+    #     source_type: kafka
+    #     num_pipelines: 1
+    #     params:
+    #       topic: quickwit-topic
+    #       client_params:
+    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
+    #         group.id: quickwit-group
 
 # Prometheus metrics
 serviceMonitor:

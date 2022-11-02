@@ -21,11 +21,4 @@ data:
     searcher:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-  {{- with .Values.config.index }}
-  index.yaml: |-
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- with .Values.config.kafkaSource }}
-  kafka_source.yaml: |-
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+

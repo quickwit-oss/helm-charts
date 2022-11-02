@@ -83,14 +83,6 @@ app.kubernetes.io/component: indexer
 {{- end }}
 
 {{/*
-Metastore Selector labels
-*/}}
-{{- define "quickwit.metastore.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
-app.kubernetes.io/component: metastore
-{{- end }}
-
-{{/*
 Create the name of the service account to use
 */}}
 {{- define "quickwit.serviceAccountName" -}}

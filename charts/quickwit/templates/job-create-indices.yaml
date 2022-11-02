@@ -1,0 +1,66 @@
+{{- if .Values.bootstrap.enabled -}}
+{{- range .Values.config.indices }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "quickwit.fullname" $ }}-index-{{ .index_id }}
+  labels:
+    {{- include "quickwit.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "1"
+spec:
+  template:
+    metadata:
+      name: "{{ $.Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ $.Release.Service | quote }}
+        app.kubernetes.io/instance: {{ $.Release.Name | quote }}
+        helm.sh/chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      restartPolicy: Never
+      containers:
+      - name: {{ $.Chart.Name }}
+        securityContext:
+          {{- toYaml $.Values.securityContext | nindent 10 }}
+        image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        args: ["index", "create", "--index-config", "{{ .index_id }}.yaml"]
+        env:
+          {{- include "quickwit.metastore.environment" $ | nindent 10 }}
+          {{- range $key, $value := $.Values.bootstrap.extraEnv }}
+          - name: "{{ $key }}"
+            value: "{{ $value }}"
+          {{- end }}
+        volumeMounts:
+          - name: config
+            mountPath: /quickwit/node.yaml
+            subPath: node.yaml
+          - name: index
+            mountPath: /quickwit/{{ .index_id }}.yaml
+            subPath: {{ .index_id }}.yaml
+        resources:
+          {{- toYaml $.Values.bootstrap.resources | nindent 10 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "quickwit.fullname" $ }}
+            items:
+              - key: node.yaml
+                path: node.yaml
+        - name: index
+          configMap:
+            name: {{ template "quickwit.fullname" $ }}-bootstrap
+            items:
+              - key: {{ .index_id }}.yaml
+                path: {{ .index_id }}.yaml
+{{- end }}
+{{- end }}

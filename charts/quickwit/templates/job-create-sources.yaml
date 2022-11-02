@@ -1,0 +1,68 @@
+{{- if .Values.bootstrap.enabled -}}
+{{- range .Values.config.sources }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "quickwit.fullname" $ }}-source-{{ .source.source_id }}
+  labels:
+    {{- include "quickwit.labels" $ | nindent 4 }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+    "helm.sh/hook-weight": "2"
+spec:
+  template:
+    metadata:
+      name: "{{ $.Release.Name }}"
+      labels:
+        app.kubernetes.io/managed-by: {{ $.Release.Service | quote }}
+        app.kubernetes.io/instance: {{ $.Release.Name | quote }}
+        helm.sh/chart: "{{ $.Chart.Name }}-{{ $.Chart.Version }}"
+    spec:
+      {{- with $.Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml $.Values.podSecurityContext | nindent 8 }}
+      restartPolicy: Never
+      containers:
+      - name: {{ $.Chart.Name }}
+        securityContext:
+          {{- toYaml $.Values.securityContext | nindent 10 }}
+        image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+        imagePullPolicy: {{ $.Values.image.pullPolicy }}
+        args: ["source", "create", "--index", "{{ .index }}", "--source-config", "{{ .source.source_id }}.yaml"]
+        env:
+          {{- include "quickwit.metastore.environment" $ | nindent 10 }}
+          {{- range $key, $value := $.Values.bootstrap.extraEnv }}
+          - name: "{{ $key }}"
+            value: "{{ $value }}"
+          {{- end }}
+        volumeMounts:
+          - name: config
+            mountPath: /quickwit/node.yaml
+            subPath: node.yaml
+          {{- if $.Values.config.sources }}
+          - name: source
+            mountPath: /quickwit/{{ .source.source_id }}.yaml
+            subPath: {{ .source.source_id }}.yaml
+          {{- end }}
+        resources:
+          {{- toYaml $.Values.bootstrap.resources | nindent 10 }}
+      volumes:
+        - name: config
+          configMap:
+            name: {{ template "quickwit.fullname" $ }}
+            items:
+              - key: node.yaml
+                path: node.yaml
+        - name: source
+          configMap:
+            name: {{ template "quickwit.fullname" $ }}-bootstrap
+            items:
+              - key: {{ .source.source_id }}.yaml
+                path: {{ .source.source_id }}.yaml
+{{- end }}
+{{- end }}

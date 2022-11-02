@@ -36,10 +36,10 @@ spec:
           args: ["run", "--service", "metastore"]
           env:
             {{- include "quickwit.metastore.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.searcher.extraEnv }}
+            {{- range $key, $value := .Values.metastore.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
-            {{- end }}          
+            {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           livenessProbe:
@@ -52,16 +52,6 @@ spec:
               subPath: node.yaml
             - name: data
               mountPath: /quickwit/qwdata
-            {{- if .Values.config.index }}
-            - name: index
-              mountPath: /quickwit/index.yaml
-              subPath: index.yaml
-            {{- end }}
-            {{- if .Values.config.kafkaSource }}
-            - name: kafka-source
-              mountPath: /quickwit/kafka_source.yaml
-              subPath: kafka_source.yaml
-            {{- end }}
           resources:
             {{- toYaml .Values.metastore.resources | nindent 14 }}
       volumes:
@@ -71,22 +61,6 @@ spec:
             items:
               - key: node.yaml
                 path: node.yaml
-        {{- if .Values.config.index }}
-        - name: index
-          configMap:
-            name: {{ template "quickwit.fullname" . }}
-            items:
-              - key: index.yaml
-                path: index.yaml
-        {{- end }}
-        {{- if .Values.config.kafkaSource }}
-        - name: kafka-source
-          configMap:
-            name: {{ template "quickwit.fullname" . }}
-            items:
-              - key: kafka_source.yaml
-                path: kafka_source.yaml
-        {{- end }}
         {{- if not .Values.metastore.persistentVolume.enabled }}
         - name: data
           emptyDir: {}
