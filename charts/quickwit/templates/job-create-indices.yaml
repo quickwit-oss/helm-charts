@@ -33,7 +33,7 @@ spec:
           {{- toYaml $.Values.securityContext | nindent 10 }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
-        args: ["index", "create", "--index-config", "{{ .index_id }}.yaml"]
+        command: ["/bin/bash","-c","quickwit index describe --index {{ .index_id }} || quickwit index create --index-config {{ .index_id }}.yaml "]
         env:
           {{- include "quickwit.metastore.environment" $ | nindent 10 }}
           {{- range $key, $value := $.Values.bootstrap.extraEnv }}

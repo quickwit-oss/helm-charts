@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
-  {{- range .Values.config.index }}
+  {{- range .Values.config.indices }}
   {{ .index_id }}.yaml: |-
     {{- toYaml . | nindent 4 }}
   {{- end }}
