@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}  
 spec:
-  replicas: {{ .Values.janitor.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "quickwit.janitor.selectorLabels" . | nindent 6 }}

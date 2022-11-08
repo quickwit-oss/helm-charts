@@ -125,7 +125,7 @@ indexer:
 metastore:
   replicaCount: 1
 
-  # Extra env for searcher
+  # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
 
@@ -171,8 +171,6 @@ janitor:
   # Enable Janitor service
   enabled: false
 
-  replicaCount: 1
-
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
@@ -214,7 +212,7 @@ janitor:
 
   affinity: {}
 
-# Deploy jobs to bootstrap creation of indices and sources for quickwit clusters
+# Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
   # Enable boostrap jobs
   enabled: false
@@ -264,7 +262,7 @@ config:
   #   split_footer_cache_capacity: 1G
   #   max_num_concurrent_split_streams: 100
 
-  indices: []
+  indexes: []
     # - version: 0
     #   index_id: myindex
     #   doc_mapping:

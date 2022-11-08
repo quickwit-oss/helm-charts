@@ -1,5 +1,5 @@
 {{- if .Values.bootstrap.enabled -}}
-{{- range .Values.config.indices }}
+{{- range .Values.config.indexes }}
 ---
 apiVersion: batch/v1
 kind: Job

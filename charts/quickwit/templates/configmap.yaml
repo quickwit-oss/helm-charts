@@ -12,7 +12,6 @@ data:
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
     default_index_root_uri: {{ .Values.config.default_index_root_uri }}
-    metastore_uri: {{ .Values.config.metastore_uri }}
     {{- with .Values.config.indexer }}
     indexer:
       {{- toYaml . | nindent 6 }}
