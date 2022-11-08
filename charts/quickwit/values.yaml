@@ -284,16 +284,15 @@ config:
     #       max_merge_factor: 12    
 
   sources: []
-    # - index: myindex
+    # - index: my-index
     #   source: 
-    #     source_id: mysource
+    #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1
     #     params:
     #       topic: quickwit-topic
     #       client_params:
-    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
-    #         group.id: quickwit-group
+    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092    
 
 # Prometheus metrics
 serviceMonitor:
