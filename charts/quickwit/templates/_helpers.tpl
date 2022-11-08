@@ -128,10 +128,14 @@ Quickwit environment
 - name: QW_CONFIG
   value: node.yaml
 {{- with .Values.config.s3 }}
+{{- if .endpoint }}
 - name: QW_S3_ENDPOINT
   value: {{ .endpoint }}
+{{- end }}
+{{- if .region }}
 - name: AWS_REGION
   value: {{ .region }}
+{{- end }}
 {{- if and .secret_key .access_key }}
 - name: AWS_ACCESS_KEY_ID
   value: {{ .access_key }}
