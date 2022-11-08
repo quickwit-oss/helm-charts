@@ -264,27 +264,24 @@ config:
 
   indexes: []
     # - version: 0
-    #   index_id: myindex
+    #   index_id: my-index
     #   doc_mapping:
     #     field_mappings:
-    #       - name: project_id
-    #         type: u64
-    #         fast: true
-    #       - name: session_id
-    #         type: u64
-    #         fast: true
-    #     partition_key: project_id
-    #     max_num_partitions: 100000
-    #     tag_fields: [project_id]
+    #       - name: timestamp
+    #         type: datetime
+    #         input_formats:
+    #           - unix_timestamp
+    #       - name: body
+    #         type: text
     #   search_settings:
-    #     default_search_fields: [text]
+    #     default_search_fields: [body]
     #   indexing_settings:
-    #     timestamp_field: view_time
+    #     timestamp_field: timestamp
     #     merge_policy:
     #       type: limit_merge
     #       max_merge_ops: 3
     #       merge_factor: 10
-    #       max_merge_factor: 12
+    #       max_merge_factor: 12    
 
   sources: []
     # - index: myindex
