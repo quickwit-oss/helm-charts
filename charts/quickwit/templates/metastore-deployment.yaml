@@ -61,10 +61,8 @@ spec:
             items:
               - key: node.yaml
                 path: node.yaml
-        {{- if not .Values.metastore.persistentVolume.enabled }}
         - name: data
           emptyDir: {}
-        {{- end }}
       {{- with .Values.metastore.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -77,17 +75,3 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-  {{- if .Values.metastore.persistentVolume.enabled }}
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: "{{ .Values.metastore.persistentVolume.storage }}"
-      {{- if .Values.metastore.persistentVolume.storageClass }}
-        storageClassName: "{{ .Values.metastore.persistentVolume.storageClass }}"
-      {{- end }}
-  {{- end }}

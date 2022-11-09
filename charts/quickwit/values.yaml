@@ -142,11 +142,6 @@ metastore:
     # maxUnavailable: 1
     # minAvailable: 2
 
-  persistentVolume:
-    enabled: false
-    # storage: "1Gi"
-    # storageClass: ""
-
   updateStrategy: {}
     # type: RollingUpdate
 
@@ -187,11 +182,6 @@ janitor:
   podDisruptionBudget: {}
     # maxUnavailable: 1
     # minAvailable: 2
-
-  persistentVolume:
-    enabled: false
-    # storage: "1Gi"
-    # storageClass: ""
 
   updateStrategy: {}
     # type: RollingUpdate
