@@ -8,9 +8,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 7280
-      targetPort: http
+      targetPort: rest
       protocol: TCP
-      name: http
+      name: rest
     - port: 7281
       targetPort: grpc
       name: grpc 
@@ -44,9 +44,9 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 7280
-      targetPort: http
+      targetPort: rest
       protocol: TCP
-      name: http
+      name: rest
     - port: 7281
       targetPort: grpc
       name: grpc 

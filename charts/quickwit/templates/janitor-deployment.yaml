@@ -1,51 +1,51 @@
+{{- if .Values.janitor.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "quickwit.fullname" . }}-metastore
+  name: {{ include "quickwit.fullname" . }}-janitor
   labels:
-    {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.labels" . | nindent 4 }}  
 spec:
-  replicas: {{ .Values.metastore.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "quickwit.metastore.selectorLabels" . | nindent 6 }}
-  strategy: {{- toYaml .Values.metastore.strategy | nindent 4 }}
+      {{- include "quickwit.janitor.selectorLabels" . | nindent 6 }}
+  strategy:
+    {{- toYaml .Values.janitor.updateStrategy | nindent 4 }}      
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- end }}    
       labels:
-        {{- include "quickwit.metastore.selectorLabels" . | nindent 8 }}
+        {{- include "quickwit.janitor.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}        
-          args: ["run", "--service", "metastore"]
+          args: ["run", "--service", "janitor"]
           env:
-            {{- include "quickwit.metastore.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.metastore.extraEnv }}
+            {{- include "quickwit.environment" . | nindent 12 }}
+            {{- range $key, $value := .Values.janitor.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
-            {{- end }}
+            {{- end }}          
+          ports:
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           livenessProbe:
-            {{- toYaml .Values.metastore.livenessProbe | nindent 12 }}
+            {{- toYaml .Values.janitor.livenessProbe | nindent 12 }}
           readinessProbe:
-            {{- toYaml .Values.metastore.readinessProbe | nindent 12 }}
+            {{- toYaml .Values.janitor.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: config
               mountPath: /quickwit/node.yaml
@@ -53,7 +53,7 @@ spec:
             - name: data
               mountPath: /quickwit/qwdata
           resources:
-            {{- toYaml .Values.metastore.resources | nindent 14 }}
+            {{- toYaml .Values.janitor.resources | nindent 14 }}
       volumes:
         - name: config
           configMap:
@@ -63,15 +63,16 @@ spec:
                 path: node.yaml
         - name: data
           emptyDir: {}
-      {{- with .Values.metastore.nodeSelector }}
+      {{- with .Values.janitor.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metastore.affinity }}
+      {{- with .Values.janitor.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metastore.tolerations }}
+      {{- with .Values.janitor.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+{{- end }} 

@@ -8,7 +8,7 @@ metadata:
 spec:
   endpoints:
     - path: /metrics
-      port: http 
+      port: rest 
       interval: {{ .Values.serviceMonitor.interval }}
       scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
       metricRelabelings:

@@ -50,10 +50,10 @@ spec:
               service:
                 name: {{ $fullName }}-searcher
                 port:
-                  name: http
+                  name: rest
               {{- else }}
               serviceName: {{ $fullName }}-searcher
-              servicePort: http
+              serviceport: rest
               {{- end }}
           {{- end }}
     {{- end }}

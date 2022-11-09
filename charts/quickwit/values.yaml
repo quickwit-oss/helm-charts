@@ -30,7 +30,7 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1005
 
-# Additional global env (searcher + indexer)
+# Additional global env
 environment: {}
   # KEY: VALUE
 
@@ -65,12 +65,18 @@ searcher:
   livenessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
 
   readinessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
 
 indexer:
   replicaCount: 1
@@ -98,12 +104,23 @@ indexer:
   livenessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
 
   readinessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  persistentVolume:
+    enabled: false
+    # storage: "1Gi"
+    # storageClass: ""
 
 metastore:
   replicaCount: 1
@@ -120,21 +137,93 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  strategy:
-    type: RollingUpdate
-    # rollingUpdate:
-    #   maxUnavailable: 5%
-    #   maxSurge: 25%
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  updateStrategy: {}
+    # type: RollingUpdate
 
   livenessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
 
   readinessProbe:
     httpGet:
       path: /
-      port: http
+      port: rest
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+
+janitor:
+  # Enable Janitor service
+  enabled: false
+
+  # Extra env for searcher
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  updateStrategy: {}
+    # type: RollingUpdate
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: rest
+
+  readinessProbe:
+    httpGet:
+      path: /
+      port: rest
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+# Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
+bootstrap:
+  # Enable boostrap jobs
+  enabled: false
+
+  # Extra env for boostrap jobs
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
 
 
 # Quickwit configuration
@@ -145,11 +234,13 @@ config:
     database: metastore
     username: quickwit
     password: ""
-  s3:
-    endpoint: ""
-    # region: us-east-1
-    access_key: ""
-    secret_key: ""
+
+  s3: {}
+    # endpoint: "https://s3.eu-west-1.amazonaws.com"
+    # region: eu-west-1  
+    # access_key: "my-access-key"
+    # secret_key: "my-secret-key"
+
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
   # indexer:
@@ -159,7 +250,39 @@ config:
   # searcher:
   #   fast_field_cache_capacity: 10G
   #   split_footer_cache_capacity: 1G
-  #   max_num_concurrent_split_streams: 100  
+  #   max_num_concurrent_split_streams: 100
+
+  indexes: []
+    # - version: 0
+    #   index_id: my-index
+    #   doc_mapping:
+    #     field_mappings:
+    #       - name: timestamp
+    #         type: datetime
+    #         input_formats:
+    #           - unix_timestamp
+    #       - name: body
+    #         type: text
+    #   search_settings:
+    #     default_search_fields: [body]
+    #   indexing_settings:
+    #     timestamp_field: timestamp
+    #     merge_policy:
+    #       type: limit_merge
+    #       max_merge_ops: 3
+    #       merge_factor: 10
+    #       max_merge_factor: 12    
+
+  sources: []
+    # - index: my-index
+    #   source: 
+    #     source_id: my-source
+    #     source_type: kafka
+    #     num_pipelines: 1
+    #     params:
+    #       topic: quickwit-topic
+    #       client_params:
+    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092    
 
 # Prometheus metrics
 serviceMonitor:
@@ -219,8 +342,4 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector: {}
 
-tolerations: []
-
-affinity: {}
