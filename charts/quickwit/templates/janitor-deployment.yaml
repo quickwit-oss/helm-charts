@@ -18,7 +18,7 @@ spec:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}    
+      {{- end }}
       labels:
         {{- include "quickwit.janitor.selectorLabels" . | nindent 8 }}
     spec:
@@ -26,20 +26,22 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}        
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           args: ["run", "--service", "janitor"]
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.janitor.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
-            {{- end }}          
-          ports:
+            {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           livenessProbe:
