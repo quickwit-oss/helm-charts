@@ -1,0 +1,25 @@
+name: Release Charts
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.email "quickwit-bot@quickwit.io"
+          git config --global user.name "Quickwit Bot"
+
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.4
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
