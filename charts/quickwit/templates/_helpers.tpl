@@ -146,6 +146,13 @@ Quickwit environment
       key: s3.secret_key
 {{- end }}
 {{- end }}
+{{- if .Values.config.azure_blob.access_key }}
+- name: QW_AZURE_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "quickwit.fullname" $ }}
+      key: azure_blob.access_key
+{{- end }}
 - name: QW_NODE_ID
   value: "$(POD_NAME)"
 - name: QW_PEER_SEEDS

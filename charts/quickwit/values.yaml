@@ -237,9 +237,12 @@ config:
 
   s3: {}
     # endpoint: "https://s3.eu-west-1.amazonaws.com"
-    # region: eu-west-1  
+    # region: eu-west-1
     # access_key: "my-access-key"
     # secret_key: "my-secret-key"
+
+  azure_blob: {}
+    # access_key: "my-azure-blob-access-key"
 
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
@@ -271,18 +274,18 @@ config:
     #       type: limit_merge
     #       max_merge_ops: 3
     #       merge_factor: 10
-    #       max_merge_factor: 12    
+    #       max_merge_factor: 12
 
   sources: []
     # - index: my-index
-    #   source: 
+    #   source:
     #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1
     #     params:
     #       topic: quickwit-topic
     #       client_params:
-    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092    
+    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
 
 # Prometheus metrics
 serviceMonitor:
@@ -341,5 +344,3 @@ resources: {}
   # requests:
   #   cpu: 100m
   #   memory: 128Mi
-
-
