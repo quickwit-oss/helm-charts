@@ -3,6 +3,25 @@ entries:
   quickwit:
   - apiVersion: v2
     appVersion: edge
+    created: "2022-11-16T21:09:30.014671068Z"
+    description: Open-Source & Cloud-Native Log Management at any scale.
+    digest: 4fba4a5ff33fa3d7b19c9af5545494f8e2bfe224d22b681351d926709fc77a4b
+    home: https://quickwit.io/
+    icon: https://avatars.githubusercontent.com/u/98504233?s=200&v=4
+    keywords:
+    - quickwit
+    maintainers:
+    - email: mkhpalm@gmail.com
+      name: mkhpalm
+    name: quickwit
+    sources:
+    - https://github.com/quickwit-oss/quickwit/
+    type: application
+    urls:
+    - https://github.com/quickwit-oss/helm-charts/releases/download/quickwit-0.1.10/quickwit-0.1.10.tgz
+    version: 0.1.10
+  - apiVersion: v2
+    appVersion: edge
     created: "2022-11-16T19:22:06.337738409Z"
     description: Open-Source & Cloud-Native Log Management at any scale.
     digest: 8cabb063571cab982eae870a13973ca4fcbe37019d1990376cd27223d2487dc3
@@ -106,4 +125,4 @@ entries:
     urls:
     - https://helm.quickwit.io/quickwit-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-16T19:22:06.337763309Z"
+generated: "2022-11-16T21:09:30.014697068Z"
