@@ -256,12 +256,13 @@ bootstrap:
 
 # Quickwit configuration
 config:
-  postgres:
-    host: ""
-    port: 5432
-    database: metastore
-    username: quickwit
-    password: ""
+  # Metastore configuration.
+  postgres: {}
+  #   host: ""
+  #   port: 5432
+  #   database: metastore
+  #   username: quickwit
+  #   password: ""
 
   s3: {}
     # endpoint: "https://s3.eu-west-1.amazonaws.com"

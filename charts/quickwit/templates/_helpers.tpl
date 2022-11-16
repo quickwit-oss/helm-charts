@@ -170,6 +170,7 @@ Quickwit metastore environment
 */}}
 {{- define "quickwit.metastore.environment" -}}
 {{ include "quickwit.environment" . }}
+{{- if .Values.config.postgres }}
 - name: POSTGRES_HOST
   value: {{ required "A valid config.postgres.host is required!" .Values.config.postgres.host }}
 - name: POSTGRES_PORT
@@ -185,5 +186,6 @@ Quickwit metastore environment
       key: postgres.password
 - name: QW_METASTORE_URI
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
+{{- end }}
 {{- end }}
 
