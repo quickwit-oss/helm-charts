@@ -62,6 +62,13 @@ searcher:
   updateStrategy: {}
     # type: RollingUpdate
 
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
   livenessProbe:
     httpGet:
       path: /
@@ -100,6 +107,13 @@ indexer:
 
   updateStrategy: {}
     # type: RollingUpdate
+
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
 
   livenessProbe:
     httpGet:

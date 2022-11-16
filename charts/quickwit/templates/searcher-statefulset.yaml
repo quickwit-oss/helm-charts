@@ -44,6 +44,8 @@ spec:
           args: ["run", "--service", "searcher"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.searcher.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.searcher.livenessProbe | nindent 12 }}
           readinessProbe:

@@ -42,6 +42,8 @@ spec:
             {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
+          startupProbe:
+            {{- toYaml .Values.metastore.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.metastore.livenessProbe | nindent 12 }}
           readinessProbe:
