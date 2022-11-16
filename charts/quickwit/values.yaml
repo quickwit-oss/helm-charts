@@ -62,14 +62,21 @@ searcher:
   updateStrategy: {}
     # type: RollingUpdate
 
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
   livenessProbe:
     httpGet:
-      path: /
+      path: /health/livez
       port: rest
 
   readinessProbe:
     httpGet:
-      path: /
+      path: /health/readyz
       port: rest
 
   nodeSelector: {}
@@ -101,14 +108,21 @@ indexer:
   updateStrategy: {}
     # type: RollingUpdate
 
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
   livenessProbe:
     httpGet:
-      path: /
+      path: /health/livez
       port: rest
 
   readinessProbe:
     httpGet:
-      path: /
+      path: /health/readyz
       port: rest
 
   nodeSelector: {}
@@ -145,14 +159,21 @@ metastore:
   updateStrategy: {}
     # type: RollingUpdate
 
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
   livenessProbe:
     httpGet:
-      path: /
+      path: /health/livez
       port: rest
 
   readinessProbe:
     httpGet:
-      path: /
+      path: /health/readyz
       port: rest
 
   nodeSelector: {}
@@ -186,14 +207,21 @@ janitor:
   updateStrategy: {}
     # type: RollingUpdate
 
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
   livenessProbe:
     httpGet:
-      path: /
+      path: /health/livez
       port: rest
 
   readinessProbe:
     httpGet:
-      path: /
+      path: /health/readyz
       port: rest
 
   nodeSelector: {}
