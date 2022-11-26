@@ -285,12 +285,13 @@ config:
   #   max_num_concurrent_split_streams: 100
 
   indexes: []
-    # - version: 0
+    # - version: 0.4
     #   index_id: my-index
     #   doc_mapping:
     #     field_mappings:
     #       - name: timestamp
     #         type: datetime
+    #         fast: true
     #         input_formats:
     #           - unix_timestamp
     #       - name: body
@@ -308,6 +309,7 @@ config:
   sources: []
     # - index: my-index
     #   source:
+    #     version: 0.4
     #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1

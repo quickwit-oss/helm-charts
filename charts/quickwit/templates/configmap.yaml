@@ -6,7 +6,7 @@ metadata:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
   node.yaml: |-
-    version: 0
+    version: 0.4
     cluster_id: {{ include "quickwit.fullname" . }}
     listen_address: 0.0.0.0
     gossip_listen_port: 7282
