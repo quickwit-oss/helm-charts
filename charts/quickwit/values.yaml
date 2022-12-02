@@ -6,7 +6,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: edge
+  # tag: v0.4.0
 
 imagePullSecrets: []
 nameOverride: ""
@@ -185,7 +185,7 @@ metastore:
 
 janitor:
   # Enable Janitor service
-  enabled: false
+  enabled: true
 
   # Extra env for searcher
   extraEnv: {}
@@ -294,12 +294,13 @@ config:
     #         fast: true
     #         input_formats:
     #           - unix_timestamp
+    #         output_format: unix_timestamp_secs
     #       - name: body
     #         type: text
+    #     timestamp_field: timestamp
     #   search_settings:
     #     default_search_fields: [body]
     #   indexing_settings:
-    #     timestamp_field: timestamp
     #     merge_policy:
     #       type: limit_merge
     #       max_merge_ops: 3
