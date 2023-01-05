@@ -5,6 +5,9 @@ metadata:
   name: {{ include "quickwit.fullname" . }}
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- with .Values.prometheus.monitor.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   endpoints:
     - path: /metrics
