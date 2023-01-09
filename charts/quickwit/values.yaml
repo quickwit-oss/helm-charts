@@ -186,6 +186,51 @@ metastore:
 
   affinity: {}
 
+control_plane:
+  replicaCount: 1
+
+  # Extra env for controle plane
+  extraEnv: {}
+    # KEY: VALUE
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  updateStrategy: {}
+    # type: RollingUpdate
+
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
+  livenessProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+
+  readinessProbe:
+    httpGet:
+      path: /health/readyz
+      port: rest
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
 
 janitor:
   # Enable Janitor service
