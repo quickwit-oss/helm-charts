@@ -33,8 +33,10 @@ spec:
           {{- toYaml $.Values.securityContext | nindent 10 }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
-        command: ["/bin/bash","-c","quickwit index describe --index {{ .index_id }} || quickwit index create --index-config {{ .index_id }}.yaml "]
+        command: ["/bin/bash","-c","quickwit index describe --index {{ .index_id }} --endpoint ${QW_CLUSTER_ENDPOINT} || quickwit index create --index-config {{ .index_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}"]
         env:
+          - name: QW_CLUSTER_ENDPOINT
+            value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.cluster.local:7280
           {{- include "quickwit.metastore.environment" $ | nindent 10 }}
           {{- range $key, $value := $.Values.bootstrap.extraEnv }}
           - name: "{{ $key }}"
