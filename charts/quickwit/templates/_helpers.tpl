@@ -78,6 +78,14 @@ app.kubernetes.io/component: metastore
 {{- end }}
 
 {{/*
+Control Plane Selector labels
+*/}}
+{{- define "quickwit.control_plane.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: control-plane
+{{- end }}
+
+{{/*
 Indexer Selector labels
 */}}
 {{- define "quickwit.indexer.selectorLabels" -}}
