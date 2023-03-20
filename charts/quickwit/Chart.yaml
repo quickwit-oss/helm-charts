@@ -2,8 +2,8 @@ apiVersion: v2
 name: quickwit
 description: Open-Source & Cloud-Native Log Management at any scale.
 type: application
-version: 0.2.1
-appVersion: "v0.4.0"
+version: 0.3.0
+appVersion: "v0.5.0"
 keywords:
 - quickwit
 home: https://quickwit.io/
