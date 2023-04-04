@@ -24,7 +24,7 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: ClusterIP
   clusterIP: None
   publishNotReadyAddresses: true
   ports:
