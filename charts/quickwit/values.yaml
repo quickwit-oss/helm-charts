@@ -306,6 +306,7 @@ bootstrap:
 # Quickwit configuration
 config:
   # Metastore configuration.
+  metastore_uri: s3://quickwit/indexes
   postgres: {}
   #   host: ""
   #   port: 5432
@@ -321,8 +322,6 @@ config:
 
   azure_blob: {}
     # access_key: "my-azure-blob-access-key"
-
-  metastore_uri: s3://quickwit/indexes
 
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
