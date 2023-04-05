@@ -17,7 +17,7 @@ data:
       {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.config.ingest_api }}
-    searcher:
+    ingest_api:
       {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.config.searcher }}
