@@ -327,6 +327,10 @@ config:
   # indexer:
   #   split_store_max_num_bytes: 200G
   #   split_store_max_num_splits: 10000
+  # Ingest API settings
+  # ingest_api:
+  #   max_queue_memory_usage: 2GiB
+  #   max_queue_disk_usage: 4GiB
   # Searcher settings
   # searcher:
   #   fast_field_cache_capacity: 10G

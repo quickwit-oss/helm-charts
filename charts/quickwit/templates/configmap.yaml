@@ -16,8 +16,15 @@ data:
     indexer:
       {{- toYaml . | nindent 6 }}
     {{- end }}
+    {{- with .Values.config.ingest_api }}
+    searcher:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
     {{- with .Values.config.searcher }}
     searcher:
       {{- toYaml . | nindent 6 }}
     {{- end }}
-
+    {{- with .Values.config.jaeger }}
+    jaeger:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
