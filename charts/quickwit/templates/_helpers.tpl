@@ -200,3 +200,10 @@ Quickwit metastore environment
 {{- end }}
 {{- end }}
 
+{{- define "quickwit.metastore.error.invalid_metastore_datastore" -}}
+  {{ if and .Values.config.postgres .Values.config.metastore_uri }}
+    {{ fail "Invalid Config: Metastore cannot be both s3 and postgres"}}
+  {{ else if and (not .Values.config.postgres) (not .Values.config.metastore_uri) }}
+    {{ fail "Invalid Config: Metastore must be either have metastore_uri or s3"}}
+  {{ end }}
+{{ end }}

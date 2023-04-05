@@ -1,3 +1,4 @@
+{{ include "quickwit.metastore.error.invalid_metastore_datastore" . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,7 +12,9 @@ data:
     listen_address: 0.0.0.0
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
+    {{- if and .Values.config.s3 .Values.config.metastore_uri }}]
     metastore_uri: {{ .Values.config.metastore_uri }}
+    {{- end }}
     default_index_root_uri: {{ .Values.config.default_index_root_uri }}
     {{- with .Values.config.indexer }}
     indexer:
