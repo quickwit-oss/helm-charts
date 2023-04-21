@@ -338,7 +338,7 @@ config:
   #   max_num_concurrent_split_streams: 100
 
   indexes: []
-    # - version: 0.4
+    # - version: 0.5
     #   index_id: my-index
     #   doc_mapping:
     #     field_mappings:
@@ -363,7 +363,7 @@ config:
   sources: []
     # - index: my-index
     #   source:
-    #     version: 0.4
+    #     version: 0.5
     #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1
