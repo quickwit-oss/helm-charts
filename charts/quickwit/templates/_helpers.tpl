@@ -138,6 +138,8 @@ Quickwit environment
       fieldPath: status.podIP
 - name: QW_CONFIG
   value: node.yaml
+- name: QW_CLUSTER_ID
+  value: {{ .Release.Namespace }}-{{ include "quickwit.fullname" . }}
 {{- with .Values.config.s3 }}
 {{- if .endpoint }}
 - name: QW_S3_ENDPOINT

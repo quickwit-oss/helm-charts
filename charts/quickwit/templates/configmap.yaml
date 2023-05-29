@@ -7,7 +7,6 @@ metadata:
 data:
   node.yaml: |-
     version: 0.5
-    cluster_id: {{ include "quickwit.fullname" . }}
     listen_address: 0.0.0.0
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
