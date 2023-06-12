@@ -159,8 +159,12 @@ Quickwit environment
       key: s3.secret_key
 {{- end }}
 {{- end }}
+{{- if .Values.config.azure_blob.account_name }}
+- name: QW_AZURE_STORAGE_ACCOUNT
+  value: {{ .Values.config.azure_blob.account_name }}
+{{- end }}
 {{- if .Values.config.azure_blob.access_key }}
-- name: QW_AZURE_ACCESS_KEY
+- name: QW_AZURE_STORAGE_ACCESS_KEY
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" $ }}
