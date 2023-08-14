@@ -6,6 +6,7 @@ metadata:
     {{- include "quickwit.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.searcher.replicaCount }}
+  podManagementPolicy: Parallel
   serviceName: {{ include "quickwit.fullname" . }}-headless
   selector:
     matchLabels:
