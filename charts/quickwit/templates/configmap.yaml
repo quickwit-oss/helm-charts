@@ -16,14 +16,17 @@ data:
       {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.config.storage }}
+    {{- $new_storage := . | deepCopy }}
     {{ if .s3 }}
-    {{- $_ := unset .s3 "secret_access_key" }}
+    {{- $_ := unset $new_storage.s3 "access_key_id" }}
+    {{- $_ := unset $new_storage.s3 "secret_access_key" }}
     {{- end }}
     {{ if .azure }}
-    {{- $_ := unset .azure "access_key" }}
+    {{- $_ := unset $new_storage.azure "account" }}
+    {{- $_ := unset $new_storage.azure "access_key" }}
     {{- end }}
     storage:
-      {{- toYaml . | nindent 6 }}
+      {{- toYaml $new_storage | nindent 6 }}
     {{- end }}
     {{- with .Values.config.ingest_api }}
     ingest_api:
