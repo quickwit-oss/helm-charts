@@ -140,35 +140,19 @@ Quickwit environment
   value: node.yaml
 - name: QW_CLUSTER_ID
   value: {{ .Release.Namespace }}-{{ include "quickwit.fullname" . }}
-{{- with .Values.config.s3 }}
-{{- if .endpoint }}
-- name: QW_S3_ENDPOINT
-  value: {{ .endpoint }}
-{{- end }}
-{{- if .region }}
-- name: AWS_REGION
-  value: {{ .region }}
-{{- end }}
-{{- if and .secret_key .access_key }}
-- name: AWS_ACCESS_KEY_ID
-  value: {{ .access_key }}
+{{- if and (.Values.config.storage) (.Values.config.storage.s3) (.Values.config.storage.s3.secret_access_key) }}
 - name: AWS_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" $ }}
-      key: s3.secret_key
+      key: .Values.config.storage.s3.secret_access_key
 {{- end }}
-{{- end }}
-{{- if .Values.config.azure_blob.account_name }}
-- name: QW_AZURE_STORAGE_ACCOUNT
-  value: {{ .Values.config.azure_blob.account_name }}
-{{- end }}
-{{- if .Values.config.azure_blob.access_key }}
+{{- if and (.Values.config.storage) (.Values.config.storage.azure) (.Values.config.storage.azure.access_key) }}
 - name: QW_AZURE_STORAGE_ACCESS_KEY
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" $ }}
-      key: azure_blob.access_key
+      key: .Values.config.azure.access_key
 {{- end }}
 - name: QW_NODE_ID
   value: "$(POD_NAME)"
