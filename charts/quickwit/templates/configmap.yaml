@@ -17,10 +17,12 @@ data:
     {{- end }}
     {{- with .Values.config.storage }}
     {{- $new_storage := . | deepCopy }}
+    {{- /* s3 access_key_id and secret_access_key are already set by env variables */}}
     {{ if .s3 }}
     {{- $_ := unset $new_storage.s3 "access_key_id" }}
     {{- $_ := unset $new_storage.s3 "secret_access_key" }}
     {{- end }}
+    {{- /* azure account and access_key are already set by env variables */}}
     {{ if .azure }}
     {{- $_ := unset $new_storage.azure "account" }}
     {{- $_ := unset $new_storage.azure "access_key" }}
