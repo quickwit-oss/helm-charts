@@ -6,7 +6,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: v0.6.1
+  # tag: v0.6.4
 
 imagePullSecrets: []
 nameOverride: ""
@@ -306,22 +306,27 @@ bootstrap:
 # Quickwit configuration
 config:
   # Metastore configuration.
-  postgres: {}
+  # Could be set either with QW_METASTORE_URI or with the following config:
+  # - If on S3:
+  # metastore_uri: s3://quickwit-indexes
+  # - If on postgres-like db:
+  # postgres: {}
   #   host: ""
   #   port: 5432
   #   database: metastore
   #   username: quickwit
   #   password: ""
 
-  s3: {}
-    # endpoint: "https://s3.eu-west-1.amazonaws.com"
-    # region: eu-west-1
-    # access_key: "my-access-key"
-    # secret_key: "my-secret-key"
-
-  azure_blob: {}
-    # account_name: "my-azure-blob-accout"
-    # access_key: "my-azure-blob-access-key"
+  storage: {}
+    # s3:
+    #   flavor: gcs
+    #   region: eu-west-1
+    #   access_key_id: "my-access-key"
+    #   secret_access_key: "my-secret-key"
+    #   endpoint: https://storage.googleapis.com
+    # azure:
+    #   account: your-azure-account-name
+    #   access_key: your-azure-access-key
 
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
@@ -364,7 +369,7 @@ config:
   sources: []
     # - index: my-index
     #   source:
-    #     version: 0.5
+    #     version: 0.6
     #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1
