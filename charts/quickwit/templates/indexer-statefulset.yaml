@@ -7,6 +7,9 @@ metadata:
 spec:
   replicas: {{ .Values.indexer.replicaCount }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
+  {{- if .Values.searcher.podManagementPolicy }}
+  podManagementPolicy: {{ .Values.indexer.podManagementPolicy }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "quickwit.indexer.selectorLabels" . | nindent 6 }}

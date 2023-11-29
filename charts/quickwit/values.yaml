@@ -58,6 +58,8 @@ searcher:
     # maxUnavailable: 1
     # minAvailable: 2
 
+  # podManagementPolicy: OrderedReady
+
   persistentVolume:
     enabled: false
     # storage: "1Gi"
@@ -108,6 +110,8 @@ indexer:
   podDisruptionBudget: {}
     # maxUnavailable: 1
     # minAvailable: 2
+
+  # podManagementPolicy: OrderedReady
 
   updateStrategy: {}
     # type: RollingUpdate
