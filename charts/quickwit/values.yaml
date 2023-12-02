@@ -407,12 +407,11 @@ service:
 
 ingress:
   enabled: false
-  className: ""
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 10m
   hosts:
-    - host: chart-example.local
+    - host: chart-example.local # hostname required here.
       paths:
         - path: /
           pathType: ImplementationSpecific
