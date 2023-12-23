@@ -312,6 +312,7 @@ config:
   #   database: metastore
   #   username: quickwit
   #   password: ""
+  #   max_num_connections: 50
 
   s3: {}
     # endpoint: "https://s3.eu-west-1.amazonaws.com"
