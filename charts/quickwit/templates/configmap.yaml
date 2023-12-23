@@ -45,5 +45,5 @@ data:
     {{- if (.Values.config.postgres).max_num_connections }}
     metastore:
       postgres:
-        max_num_connections: .Values.config.postgres.max_num_connections
+        max_num_connections: {{ .Values.config.postgres.max_num_connections }}
     {{- end }}
