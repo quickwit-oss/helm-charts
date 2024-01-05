@@ -6,7 +6,7 @@ metadata:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
   node.yaml: |-
-    version: 0.6
+    version: 0.7
     listen_address: 0.0.0.0
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
@@ -19,13 +19,13 @@ data:
     {{- $new_storage := . | deepCopy }}
     {{- /* s3 access_key_id and secret_access_key are already set by env variables */}}
     {{ if .s3 }}
-    {{- $_ := unset $new_storage.s3 "access_key_id" }}
-    {{- $_ := unset $new_storage.s3 "secret_access_key" }}
+    {{- $_ := set $new_storage.s3 "access_key_id" "${AWS_ACCESS_KEY_ID}" }}
+    {{- $_ := set $new_storage.s3 "secret_access_key" "${AWS_SECRET_ACCESS_KEY}" }}
     {{- end }}
     {{- /* azure account and access_key are already set by env variables */}}
     {{ if .azure }}
-    {{- $_ := unset $new_storage.azure "account" }}
-    {{- $_ := unset $new_storage.azure "access_key" }}
+    {{- $_ := set $new_storage.azure "account" "${QW_AZURE_STORAGE_ACCOUNT}" }}
+    {{- $_ := set $new_storage.azure "access_key" "${QW_AZURE_STORAGE_ACCESS_KEY}" }}
     {{- end }}
     storage:
       {{- toYaml $new_storage | nindent 6 }}
@@ -41,4 +41,9 @@ data:
     {{- with .Values.config.jaeger }}
     jaeger:
       {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- if (.Values.config.postgres).max_num_connections }}
+    metastore:
+      postgres:
+        max_num_connections: {{ .Values.config.postgres.max_num_connections }}
     {{- end }}
