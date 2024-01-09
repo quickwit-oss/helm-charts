@@ -44,6 +44,10 @@ spec:
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- with .Values.indexer.extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           args: ["run", "--service", "indexer"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}

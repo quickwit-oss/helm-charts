@@ -38,12 +38,20 @@ securityContext:
 environment: {}
   # KEY: VALUE
 
+# -- Specify an existing secret containing Quickwit configuration.
+existingSecretForConfig: ""
+
 searcher:
   replicaCount: 3
 
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
+
+  # -- Environment variables from secrets or configmaps to add to the searcher
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
 
   resources: {}
     # limits:
@@ -96,6 +104,11 @@ indexer:
   extraEnv: {}
     # KEY: VALUE
 
+  # -- Environment variables from secrets or configmaps to add to the indexer
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
+
   resources: {}
     # limits:
     #   cpu: 100m
@@ -146,6 +159,11 @@ metastore:
   # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
+  
+  # -- Environment variables from secrets or configmaps to add to the metastore
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
 
   resources: {}
     # limits:
@@ -192,6 +210,11 @@ control_plane:
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
+  
+  # -- Environment variables from secrets or configmaps to add to the control plane
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
 
   resources: {}
     # limits:
@@ -239,6 +262,11 @@ janitor:
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
+  
+  # -- Environment variables from secrets or configmaps to add to the janitor
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
 
   resources: {}
     # limits:
@@ -287,6 +315,11 @@ bootstrap:
   # Extra env for boostrap jobs
   extraEnv: {}
     # KEY: VALUE
+  
+  # -- Environment variables from secrets or configmaps to add to the bootstrap
+  extraEnvFrom: []
+  # - secretRef:
+  #     name: quickwit-credentials
 
   resources: {}
     # limits:
