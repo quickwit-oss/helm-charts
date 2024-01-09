@@ -159,7 +159,7 @@ metastore:
   # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
-  
+
   # -- Environment variables from secrets or configmaps to add to the metastore
   extraEnvFrom: []
   # - secretRef:
@@ -210,7 +210,7 @@ control_plane:
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
-  
+
   # -- Environment variables from secrets or configmaps to add to the control plane
   extraEnvFrom: []
   # - secretRef:
@@ -262,7 +262,7 @@ janitor:
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
-  
+
   # -- Environment variables from secrets or configmaps to add to the janitor
   extraEnvFrom: []
   # - secretRef:
@@ -315,7 +315,7 @@ bootstrap:
   # Extra env for boostrap jobs
   extraEnv: {}
     # KEY: VALUE
-  
+
   # -- Environment variables from secrets or configmaps to add to the bootstrap
   extraEnvFrom: []
   # - secretRef:
