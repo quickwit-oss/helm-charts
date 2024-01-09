@@ -39,7 +39,7 @@ environment: {}
   # KEY: VALUE
 
 # -- Specify an existing secret containing Quickwit configuration.
-existingSecretForConfig: ""
+existingSecretForConfig: false
 
 searcher:
   replicaCount: 3
