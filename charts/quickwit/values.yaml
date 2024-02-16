@@ -347,15 +347,17 @@ config:
   #   password: ""
   #   max_num_connections: 50
 
-  s3: {}
-    # endpoint: "https://s3.eu-west-1.amazonaws.com"
-    # region: eu-west-1
-    # access_key: "my-access-key"
-    # secret_key: "my-secret-key"
-
-  azure_blob: {}
-    # account_name: "my-azure-blob-accout"
-    # access_key: "my-azure-blob-access-key"
+  # storage:
+    # s3:
+      # endpoint: "http://custom-s3-endpoint"
+      # region: eu-east-1
+      # We recommend using IAM roles and permissions to access Amazon S3 resources,
+      # but you can specify a pair of access and secret keys if necessary.
+      # access_key_id: <my access key>
+      # secret_access_key: <my secret key>
+    # azure:
+      # account: "my-azure-blob-account-name"
+      # access_key: "my-azure-blob-access-key"
 
   default_index_root_uri: s3://quickwit/indexes
   # Indexer settings
