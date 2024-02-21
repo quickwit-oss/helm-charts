@@ -25,6 +25,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+annotations: {}
+
 podAnnotations: {}
 
 podSecurityContext:
@@ -83,6 +85,12 @@ searcher:
       path: /health/readyz
       port: rest
 
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -128,6 +136,12 @@ indexer:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
 
   nodeSelector: {}
 
@@ -180,6 +194,12 @@ metastore:
       path: /health/readyz
       port: rest
 
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -225,6 +245,10 @@ control_plane:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
 
   nodeSelector: {}
 
@@ -272,6 +296,10 @@ janitor:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
 
   nodeSelector: {}
 
@@ -407,6 +435,8 @@ prometheusRule:
 
 service:
   type: ClusterIP
+
+  annotations: {}
 
 ingress:
   enabled: false
