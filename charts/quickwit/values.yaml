@@ -283,8 +283,12 @@ bootstrap:
 # Quickwit configuration
 config:
   # Metastore configuration.
-  metastore_uri: s3://quickwit/indexes
-  # postgres: {}
+  # Default to `qwdata/indexes` if not set.
+  # S3 metastore
+  # metastore_uri: s3://quickwit/indexes
+  #
+  # Postgres metastore
+  # postgres:
   #   host: ""
   #   port: 5432
   #   database: metastore
@@ -292,6 +296,7 @@ config:
   #   password: ""
   #   max_num_connections: 50
 
+  # Storage configuration.
   # storage:
     # s3:
       # endpoint: "http://custom-s3-endpoint"
@@ -305,6 +310,7 @@ config:
       # access_key: "my-azure-blob-access-key"
 
   default_index_root_uri: s3://quickwit/indexes
+
   # Indexer settings
   # indexer:
   #   split_store_max_num_bytes: 200G
