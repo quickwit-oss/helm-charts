@@ -155,11 +155,6 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
   updateStrategy: {}
     # type: RollingUpdate
 
@@ -187,8 +182,6 @@ metastore:
   affinity: {}
 
 control_plane:
-  replicaCount: 1
-
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
@@ -200,14 +193,6 @@ control_plane:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
-  updateStrategy: {}
-    # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -247,14 +232,6 @@ janitor:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
-  updateStrategy: {}
-    # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -306,7 +283,8 @@ bootstrap:
 # Quickwit configuration
 config:
   # Metastore configuration.
-  postgres: {}
+  metastore_uri: s3://quickwit/indexes
+  # postgres: {}
   #   host: ""
   #   port: 5432
   #   database: metastore
