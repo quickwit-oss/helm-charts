@@ -31,6 +31,17 @@ spec:
     - port: 7282
       protocol: UDP
       name: discovery
+    # Needed by istio with mTLS mode set to STRICT.
+    # The port names must starts with "tcp-" to work...
+    # See https://istio.io/latest/docs/ops/common-problems/network-issues/#503-error-while-accessing-headless-services
+    - name: tcp-http
+      port: 7280
+      protocol: TCP
+      targetPort: 7280
+    - name: tcp-grpc
+      port: 7281
+      protocol: TCP
+      targetPort: 7281
   selector:
     {{- include "quickwit.selectorLabels" . | nindent 4 }}
 ---
