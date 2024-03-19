@@ -6,7 +6,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: v0.7.0
+  # tag: v0.7.1
 
 imagePullSecrets: []
 nameOverride: ""
@@ -155,11 +155,6 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
   updateStrategy: {}
     # type: RollingUpdate
 
@@ -187,8 +182,6 @@ metastore:
   affinity: {}
 
 control_plane:
-  replicaCount: 1
-
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
@@ -200,14 +193,6 @@ control_plane:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
-  updateStrategy: {}
-    # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -247,14 +232,6 @@ janitor:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
-  updateStrategy: {}
-    # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -306,7 +283,12 @@ bootstrap:
 # Quickwit configuration
 config:
   # Metastore configuration.
-  postgres: {}
+  # Default to `qwdata/indexes` if not set.
+  # S3 metastore
+  # metastore_uri: s3://quickwit/indexes
+  #
+  # Postgres metastore
+  # postgres:
   #   host: ""
   #   port: 5432
   #   database: metastore
@@ -314,6 +296,7 @@ config:
   #   password: ""
   #   max_num_connections: 50
 
+  # Storage configuration.
   # storage:
     # s3:
       # endpoint: "http://custom-s3-endpoint"
@@ -327,6 +310,7 @@ config:
       # access_key: "my-azure-blob-access-key"
 
   default_index_root_uri: s3://quickwit/indexes
+
   # Indexer settings
   # indexer:
   #   split_store_max_num_bytes: 200G
