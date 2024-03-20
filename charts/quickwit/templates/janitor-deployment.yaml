@@ -5,6 +5,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-janitor
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}  
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.janitor.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -17,6 +24,9 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.janitor.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:

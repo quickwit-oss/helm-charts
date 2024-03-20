@@ -4,6 +4,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-control-plane
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}  
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.control_plane.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -16,6 +23,9 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.control_plane.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:

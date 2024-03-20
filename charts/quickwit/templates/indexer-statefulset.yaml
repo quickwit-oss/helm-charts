@@ -4,6 +4,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-indexer
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.indexer.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.indexer.replicaCount }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
@@ -20,6 +27,9 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.indexer.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
