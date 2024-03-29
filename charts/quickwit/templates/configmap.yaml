@@ -6,7 +6,7 @@ metadata:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
   node.yaml: |-
-    version: 0.7
+    version: 0.8
     listen_address: 0.0.0.0
     gossip_listen_port: 7282
     data_dir: /quickwit/qwdata
