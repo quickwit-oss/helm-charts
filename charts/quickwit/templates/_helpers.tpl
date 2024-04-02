@@ -54,7 +54,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Search Selector labels
+Searcher Selector labels
 */}}
 {{- define "quickwit.searcher.selectorLabels" -}}
 {{ include "quickwit.selectorLabels" . }}
@@ -200,4 +200,3 @@ Quickwit metastore environment
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
 {{- end }}
-

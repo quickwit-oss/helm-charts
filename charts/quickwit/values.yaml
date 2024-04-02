@@ -45,6 +45,9 @@ searcher:
   extraEnv: {}
     # KEY: VALUE
 
+  podExtraLabels: {}
+    # KEY: VALUE
+
   resources: {}
     # limits:
     #   cpu: 100m
