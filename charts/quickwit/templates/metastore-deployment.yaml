@@ -4,6 +4,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-metastore
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.metastore.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.metastore.replicaCount }}
   selector:
@@ -15,6 +22,9 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
       {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.metastore.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
