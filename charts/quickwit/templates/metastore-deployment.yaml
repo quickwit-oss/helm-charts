@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "quickwit.labels" . | nindent 8 }}
+        {{- include "quickwit.customLabels" . | nindent 8 }}
         {{- include "quickwit.metastore.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
