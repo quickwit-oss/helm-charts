@@ -33,7 +33,7 @@ Create chart name and version as used by the chart label.
 {{/*
 Custom labels
 */}}
-{{- define "quickwit.customLabels" -}}
+{{- define "quickwit.additionalLabels" -}}
 {{- if .Values.additionalLabels }}
 {{ toYaml .Values.additionalLabels }}
 {{- end }}
@@ -49,7 +49,7 @@ helm.sh/chart: {{ include "quickwit.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{ include "quickwit.customLabels" . }}
+{{ include "quickwit.additionalLabels" . }}
 {{- end }}
 
 {{/*
