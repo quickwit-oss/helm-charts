@@ -66,6 +66,10 @@ spec:
               subPath: node.yaml
             - name: data
               mountPath: /quickwit/qwdata
+            {{- range .Values.configMaps }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
           resources:
             {{- toYaml .Values.control_plane.resources | nindent 14 }}
       volumes:
@@ -77,6 +81,11 @@ spec:
                 path: node.yaml
         - name: data
           emptyDir: {}
+        {{- range .Values.configMaps }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
+        {{- end }}
       {{- with .Values.control_plane.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
