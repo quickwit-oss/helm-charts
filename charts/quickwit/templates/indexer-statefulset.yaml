@@ -70,6 +70,10 @@ spec:
               subPath: node.yaml
             - name: data
               mountPath: /quickwit/qwdata
+            {{- range .Values.configMaps }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
           resources:
             {{- toYaml .Values.indexer.resources | nindent 12 }}
       volumes:
@@ -82,6 +86,11 @@ spec:
         {{- if ne .Values.indexer.persistentVolume.enabled true }}
         - name: data
           emptyDir: {}
+        {{- end }}
+        {{- range .Values.configMaps }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
         {{- end }}
       {{- with .Values.indexer.nodeSelector }}
       nodeSelector:

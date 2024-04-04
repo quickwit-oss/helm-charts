@@ -40,6 +40,10 @@ securityContext:
 environment: {}
   # KEY: VALUE
 
+configMaps: []
+  # - name: configmap1
+  #   mountPath: /quickwit/configmaps/
+
 searcher:
   replicaCount: 3
 
