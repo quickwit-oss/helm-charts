@@ -5,9 +5,12 @@ metadata:
   name: {{ include "quickwit.fullname" . }}
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- with .Values.prometheusRule.additionalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   groups:
     - name: {{ include "quickwit.fullname" . }}
       rules:
-        {{- toYaml .Values.prometheusRules.rules | nindent 8 }} 
+        {{- toYaml .Values.prometheusRule.rules | nindent 8 }} 
 {{- end }} 
