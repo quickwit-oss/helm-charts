@@ -4,6 +4,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-searcher
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.searcher.selectorLabels" . | nindent 4 }}
   annotations:
     {{- with .Values.service.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -60,6 +61,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-indexer
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.indexer.selectorLabels" . | nindent 4 }}
   annotations:
     {{- with .Values.service.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -86,6 +88,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-metastore
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.metastore.selectorLabels" . | nindent 4 }}
   annotations:
     {{- with .Values.service.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -112,6 +115,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-control-plane
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.control_plane.selectorLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -124,7 +128,6 @@ spec:
       name: grpc
   selector:
     {{- include "quickwit.control_plane.selectorLabels" . | nindent 4 }}
-
 ---
 apiVersion: v1
 kind: Service
@@ -132,6 +135,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-janitor
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.janitor.selectorLabels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:

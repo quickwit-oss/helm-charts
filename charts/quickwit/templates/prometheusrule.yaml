@@ -5,6 +5,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    app.kubernetes.io/component: metrics
 spec:
   groups:
     - name: {{ include "quickwit.fullname" . }}

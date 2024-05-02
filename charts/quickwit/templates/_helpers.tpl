@@ -49,6 +49,7 @@ helm.sh/chart: {{ include "quickwit.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
+app.kubernetes.io/part-of: quickwit
 {{ include "quickwit.additionalLabels" . }}
 {{- end }}
 
@@ -64,7 +65,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Searcher Selector labels
 */}}
 {{- define "quickwit.searcher.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
 app.kubernetes.io/component: searcher
 {{- end }}
 
@@ -72,7 +72,6 @@ app.kubernetes.io/component: searcher
 Janitor Selector labels
 */}}
 {{- define "quickwit.janitor.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
 app.kubernetes.io/component: janitor
 {{- end }}
 
@@ -80,7 +79,6 @@ app.kubernetes.io/component: janitor
 Metastore Selector labels
 */}}
 {{- define "quickwit.metastore.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
 app.kubernetes.io/component: metastore
 {{- end }}
 
@@ -88,7 +86,6 @@ app.kubernetes.io/component: metastore
 Control Plane Selector labels
 */}}
 {{- define "quickwit.control_plane.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
 app.kubernetes.io/component: control-plane
 {{- end }}
 
@@ -96,7 +93,6 @@ app.kubernetes.io/component: control-plane
 Indexer Selector labels
 */}}
 {{- define "quickwit.indexer.selectorLabels" -}}
-{{ include "quickwit.selectorLabels" . }}
 app.kubernetes.io/component: indexer
 {{- end }}
 
