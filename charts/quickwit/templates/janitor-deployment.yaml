@@ -5,6 +5,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-janitor
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}  
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.janitor.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
@@ -19,7 +26,11 @@ spec:
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.janitor.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
+        {{- include "quickwit.additionalLabels" . | nindent 8 }}
         {{- include "quickwit.janitor.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -60,6 +71,10 @@ spec:
               subPath: node.yaml
             - name: data
               mountPath: /quickwit/qwdata
+            {{- range .Values.configMaps }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
           resources:
             {{- toYaml .Values.janitor.resources | nindent 14 }}
       volumes:
@@ -71,6 +86,11 @@ spec:
                 path: node.yaml
         - name: data
           emptyDir: {}
+        {{- range .Values.configMaps }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
+        {{- end }}
       {{- with .Values.janitor.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

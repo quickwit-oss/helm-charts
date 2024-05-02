@@ -4,7 +4,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "quickwit.fullname" $ }}-source-{{ .source.source_id }}
+  name: {{ printf "%s-source-%s" (include "quickwit.fullname" $ | trunc 46) .source.source_id | trunc 63 | trimSuffix "-" }}
   labels:
     {{- include "quickwit.labels" $ | nindent 4 }}
   annotations:

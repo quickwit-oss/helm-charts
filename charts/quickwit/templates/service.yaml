@@ -4,6 +4,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-searcher
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.searcher.serviceAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -23,6 +30,10 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-headless
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: ClusterIP
   clusterIP: None
@@ -49,6 +60,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-indexer
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.indexer.serviceAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -68,6 +86,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-metastore
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.service.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.metastore.serviceAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:

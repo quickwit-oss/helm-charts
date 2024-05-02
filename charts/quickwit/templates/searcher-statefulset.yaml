@@ -4,6 +4,13 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-searcher
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with .Values.searcher.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
 spec:
   replicas: {{ .Values.searcher.replicaCount }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
@@ -22,7 +29,11 @@ spec:
       {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.searcher.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
+        {{- include "quickwit.additionalLabels" . | nindent 8 }}
         {{- include "quickwit.searcher.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -63,6 +74,10 @@ spec:
               subPath: node.yaml
             - name: data
               mountPath: /quickwit/qwdata
+            {{- range .Values.configMaps }}
+            - name: {{ .name }}
+              mountPath: {{ .mountPath }}
+            {{- end }}
           resources:
             {{- toYaml .Values.searcher.resources | nindent 14 }}
       volumes:
@@ -75,6 +90,11 @@ spec:
         {{- if not .Values.searcher.persistentVolume.enabled }}
         - name: data
           emptyDir: {}
+        {{- end }}
+        {{- range .Values.configMaps }}
+        - name: {{ .name }}
+          configMap:
+            name: {{ .name }}
         {{- end }}
       {{- with .Values.searcher.nodeSelector }}
       nodeSelector:

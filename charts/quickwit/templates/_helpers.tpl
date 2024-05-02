@@ -31,6 +31,15 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Custom labels
+*/}}
+{{- define "quickwit.additionalLabels" -}}
+{{- if .Values.additionalLabels }}
+{{ toYaml .Values.additionalLabels }}
+{{- end }}
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "quickwit.labels" -}}
@@ -40,9 +49,7 @@ helm.sh/chart: {{ include "quickwit.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- if .Values.additionalLabels }}
-{{ toYaml .Values.additionalLabels }}
-{{- end }}
+{{ include "quickwit.additionalLabels" . }}
 {{- end }}
 
 {{/*
@@ -54,7 +61,7 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Search Selector labels
+Searcher Selector labels
 */}}
 {{- define "quickwit.searcher.selectorLabels" -}}
 {{ include "quickwit.selectorLabels" . }}
@@ -200,4 +207,3 @@ Quickwit metastore environment
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
 {{- end }}
-

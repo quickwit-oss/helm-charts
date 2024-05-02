@@ -6,7 +6,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: v0.7.1
+  # tag: v0.8.1
 
 imagePullSecrets: []
 nameOverride: ""
@@ -25,6 +25,8 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
+annotations: {}
+
 podAnnotations: {}
 
 podSecurityContext:
@@ -40,6 +42,10 @@ environment: {}
 
 # -- Specify an existing secret containing Quickwit configuration.
 existingSecretForConfig: false
+
+configMaps: []
+  # - name: configmap1
+  #   mountPath: /quickwit/configmaps/
 
 searcher:
   replicaCount: 3
@@ -90,6 +96,12 @@ searcher:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
 
   nodeSelector: {}
 
@@ -142,6 +154,12 @@ indexer:
       path: /health/readyz
       port: rest
 
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -193,6 +211,12 @@ metastore:
       path: /health/readyz
       port: rest
 
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -233,6 +257,10 @@ control_plane:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
 
   nodeSelector: {}
 
@@ -277,6 +305,10 @@ janitor:
     httpGet:
       path: /health/readyz
       port: rest
+
+  annotations: {}
+
+  podAnnotations: {}
 
   nodeSelector: {}
 
@@ -359,7 +391,7 @@ config:
   #   max_num_concurrent_split_streams: 100
 
   indexes: []
-    # - version: 0.5
+    # - version: 0.8
     #   index_id: my-index
     #   doc_mapping:
     #     field_mappings:
@@ -384,7 +416,7 @@ config:
   sources: []
     # - index: my-index
     #   source:
-    #     version: 0.5
+    #     version: 0.8
     #     source_id: my-source
     #     source_type: kafka
     #     num_pipelines: 1
@@ -424,6 +456,8 @@ prometheusRule:
 
 service:
   type: ClusterIP
+
+  annotations: {}
 
 ingress:
   enabled: false
