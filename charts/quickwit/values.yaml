@@ -414,8 +414,6 @@ serviceMonitor:
 # Prometheus Operator alertmanager alerts
 prometheusRule:
   enabled: false
-  # -- Additional labels to add to PrometheusRule resources
-  additionalLabels: {}
   rules: []
   #  - alert: Example
   #    expr: metric == 1
