@@ -55,6 +55,10 @@ spec:
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- with (.Values.config.storage).extraEnvFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           args: ["run", "--service", "searcher"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}

@@ -190,19 +190,29 @@ Quickwit metastore environment
 - name: QW_METASTORE_URI
   value: {{ .Values.config.metastore_uri }}
 {{- else if .Values.config.postgres }}
+{{- if (.Values.config.postgres).host }}
 - name: POSTGRES_HOST
   value: {{ required "A valid config.postgres.host is required!" .Values.config.postgres.host }}
+{{- end }}
+{{- if (.Values.config.postgres).port }}
 - name: POSTGRES_PORT
   value: {{ .Values.config.postgres.port | default 5432 | quote }}
+{{- end }}
+{{- if (.Values.config.postgres).database }}
 - name: POSTGRES_DATABASE
   value: {{ .Values.config.postgres.database | default "metastore" }}
+{{- end }}
+{{- if (.Values.config.postgres).username }}
 - name: POSTGRES_USERNAME
   value: {{ .Values.config.postgres.username | default "quickwit" }}
+{{- end }}
+{{- if (.Values.config.postgres).password }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" . }}
       key: postgres.password
+{{- end }}
 - name: QW_METASTORE_URI
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
