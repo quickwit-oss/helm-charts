@@ -350,7 +350,6 @@ config:
     # azure:
       # account: "my-azure-blob-account-name"
       # access_key: "my-azure-blob-access-key"
-    
 
   default_index_root_uri: s3://quickwit/indexes
 
