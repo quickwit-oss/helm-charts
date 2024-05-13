@@ -349,7 +349,7 @@ config:
       # Otherwise define your access key here
       # secret_access_key: <my secret key>
     # azure:
-      # account: "<my account key>"
+      # account: "<my account name>"
       # We also recommend using an external secret to pass your access key
       # access_key_secret_key_ref:
       #   name: QW_AZURE_STORAGE_ACCESS_KEY
