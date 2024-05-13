@@ -151,7 +151,12 @@ Quickwit environment
 - name: AWS_ACCESS_KEY_ID
   value: {{ .Values.config.storage.s3.access_key_id }}
 {{- end }}
-{{- if ((.Values.config.storage).s3).secret_access_key }}
+{{- if ((.Values.config.storage).s3).secret_access_key_secret_key_ref }}
+- name: AWS_SECRET_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      {{- toYaml .Values.config.storage.s3.secret_access_key_secret_key_ref | nindent 6 }}
+{{- else if ((.Values.config.storage).s3).secret_access_key }}
 - name: AWS_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
@@ -162,7 +167,12 @@ Quickwit environment
 - name: QW_AZURE_STORAGE_ACCOUNT
   value: {{ .Values.config.storage.azure.account }}
 {{- end }}
-{{- if ((.Values.config.storage).azure).access_key }}
+{{- if ((.Values.config.storage).azure).access_key_secret_key_ref }}
+- name: QW_AZURE_STORAGE_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      {{- toYaml .Values.config.storage.azure.access_key_secret_key_ref | nindent 6 }}
+{{- else if ((.Values.config.storage).azure).access_key }}
 - name: QW_AZURE_STORAGE_ACCESS_KEY
   valueFrom:
     secretKeyRef:
@@ -189,7 +199,10 @@ Quickwit metastore environment
 {{- if .Values.config.metastore_uri }}
 - name: QW_METASTORE_URI
   value: {{ .Values.config.metastore_uri }}
-{{- else if .Values.config.postgres }}
+{{- else }}
+- name: QW_METASTORE_URI
+  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
+{{- end }}
 {{- if (.Values.config.postgres).host }}
 - name: POSTGRES_HOST
   value: {{ required "A valid config.postgres.host is required!" .Values.config.postgres.host }}
@@ -206,14 +219,16 @@ Quickwit metastore environment
 - name: POSTGRES_USERNAME
   value: {{ .Values.config.postgres.username | default "quickwit" }}
 {{- end }}
-{{- if (.Values.config.postgres).password }}
+{{- if (.Values.config.postgres).password_secret_key_ref }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      {{- toYaml .Values.config.postgres.password_secret_key_ref | nindent 6 }}
+{{- else if (.Values.config.postgres).password }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" . }}
       key: postgres.password
-{{- end }}
-- name: QW_METASTORE_URI
-  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
 {{- end }}

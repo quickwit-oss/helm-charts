@@ -321,35 +321,41 @@ config:
   #
   # Postgres metastore
   # postgres:
-  #   We recommend using an external secret to pass postgres variables to quickwit
-  #   extraEnvFrom:
-  #   - secretRef:
-  #       name: quickwit-postgres
   #   Otherwise define your variables here
   #   host: ""
   #   port: 5432
   #   database: metastore
   #   username: quickwit
+  #   We also recommend using an external secret to pass your password
+  #   password_secret_key_ref:
+  #     name: POSTGRES_PASSWORD
+  #     key: secret_access_key
+  #   Otherwise define your password here
   #   password: ""
   #   max_num_connections: 50
 
   # Storage configuration.
   # storage:
-    # We recommend using an external secret to pass storage variables to quickwit
-    # extraEnvFrom:
-    # - secretRef:
-    #     name: quickwit-storage
-    # Otherwise define your variables here
     # s3:
       # endpoint: "http://custom-s3-endpoint"
       # region: eu-east-1
       # We recommend using IAM roles and permissions to access Amazon S3 resources,
       # but you can specify a pair of access and secret keys if necessary.
       # access_key_id: <my access key>
+      # We also recommend using an external secret to pass your access key
+      # secret_access_key_secret_key_ref:
+      #   name: AWS_SECRET_ACCESS_KEY
+      #   key: secret_access_key
+      # Otherwise define your access key here
       # secret_access_key: <my secret key>
     # azure:
-      # account: "my-azure-blob-account-name"
-      # access_key: "my-azure-blob-access-key"
+      # account: "<my account key>"
+      # We also recommend using an external secret to pass your access key
+      # access_key_secret_key_ref:
+      #   name: QW_AZURE_STORAGE_ACCESS_KEY
+      #   key: access_key
+      # Otherwise define your access key here
+      # access_key: <my access key>
 
   default_index_root_uri: s3://quickwit/indexes
 

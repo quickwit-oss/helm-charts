@@ -42,15 +42,6 @@ spec:
           - name: "{{ $key }}"
             value: "{{ $value }}"
           {{- end }}
-        {{- if or ((.Values.config.postgres).extraEnvFrom) ((.Values.config.storage).extraEnvFrom) }}
-        envFrom:
-        {{- with (.Values.config.postgres).extraEnvFrom }}
-          {{- toYaml . | nindent 12 }}
-        {{- end }}
-        {{- with (.Values.config.storage).extraEnvFrom }}
-          {{- toYaml . | nindent 12 }}
-        {{- end }}
-        {{- end }}
         volumeMounts:
           - name: config
             mountPath: /quickwit/node.yaml

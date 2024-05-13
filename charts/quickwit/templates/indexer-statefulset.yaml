@@ -50,15 +50,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
-            {{- include "quickwit.environment" . | nindent 12 }}
+            {{- include "quickwit.metastore.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.indexer.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
-          {{- with (.Values.config.storage).extraEnvFrom }}
-          envFrom:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           args: ["run", "--service", "indexer"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
