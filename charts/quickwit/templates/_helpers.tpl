@@ -199,7 +199,7 @@ Quickwit metastore environment
 {{- if .Values.config.metastore_uri }}
 - name: QW_METASTORE_URI
   value: {{ .Values.config.metastore_uri }}
-{{- else }}
+{{- else if .Values.config.postgres }}
 - name: QW_METASTORE_URI
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
