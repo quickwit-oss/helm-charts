@@ -351,8 +351,8 @@ config:
       # account: "<my account name>"
       # If possible, use an existing external secret to provide the access key
       # access_key_secret_key_ref:
-      #   name: QW_AZURE_STORAGE_ACCESS_KEY
-      #   key: access_key
+      #   name: your_external_secrets
+      #   key: azure_access_key
       # Otherwise define your access key here
       # access_key: <my access key>
 
