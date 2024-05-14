@@ -341,7 +341,7 @@ config:
       # We recommend using IAM roles and permissions to access Amazon S3 resources,
       # but you can specify a pair of access and secret keys if necessary.
       # access_key_id: <my access key>
-      # We also recommend using an external secret to pass your access key
+      # If possible, use an existing external secret to provide the access key
       # secret_access_key_secret_key_ref:
       #   name: AWS_SECRET_ACCESS_KEY
       #   key: secret_access_key
