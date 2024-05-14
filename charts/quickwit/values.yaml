@@ -326,7 +326,7 @@ config:
   #   port: 5432
   #   database: metastore
   #   username: quickwit
-  #   We also recommend using an external secret to pass your password
+  #   If possible, use an existing external secret to provide the password
   #   password_secret_key_ref:
   #     name: POSTGRES_PASSWORD
   #     key: secret_access_key
