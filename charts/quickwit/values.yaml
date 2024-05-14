@@ -343,8 +343,8 @@ config:
       # access_key_id: <my access key>
       # If possible, use an existing external secret to provide the access key
       # secret_access_key_secret_key_ref:
-      #   name: AWS_SECRET_ACCESS_KEY
-      #   key: secret_access_key
+      #   name: your_external_secrets
+      #   key: aws_secret_access_key
       # Otherwise define your access key here
       # secret_access_key: <my secret key>
     # azure:
