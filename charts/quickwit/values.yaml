@@ -327,8 +327,8 @@ config:
   #   username: quickwit
   #   If possible, use an existing external secret to provide the password
   #   password_secret_key_ref:
-  #     name: POSTGRES_PASSWORD
-  #     key: secret_access_key
+  #     name: your_external_secrets
+  #     key: postgres_password
   #   Otherwise define your password here
   #   password: ""
   #   max_num_connections: 50
