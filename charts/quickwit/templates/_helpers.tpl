@@ -202,18 +202,12 @@ Quickwit metastore environment
 {{- else if .Values.config.postgres }}   
 - name: POSTGRES_HOST
   value: {{ required "A valid config.postgres.host is required!" .Values.config.postgres.host }}
-{{- if (.Values.config.postgres).port }}
 - name: POSTGRES_PORT
   value: {{ .Values.config.postgres.port | default 5432 | quote }}
-{{- end }}
-{{- if (.Values.config.postgres).database }}
 - name: POSTGRES_DATABASE
   value: {{ .Values.config.postgres.database | default "metastore" }}
-{{- end }}
-{{- if (.Values.config.postgres).username }}
 - name: POSTGRES_USERNAME
   value: {{ .Values.config.postgres.username | default "quickwit" }}
-{{- end }}
 {{- if (.Values.config.postgres).password_secret_key_ref }}
 - name: POSTGRES_PASSWORD
   valueFrom:
