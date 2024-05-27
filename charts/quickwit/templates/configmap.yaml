@@ -16,14 +16,31 @@ data:
       {{- toYaml . | nindent 6 }}
     {{- end }}
     {{- with .Values.config.storage }}
-    {{- if .s3 }}
-    {{- $_ := unset .s3 "secret_access_key_secret_key_ref" }}
-    {{- end }}
-    {{- if .azure }}
-    {{- $_ := unset .azure "access_key_secret_key_ref" }}
-    {{- end }}
     storage:
-      {{- toYaml . | nindent 6 }}
+      {{- if .s3 }}
+      s3:
+        {{- if .s3.endpoint }}
+        endpoint: "{{ .s3.endpoint }}"
+        {{- end }}
+        {{- if .s3.region }}
+        region: "{{ .s3.region }}"
+        {{- end }}
+        {{- if .s3.access_key_id }}
+        access_key_id: "{{ .s3.access_key_id }}"
+        {{- end }}
+        {{- if or (.s3.secret_access_key) (.s3.secret_access_key_secret_key_ref) }}
+        secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+        {{- end }}
+      {{- end }}
+      {{- if .azure }}
+      azure:
+        {{- if .azure.account }}
+        account: "{{ .azure.account }}"
+        {{- end }}
+        {{- if or (.azure.access_key) (.azure.access_key_secret_key_ref) }}
+        access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
+        {{- end }}
+      {{- end }}
     {{- end }}
     {{- with .Values.config.ingest_api }}
     ingest_api:
