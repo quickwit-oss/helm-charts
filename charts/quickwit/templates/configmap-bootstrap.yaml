@@ -1,4 +1,4 @@
-{{- if and (or .Values.config.sources .Values.config.indexes) .Values.bootstrap.enabled -}}
+{{- if and (or .Values.seed.sources .Values.seed.indexes) .Values.bootstrap.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,11 +6,11 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
-  {{- range .Values.config.indexes }}
+  {{- range .Values.seed.indexes }}
   {{ .index_id }}.yaml: |-
     {{- toYaml . | nindent 4 }}
   {{- end }}
-  {{- range .Values.config.sources }}
+  {{- range .Values.seed.sources }}
   {{ .source.source_id }}.yaml: |-
     {{- toYaml .source | nindent 4 }}
   {{- end }}
