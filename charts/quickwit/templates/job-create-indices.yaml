@@ -40,15 +40,15 @@ spec:
           - name: "{{ $key }}"
             value: "{{ $value }}"
           {{- end }}
-          {{- if or (.Values.environmentFrom) (.Values.bootstrap.extraEnvFrom) }}
-          envFrom:
-          {{- with .Values.environmentFrom }}
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.bootstrap.extraEnvFrom }}
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- end }}
+        {{- if or ($.Values.environmentFrom) ($.Values.bootstrap.extraEnvFrom) }}
+        envFrom:
+        {{- with $.Values.environmentFrom }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- with $.Values.bootstrap.extraEnvFrom }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- end }}
         volumeMounts:
           - name: config
             mountPath: /quickwit/node.yaml
