@@ -328,6 +328,14 @@ config:
   #   password: ""
   #   max_num_connections: 50
 
+      # Metastore password from kubernetes secret
+      # only works if password above is empty and
+      # this is enabled. psql can accept empty passwords 
+      # passwordFromSecret:
+      #   enabled: false
+      #   secretName: quickwit-metastore-password
+      #   secretKey: password
+
   # Storage configuration.
   # storage:
     # s3:

@@ -198,11 +198,19 @@ Quickwit metastore environment
   value: {{ .Values.config.postgres.database | default "metastore" }}
 - name: POSTGRES_USERNAME
   value: {{ .Values.config.postgres.username | default "quickwit" }}
+{{- if .Values.config.postgres.passwordFromSecret.enabled }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.config.postgres.passwordFromSecret.secretName }}
+      key: {{ .Values.config.postgres.passwordFromSecret.secretKey }}
+{{- else }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ include "quickwit.fullname" . }}
       key: postgres.password
+{{- end }}
 - name: QW_METASTORE_URI
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
 {{- end }}
