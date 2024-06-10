@@ -327,6 +327,7 @@ config:
   #   username: quickwit
   #   password: ""
   #   max_num_connections: 50
+  #   existingSecret: ""
 
   # Storage configuration.
   # storage:

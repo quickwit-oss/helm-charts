@@ -201,7 +201,11 @@ Quickwit metastore environment
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
+      {{- if .Values.config.postgres.existingSecret }}
+      name: {{ .Values.config.postgres.existingSecret }}
+      {{- else }}
       name: {{ include "quickwit.fullname" . }}
+      {{- end }}
       key: postgres.password
 - name: QW_METASTORE_URI
   value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
