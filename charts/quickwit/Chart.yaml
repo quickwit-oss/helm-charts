@@ -2,7 +2,7 @@ apiVersion: v2
 name: quickwit
 description: Sub-second search & analytics engine on cloud storage.
 type: application
-version: 0.5.16
+version: 0.5.17
 appVersion: "v0.8.1"
 keywords:
   - quickwit
