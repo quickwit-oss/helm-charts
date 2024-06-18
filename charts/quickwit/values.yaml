@@ -39,8 +39,10 @@ securityContext:
 # Additional global env
 environment: {}
   # KEY: VALUE
-environmentFrom: {}
+environmentFrom: []
   # - secretRef:
+  #     name: quickwit
+  # - configMapRef:
   #     name: quickwit
 
 configMaps: []
@@ -53,8 +55,10 @@ searcher:
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-searcher
+    # - configMapRef:
     #     name: quickwit-searcher
 
   resources: {}
@@ -113,8 +117,10 @@ indexer:
   # Extra env for indexer
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-indexer
+    # - configMapRef:
     #     name: quickwit-indexer
 
   resources: {}
@@ -173,8 +179,10 @@ metastore:
   # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-metastore
+    # - configMapRef:
     #     name: quickwit-metastore
 
   resources: {}
@@ -221,8 +229,10 @@ control_plane:
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-control-plane
+    # - configMapRef:
     #     name: quickwit-control-plane
 
   resources: {}
@@ -267,8 +277,10 @@ janitor:
   # Extra env for janitor
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-janitor
+    # - configMapRef:
     #     name: quickwit-janitor
 
   resources: {}
@@ -314,8 +326,10 @@ bootstrap:
   # Extra env for boostrap jobs
   extraEnv: {}
     # KEY: VALUE
-  extraEnvFrom: {}
+  extraEnvFrom: []
     # - secretRef:
+    #     name: quickwit-boostrap
+    # - configMapRef:
     #     name: quickwit-boostrap
 
   resources: {}
