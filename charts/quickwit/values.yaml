@@ -179,6 +179,7 @@ metastore:
   # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
+  # This is the recommended way to inject `QW_METASTORE_URI` when using the postgres metastore (see https://quickwit.io/docs/configuration/metastore-config)
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-metastore
