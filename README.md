@@ -33,6 +33,7 @@ The changes are:
 
 The way the `config` value works has changed in 0.6.0. It is now copied "as is"
 to the Quickwit nodes' configurations. In particular:
+
 - the `config.postgres` section does not support the following attributes
   anymore
 ```
@@ -45,6 +46,7 @@ assword: ""
 Configure `QW_METASTORE_URI` in `extraEnvFrom` instead (see
 [documentation](https://quickwit.io/docs/configuration/metastore-config) for
 more details).
+
 - the seed configuration has moved from `config` to a dedicated attribute. The
   changes are:
   - the `config.indexes` field is moved to `seed.indexes`
