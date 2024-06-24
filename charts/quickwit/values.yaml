@@ -374,6 +374,20 @@ config:
       # account: "<my account name>"
       # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
 
+  # Indexer settings
+  # indexer:
+  #   split_store_max_num_bytes: 200G
+  #   split_store_max_num_splits: 10000
+  # Ingest API settings
+  # ingest_api:
+  #   max_queue_memory_usage: 2GiB
+  #   max_queue_disk_usage: 4GiB
+  # Searcher settings
+  # searcher:
+  #   fast_field_cache_capacity: 10G
+  #   split_footer_cache_capacity: 1G
+  #   max_num_concurrent_split_streams: 100
+
 # Seed configuration
 seed:
   indexes: []
