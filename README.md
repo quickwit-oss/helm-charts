@@ -31,8 +31,8 @@ The changes are:
 
 ## Upgrade helm chart from 0.5.0 to 0.6.0
 
-The seed configuration has been moved from the quickwit configuration to a dedicated configuration
+The way the `config` value works has changed in 0.6.0. It is now copied "as is"
+to the Quickwit nodes' configurations. In particular:
 
-The changes are:
-- the `config.indexes` field is moved to `seed.indexes`
-- the `config.sources` field is moved to `seed.sources`
+- the `config.postgres` section does not support the following attributes
+  anymore
