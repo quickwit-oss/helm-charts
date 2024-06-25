@@ -55,6 +55,15 @@ spec:
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- if or (.Values.environmentFrom) (.Values.searcher.extraEnvFrom) }}
+          envFrom:
+          {{- with .Values.environmentFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.searcher.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
           args: ["run", "--service", "searcher"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}

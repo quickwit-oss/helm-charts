@@ -28,3 +28,26 @@ The way storage config is defined changed and you have to update your helm value
 The changes are:
 - the `config.s3` and `config.azure_blob` values are no more supported. You now have to use the storage config as defined in the [docs](https://quickwit.io/docs/configuration/storage-config).
 - the keys of secrets have changed: `s3.secret_key` is replaced by `storage.s3.secret_access_key` and `azure_blob.access_key` is replace by `storage.azure.access_key`.
+
+## Upgrade helm chart from 0.5.0 to 0.6.0
+
+The way the `config` value works has changed in 0.6.0. It is now copied "as is"
+to the Quickwit nodes' configurations. In particular:
+
+- the `config.postgres` section does not support the following attributes
+  anymore
+```
+host: ""
+port: 5432
+database: metastore
+username: quickwit
+assword: ""
+```
+Configure `QW_METASTORE_URI` in `extraEnvFrom` instead (see
+[documentation](https://quickwit.io/docs/configuration/metastore-config) for
+more details).
+
+- the seed configuration has moved from `config` to a dedicated attribute. The
+  changes are:
+  - the `config.indexes` field is moved to `seed.indexes`
+  - the `config.sources` field is moved to `seed.sources`

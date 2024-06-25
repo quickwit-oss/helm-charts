@@ -39,6 +39,11 @@ securityContext:
 # Additional global env
 environment: {}
   # KEY: VALUE
+environmentFrom: []
+  # - secretRef:
+  #     name: quickwit
+  # - configMapRef:
+  #     name: quickwit
 
 configMaps: []
   # - name: configmap1
@@ -50,6 +55,11 @@ searcher:
   # Extra env for searcher
   extraEnv: {}
     # KEY: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-searcher
+    # - configMapRef:
+    #     name: quickwit-searcher
 
   resources: {}
     # limits:
@@ -107,6 +117,11 @@ indexer:
   # Extra env for indexer
   extraEnv: {}
     # KEY: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-indexer
+    # - configMapRef:
+    #     name: quickwit-indexer
 
   resources: {}
     # limits:
@@ -164,6 +179,12 @@ metastore:
   # Extra env for metastore
   extraEnv: {}
     # KEY: VALUE
+  # This is the recommended way to inject `QW_METASTORE_URI` when using the postgres metastore (see https://quickwit.io/docs/configuration/metastore-config)
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-metastore
+    # - configMapRef:
+    #     name: quickwit-metastore
 
   resources: {}
     # limits:
@@ -209,6 +230,11 @@ control_plane:
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-control-plane
+    # - configMapRef:
+    #     name: quickwit-control-plane
 
   resources: {}
     # limits:
@@ -249,9 +275,14 @@ janitor:
   # Enable Janitor service
   enabled: true
 
-  # Extra env for searcher
+  # Extra env for janitor
   extraEnv: {}
     # KEY: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-janitor
+    # - configMapRef:
+    #     name: quickwit-janitor
 
   resources: {}
     # limits:
@@ -296,6 +327,11 @@ bootstrap:
   # Extra env for boostrap jobs
   extraEnv: {}
     # KEY: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-boostrap
+    # - configMapRef:
+    #     name: quickwit-boostrap
 
   resources: {}
     # limits:
@@ -313,22 +349,19 @@ bootstrap:
 
 
 # Quickwit configuration
+# Warning: This config is writed directly into a configMap
+# to avoid passing sensitive value you can pass environment variables.
+# https://quickwit.io/docs/configuration/node-config#using-environment-variables-in-the-configuration
 config:
-  # Metastore configuration.
-  # Default to `qwdata/indexes` if not set.
-  # S3 metastore
-  # metastore_uri: s3://quickwit/indexes
-  #
-  # Postgres metastore
+  version: 0.8
+  listen_address: 0.0.0.0
+  gossip_listen_port: 7282
+  data_dir: /quickwit/qwdata
+  default_index_root_uri: s3://quickwit/indexes
+
   # postgres:
-  #   host: ""
-  #   port: 5432
-  #   database: metastore
-  #   username: quickwit
-  #   password: ""
   #   max_num_connections: 50
 
-  # Storage configuration.
   # storage:
     # s3:
       # endpoint: "http://custom-s3-endpoint"
@@ -336,12 +369,10 @@ config:
       # We recommend using IAM roles and permissions to access Amazon S3 resources,
       # but you can specify a pair of access and secret keys if necessary.
       # access_key_id: <my access key>
-      # secret_access_key: <my secret key>
+      # secret_access_key: ${AWS_ACCESS_KEY_ID}
     # azure:
-      # account: "my-azure-blob-account-name"
-      # access_key: "my-azure-blob-access-key"
-
-  default_index_root_uri: s3://quickwit/indexes
+      # account: "<my account name>"
+      # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
 
   # Indexer settings
   # indexer:
@@ -357,6 +388,8 @@ config:
   #   split_footer_cache_capacity: 1G
   #   max_num_concurrent_split_streams: 100
 
+# Seed configuration
+seed:
   indexes: []
     # - version: 0.8
     #   index_id: my-index

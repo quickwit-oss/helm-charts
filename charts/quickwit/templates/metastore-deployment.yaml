@@ -46,11 +46,20 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}        
           args: ["run", "--service", "metastore"]
           env:
-            {{- include "quickwit.metastore.environment" . | nindent 12 }}
+            {{- include "quickwit.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.metastore.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- if or (.Values.environmentFrom) (.Values.metastore.extraEnvFrom) }}
+          envFrom:
+          {{- with .Values.environmentFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.metastore.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           startupProbe:
