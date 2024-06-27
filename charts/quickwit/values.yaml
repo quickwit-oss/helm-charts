@@ -14,7 +14,7 @@ fullnameOverride: ""
 
 # -- Additional labels to add to all resources
 additionalLabels: {}
-  # app: quickwit
+# app: quickwit
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -38,28 +38,34 @@ securityContext:
 
 # Additional global env
 environment: {}
-  # KEY: VALUE
+# KEY: VALUE
 environmentFrom: []
   # - secretRef:
   #     name: quickwit
   # - configMapRef:
-  #     name: quickwit
+#     name: quickwit
 
 configMaps: []
   # - name: configmap1
-  #   mountPath: /quickwit/configmaps/
+#   mountPath: /quickwit/configmaps/
 
 searcher:
   replicaCount: 3
 
   # Extra env for searcher
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-searcher
     # - configMapRef:
-    #     name: quickwit-searcher
+  #     name: quickwit-searcher
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -67,12 +73,12 @@ searcher:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
 
   ## Pod distruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1
-    # minAvailable: 2
+  # minAvailable: 2
 
   persistentVolume:
     enabled: false
@@ -80,7 +86,7 @@ searcher:
     # storageClass: ""
 
   updateStrategy: {}
-    # type: RollingUpdate
+  # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -98,6 +104,9 @@ searcher:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -118,12 +127,18 @@ indexer:
 
   # Extra env for indexer
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-indexer
     # - configMapRef:
-    #     name: quickwit-indexer
+  #     name: quickwit-indexer
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -131,15 +146,15 @@ indexer:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
 
   ## Pod distruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1
-    # minAvailable: 2
+  # minAvailable: 2
 
   updateStrategy: {}
-    # type: RollingUpdate
+  # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -157,6 +172,9 @@ indexer:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -182,13 +200,19 @@ metastore:
 
   # Extra env for metastore
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   # This is the recommended way to inject `QW_METASTORE_URI` when using the postgres metastore (see https://quickwit.io/docs/configuration/metastore-config)
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-metastore
     # - configMapRef:
-    #     name: quickwit-metastore
+  #     name: quickwit-metastore
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -196,10 +220,10 @@ metastore:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
 
   updateStrategy: {}
-    # type: RollingUpdate
+  # type: RollingUpdate
 
   startupProbe:
     httpGet:
@@ -217,6 +241,9 @@ metastore:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -235,12 +262,18 @@ metastore:
 control_plane:
   # Extra env for control plane
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-control-plane
     # - configMapRef:
-    #     name: quickwit-control-plane
+  #     name: quickwit-control-plane
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -248,7 +281,7 @@ control_plane:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
 
   startupProbe:
     httpGet:
@@ -266,6 +299,9 @@ control_plane:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -287,12 +323,18 @@ janitor:
 
   # Extra env for janitor
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-janitor
     # - configMapRef:
-    #     name: quickwit-janitor
+  #     name: quickwit-janitor
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -300,7 +342,7 @@ janitor:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
 
   startupProbe:
     httpGet:
@@ -318,6 +360,9 @@ janitor:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -340,12 +385,18 @@ bootstrap:
 
   # Extra env for boostrap jobs
   extraEnv: {}
-    # KEY: VALUE
+  # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-boostrap
     # - configMapRef:
-    #     name: quickwit-boostrap
+  #     name: quickwit-boostrap
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -353,7 +404,10 @@ bootstrap:
     #   memory: 128Mi
     # requests:
     #   cpu: 100m
-    #   memory: 128Mi
+  #   memory: 128Mi
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   nodeSelector: {}
 
@@ -361,11 +415,33 @@ bootstrap:
 
   affinity: {}
 
+jobs:
+  sources:
+    # initContainers -- Init Containers to be added to the pods
+    initContainers: []
+
+    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    extraVolumes: []
+
+    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    extraVolumeMounts: []
+
+  indexes:
+    # initContainers -- Init Containers to be added to the pods
+    initContainers: []
+
+    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    extraVolumes: []
+
+    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    extraVolumeMounts: []
 
 # Quickwit configuration
 # Warning: This config is writed directly into a configMap
 # to avoid passing sensitive value you can pass environment variables.
 # https://quickwit.io/docs/configuration/node-config#using-environment-variables-in-the-configuration
+configLocation: /quickwit/node.yaml
+
 config:
   version: 0.8
   listen_address: 0.0.0.0
@@ -373,20 +449,20 @@ config:
   data_dir: /quickwit/qwdata
   default_index_root_uri: s3://quickwit/indexes
 
-  # postgres:
-  #   max_num_connections: 50
+    # postgres:
+    #   max_num_connections: 50
 
-  # storage:
+    # storage:
     # s3:
-      # endpoint: "http://custom-s3-endpoint"
-      # region: eu-east-1
-      # We recommend using IAM roles and permissions to access Amazon S3 resources,
-      # but you can specify a pair of access and secret keys if necessary.
-      # access_key_id: <my access key>
-      # secret_access_key: ${AWS_ACCESS_KEY_ID}
+    # endpoint: "http://custom-s3-endpoint"
+    # region: eu-east-1
+    # We recommend using IAM roles and permissions to access Amazon S3 resources,
+    # but you can specify a pair of access and secret keys if necessary.
+    # access_key_id: <my access key>
+    # secret_access_key: ${AWS_ACCESS_KEY_ID}
     # azure:
-      # account: "<my account name>"
-      # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
+    # account: "<my account name>"
+  # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
 
   # Indexer settings
   # indexer:
@@ -425,7 +501,7 @@ seed:
     #       type: limit_merge
     #       max_merge_ops: 3
     #       merge_factor: 10
-    #       max_merge_factor: 12
+  #       max_merge_factor: 12
 
   sources: []
     # - index: my-index
@@ -437,7 +513,7 @@ seed:
     #     params:
     #       topic: quickwit-topic
     #       client_params:
-    #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
+  #         bootstrap.servers: kafka-server-endpoint1:9092,kafka-server-endpoint2:9092
 
 # Prometheus metrics
 serviceMonitor:
@@ -507,4 +583,4 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi

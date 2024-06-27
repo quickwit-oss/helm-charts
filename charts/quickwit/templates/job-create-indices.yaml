@@ -24,9 +24,14 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "quickwit.serviceAccountName" $ }}
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
       restartPolicy: Never
+      {{- with $.Values.jobs.indexes.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{ end }}
       containers:
       - name: {{ $.Chart.Name }}
         securityContext:
@@ -56,6 +61,9 @@ spec:
           - name: index
             mountPath: /quickwit/{{ .index_id }}.yaml
             subPath: {{ .index_id }}.yaml
+          {{- with $.Values.jobs.indexes.extraVolumeMounts }}
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
         resources:
           {{- toYaml $.Values.bootstrap.resources | nindent 10 }}
       volumes:
@@ -71,5 +79,20 @@ spec:
             items:
               - key: {{ .index_id }}.yaml
                 path: {{ .index_id }}.yaml
+         {{- with $.Values.jobs.indexes.extraVolumes }}
+           {{- toYaml . | nindent 8 }}
+         {{- end }}
+      {{- with $.Values.bootstrap.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.bootstrap.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.bootstrap.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}
 {{- end }}
