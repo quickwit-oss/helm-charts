@@ -61,6 +61,12 @@ searcher:
     # - configMapRef:
     #     name: quickwit-searcher
 
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
+
   resources: {}
     # limits:
     #   cpu: 100m
@@ -99,6 +105,12 @@ searcher:
       path: /health/readyz
       port: rest
 
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
+
   annotations: {}
 
   podAnnotations: {}
@@ -124,6 +136,12 @@ indexer:
     #     name: quickwit-indexer
     # - configMapRef:
     #     name: quickwit-indexer
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -157,6 +175,12 @@ indexer:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -190,6 +214,12 @@ metastore:
     # - configMapRef:
     #     name: quickwit-metastore
 
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
+
   resources: {}
     # limits:
     #   cpu: 100m
@@ -218,6 +248,12 @@ metastore:
       path: /health/readyz
       port: rest
 
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
+
   annotations: {}
 
   podAnnotations: {}
@@ -241,6 +277,12 @@ control_plane:
     #     name: quickwit-control-plane
     # - configMapRef:
     #     name: quickwit-control-plane
+
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
 
   resources: {}
     # limits:
@@ -266,6 +308,12 @@ control_plane:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -294,6 +342,12 @@ janitor:
     # - configMapRef:
     #     name: quickwit-janitor
 
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
+
   resources: {}
     # limits:
     #   cpu: 100m
@@ -318,6 +372,12 @@ janitor:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
 
   annotations: {}
 
@@ -347,6 +407,12 @@ bootstrap:
     # - configMapRef:
     #     name: quickwit-boostrap
 
+  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  extraVolumeMounts: []
+
   resources: {}
     # limits:
     #   cpu: 100m
@@ -355,17 +421,45 @@ bootstrap:
     #   cpu: 100m
     #   memory: 128Mi
 
+  # initContainers -- Init Containers to be added to the pods
+  initContainers: []
+
   nodeSelector: {}
 
   tolerations: []
 
   affinity: {}
 
+jobs:
+  sources:
+    # Override command for starting container
+    command: []
+
+    # initContainers -- Init Containers to be added to the pods
+    initContainers: []
+
+    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    extraVolumes: []
+
+    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    extraVolumeMounts: []
+
+  indexes:
+    # initContainers -- Init Containers to be added to the pods
+    initContainers: []
+
+    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    extraVolumes: []
+
+    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    extraVolumeMounts: []
 
 # Quickwit configuration
 # Warning: This config is writed directly into a configMap
 # to avoid passing sensitive value you can pass environment variables.
 # https://quickwit.io/docs/configuration/node-config#using-environment-variables-in-the-configuration
+configLocation: /quickwit/node.yaml
+
 config:
   version: 0.8
   listen_address: 0.0.0.0

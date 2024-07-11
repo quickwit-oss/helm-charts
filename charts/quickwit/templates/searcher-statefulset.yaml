@@ -43,12 +43,21 @@ spec:
       serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.searcher.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{ end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if $.Values.searcher.args }}
+          args: {{- toYaml $.Values.searcher.args | nindent 10 }}
+          {{- else }}
+          args: ["run", "--service", "searcher"]
+          {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.searcher.extraEnv }}
@@ -64,7 +73,6 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- end }}
-          args: ["run", "--service", "searcher"]
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           startupProbe:
@@ -83,6 +91,9 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
+            {{- with .Values.searcher.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.searcher.resources | nindent 14 }}
       volumes:
@@ -100,6 +111,9 @@ spec:
         - name: {{ .name }}
           configMap:
             name: {{ .name }}
+        {{- end }}
+        {{- with .Values.searcher.extraVolumes }}
+          {{- toYaml . | nindent 10 }}
         {{- end }}
       {{- with .Values.searcher.nodeSelector }}
       nodeSelector:

@@ -144,7 +144,7 @@ Quickwit environment
     fieldRef:
       fieldPath: status.podIP
 - name: QW_CONFIG
-  value: node.yaml
+  value: {{ .Values.configLocation }}
 - name: QW_CLUSTER_ID
   value: {{ .Release.Namespace }}-{{ include "quickwit.fullname" . }}
 - name: QW_NODE_ID
