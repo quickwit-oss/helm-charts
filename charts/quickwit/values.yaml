@@ -117,6 +117,8 @@ searcher:
 
   serviceAnnotations: {}
 
+  # serviceType: ClusterIP
+
   nodeSelector: {}
 
   tolerations: []
@@ -185,6 +187,8 @@ indexer:
   podAnnotations: {}
 
   serviceAnnotations: {}
+
+  # serviceType: ClusterIP
 
   nodeSelector: {}
 
@@ -256,6 +260,8 @@ metastore:
 
   serviceAnnotations: {}
 
+  # serviceType: ClusterIP
+
   nodeSelector: {}
 
   tolerations: []
@@ -312,6 +318,10 @@ control_plane:
   annotations: {}
 
   podAnnotations: {}
+
+  serviceAnnotations: {}
+
+  # serviceType: ClusterIP
 
   nodeSelector: {}
 
@@ -372,6 +382,10 @@ janitor:
   annotations: {}
 
   podAnnotations: {}
+
+  serviceAnnotations: {}
+
+  # serviceType: ClusterIP
 
   nodeSelector: {}
 
@@ -551,6 +565,7 @@ prometheusRule:
   #      severity: warning
 
 service:
+  # Service type configuration default for all Quickwit services
   type: ClusterIP
 
   # -- Set the ip family policy to configure dual-stack see [Configure dual-stack](https://kubernetes.io/docs/concepts/services-networking/dual-stack/#services)
