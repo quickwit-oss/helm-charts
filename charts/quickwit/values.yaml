@@ -61,10 +61,10 @@ searcher:
     # - configMapRef:
     #     name: quickwit-searcher
 
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  # extraVolumes -- Additional volumes to use with Pods.
   extraVolumes: []
 
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
   resources: {}
@@ -108,7 +108,7 @@ searcher:
   # Override args for starting container
   args: []
 
-  # initContainers -- Init Containers to be added to the pods
+  # initContainers -- Init containers to be added to the pods
   initContainers: []
 
   annotations: {}
@@ -137,10 +137,10 @@ indexer:
     # - configMapRef:
     #     name: quickwit-indexer
 
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  # extraVolumes -- Additional volumes to use with Pods.
   extraVolumes: []
 
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
   resources: {}
@@ -179,7 +179,7 @@ indexer:
   # Override args for starting container
   args: []
 
-  # initContainers -- Init Containers to be added to the pods
+  # initContainers -- Init containers to be added to the pods
   initContainers: []
 
   annotations: {}
@@ -214,10 +214,10 @@ metastore:
     # - configMapRef:
     #     name: quickwit-metastore
 
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  # extraVolumes -- Additional volumes to use with Pods.
   extraVolumes: []
 
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
   resources: {}
@@ -251,7 +251,7 @@ metastore:
   # Override args for starting container
   args: []
 
-  # initContainers -- Init Containers to be added to the pods
+  # initContainers -- Init containers to be added to the pods
   initContainers: []
 
   annotations: {}
@@ -278,10 +278,10 @@ control_plane:
     # - configMapRef:
     #     name: quickwit-control-plane
 
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  # extraVolumes -- Additional volumes to use with Pods.
   extraVolumes: []
 
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
   resources: {}
@@ -312,7 +312,7 @@ control_plane:
   # Override args for starting container
   args: []
 
-  # initContainers -- Init Containers to be added to the pods
+  # initContainers -- Init containers to be added to the pods
   initContainers: []
 
   annotations: {}
@@ -342,10 +342,10 @@ janitor:
     # - configMapRef:
     #     name: quickwit-janitor
 
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
+  # extraVolumes -- Additional volumes to use with Pods.
   extraVolumes: []
 
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
   resources: {}
@@ -376,7 +376,7 @@ janitor:
   # Override args for starting container
   args: []
 
-  # initContainers -- Init Containers to be added to the pods
+  # initContainers -- Init containers to be added to the pods
   initContainers: []
 
   annotations: {}
@@ -395,23 +395,17 @@ janitor:
 
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
-  # Enable boostrap jobs
+  # Enable bootstrap jobs
   enabled: false
 
-  # Extra env for boostrap jobs
+  # Extra env for bootstrap jobs
   extraEnv: {}
     # KEY: VALUE
   extraEnvFrom: []
     # - secretRef:
-    #     name: quickwit-boostrap
+    #     name: quickwit-bootstrap
     # - configMapRef:
-    #     name: quickwit-boostrap
-
-  # extraVolumes -- Additional Volumes to use with Vector Pods.
-  extraVolumes: []
-
-  # extraVolumeMounts -- Additional Volume to mount into Vector Containers.
-  extraVolumeMounts: []
+    #     name: quickwit-bootstrap
 
   resources: {}
     # limits:
@@ -420,9 +414,6 @@ bootstrap:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  # initContainers -- Init Containers to be added to the pods
-  initContainers: []
 
   nodeSelector: {}
 
@@ -435,23 +426,23 @@ jobs:
     # Override command for starting container
     command: []
 
-    # initContainers -- Init Containers to be added to the pods
+    # initContainers -- Init containers to be executed before the source creation.
     initContainers: []
 
-    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    # extraVolumes -- Additional volumes to use with bootstrap Pods.
     extraVolumes: []
 
-    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    # extraVolumeMounts -- Additional volumes to mount into bootstrap containers (not the init containers).
     extraVolumeMounts: []
 
   indexes:
-    # initContainers -- Init Containers to be added to the pods
+    # initContainers -- Init containers to be executed before the index creation.
     initContainers: []
 
-    # extraVolumes -- Additional Volumes to use with quickwit Pods.
+    # extraVolumes -- Additional volumes to use with bootstrap Pods.
     extraVolumes: []
 
-    # extraVolumeMounts -- Additional Volume to mount into quickwit Containers.
+    # extraVolumeMounts -- Additional volumes to mount into bootstrap containers (not the init containers).
     extraVolumeMounts: []
 
 # Quickwit configuration
