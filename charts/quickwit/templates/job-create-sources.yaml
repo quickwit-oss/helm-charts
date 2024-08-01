@@ -28,7 +28,7 @@ spec:
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
       restartPolicy: Never
-      {{- with $.Values.jobs.sources.initContainers }}
+      {{- with $.Values.bootstrap.sources.initContainers }}
       initContainers:
         {{- toYaml . | nindent 8 }}
       {{ end }}
@@ -38,8 +38,8 @@ spec:
           {{- toYaml $.Values.securityContext | nindent 10 }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
-      {{- if $.Values.jobs.sources.command }}
-        command: {{- toYaml $.Values.jobs.sources.command | nindent 8 }}
+      {{- if $.Values.bootstrap.sources.command }}
+        command: {{- toYaml $.Values.bootstrap.sources.command | nindent 8 }}
       {{- else }}
         command: ["/bin/bash","-c","quickwit source describe --index {{ .index }} --source {{ .source.source_id }} --endpoint ${QW_CLUSTER_ENDPOINT} || quickwit source create --index {{ .index }} --source-config {{ .source.source_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}"]
       {{- end }}
@@ -67,7 +67,7 @@ spec:
             mountPath: /quickwit/{{ .source.source_id }}.yaml
             subPath: {{ .source.source_id }}.yaml
           {{- end }}
-          {{- with $.Values.jobs.sources.extraVolumeMounts }}
+          {{- with $.Values.bootstrap.sources.extraVolumeMounts }}
             {{- toYaml . | nindent 10 }}
           {{- end }}
         resources:
@@ -85,7 +85,7 @@ spec:
             items:
               - key: {{ .source.source_id }}.yaml
                 path: {{ .source.source_id }}.yaml
-         {{- with $.Values.jobs.sources.extraVolumes }}
+         {{- with $.Values.bootstrap.sources.extraVolumes }}
            {{- toYaml . | nindent 8 }}
          {{- end }}
       {{- with $.Values.bootstrap.nodeSelector }}

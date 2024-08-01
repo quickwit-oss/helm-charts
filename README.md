@@ -51,3 +51,10 @@ more details).
   changes are:
   - the `config.indexes` field is moved to `seed.indexes`
   - the `config.sources` field is moved to `seed.sources`
+
+## Upgrade helm chart from 0.6.0 to 0.7.0
+
+The `jobs` and `bootstrap` sections got merged in 0.7.0:
+
+* `jobs.sources` section is now replaced by `bootstrap.sources`
+* `jobs.indexes` section is now replaced by `bootstrap.indexes`
