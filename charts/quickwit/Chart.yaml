@@ -3,7 +3,7 @@ name: quickwit
 description: Sub-second search & analytics engine on cloud storage.
 type: application
 version: 0.7.0
-appVersion: "v0.8.1"
+appVersion: "v0.8.2"
 keywords:
   - quickwit
   - search
