@@ -421,7 +421,6 @@ bootstrap:
 
   affinity: {}
 
-jobs:
   sources:
     # Override command for starting container
     command: []
