@@ -31,6 +31,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-headless
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.selectorLabels" . | nindent 4 }}
   annotations:
     {{- with .Values.service.annotations }}
     {{- toYaml . | nindent 4 }}

@@ -16,7 +16,6 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "quickwit.selectorLabels" . | nindent 6 }}
       {{- include "quickwit.control_plane.selectorLabels" . | nindent 6 }}
   strategy:
     type: Recreate
