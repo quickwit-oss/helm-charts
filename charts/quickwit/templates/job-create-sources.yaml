@@ -1,5 +1,5 @@
 {{- if .Values.bootstrap.enabled -}}
-{{- range .Values.config.sources }}
+{{- range .Values.seed.sources }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -24,32 +24,51 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "quickwit.serviceAccountName" $ }}
       securityContext:
         {{- toYaml $.Values.podSecurityContext | nindent 8 }}
       restartPolicy: Never
+      {{- with $.Values.bootstrap.sources.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{ end }}
       containers:
       - name: {{ $.Chart.Name }}
         securityContext:
           {{- toYaml $.Values.securityContext | nindent 10 }}
         image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
-        command: ["/bin/bash","-c","quickwit source describe --index {{ .index }} --source {{ .source.source_id }} --endpoint ${QW_CLUSTER_ENDPOINT}|| quickwit source create --index {{ .index }} --source-config {{ .source.source_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}"]
+      {{- if $.Values.bootstrap.sources.command }}
+        command: {{- toYaml $.Values.bootstrap.sources.command | nindent 8 }}
+      {{- else }}
+        command: ["/bin/bash","-c","quickwit source describe --index {{ .index }} --source {{ .source.source_id }} --endpoint ${QW_CLUSTER_ENDPOINT} || quickwit source create --index {{ .index }} --source-config {{ .source.source_id }}.yaml --endpoint ${QW_CLUSTER_ENDPOINT}"]
+      {{- end }}
         env:
-          - name: QW_CLUSTER_ENDPOINT
-            value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.cluster.local:7280
-          {{- include "quickwit.metastore.environment" $ | nindent 10 }}
+          {{- include "quickwit.environment" $ | nindent 10 }}
           {{- range $key, $value := $.Values.bootstrap.extraEnv }}
           - name: "{{ $key }}"
             value: "{{ $value }}"
           {{- end }}
+        {{- if or ($.Values.environmentFrom) ($.Values.bootstrap.extraEnvFrom) }}
+        envFrom:
+        {{- with $.Values.environmentFrom }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- with $.Values.bootstrap.extraEnvFrom }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
+        {{- end }}
         volumeMounts:
           - name: config
             mountPath: /quickwit/node.yaml
             subPath: node.yaml
-          {{- if $.Values.config.sources }}
+          {{- if $.Values.seed.sources }}
           - name: source
             mountPath: /quickwit/{{ .source.source_id }}.yaml
             subPath: {{ .source.source_id }}.yaml
+          {{- end }}
+          {{- with $.Values.bootstrap.sources.extraVolumeMounts }}
+            {{- toYaml . | nindent 10 }}
           {{- end }}
         resources:
           {{- toYaml $.Values.bootstrap.resources | nindent 10 }}
@@ -66,5 +85,20 @@ spec:
             items:
               - key: {{ .source.source_id }}.yaml
                 path: {{ .source.source_id }}.yaml
+         {{- with $.Values.bootstrap.sources.extraVolumes }}
+           {{- toYaml . | nindent 8 }}
+         {{- end }}
+      {{- with $.Values.bootstrap.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.bootstrap.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.bootstrap.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}
 {{- end }}

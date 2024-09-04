@@ -40,19 +40,36 @@ spec:
       serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.janitor.initContainers }}
+      initContainers:
+        {{ toYaml . | nindent 8 }}
+      {{ end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if $.Values.janitor.args }}
+          args: {{- toYaml $.Values.janitor.args | nindent 10 }}
+          {{- else }}
           args: ["run", "--service", "janitor"]
+          {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.janitor.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- if or (.Values.environmentFrom) (.Values.janitor.extraEnvFrom) }}
+          envFrom:
+          {{- with .Values.environmentFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.janitor.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           startupProbe:
@@ -71,6 +88,9 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
+            {{- with .Values.indexer.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.janitor.resources | nindent 14 }}
       volumes:
@@ -86,6 +106,9 @@ spec:
         - name: {{ .name }}
           configMap:
             name: {{ .name }}
+        {{- end }}
+        {{- with .Values.indexer.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.janitor.nodeSelector }}
       nodeSelector:

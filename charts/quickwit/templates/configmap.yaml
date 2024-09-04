@@ -8,33 +8,4 @@ metadata:
     app.kubernetes.io/component: config
 data:
   node.yaml: |-
-    version: 0.8
-    listen_address: 0.0.0.0
-    gossip_listen_port: 7282
-    data_dir: /quickwit/qwdata
-    default_index_root_uri: {{ .Values.config.default_index_root_uri }}
-    {{- with .Values.config.indexer }}
-    indexer:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.config.storage }}
-    storage:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.config.ingest_api }}
-    ingest_api:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.config.searcher }}
-    searcher:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- with .Values.config.jaeger }}
-    jaeger:
-      {{- toYaml . | nindent 6 }}
-    {{- end }}
-    {{- if (.Values.config.postgres).max_num_connections }}
-    metastore:
-      postgres:
-        max_num_connections: {{ .Values.config.postgres.max_num_connections }}
-    {{- end }}
+    {{- toYaml .Values.config | nindent 4 }}

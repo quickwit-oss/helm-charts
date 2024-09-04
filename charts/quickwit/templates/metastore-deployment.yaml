@@ -38,19 +38,36 @@ spec:
       serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- with .Values.metastore.initContainers }}
+      initContainers:
+        {{- toYaml . | nindent 8 }}
+      {{ end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}        
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if $.Values.metastore.args }}
+          args: {{- toYaml $.Values.metastore.args | nindent 10 }}
+          {{- else }}
           args: ["run", "--service", "metastore"]
+          {{- end }}
           env:
-            {{- include "quickwit.metastore.environment" . | nindent 12 }}
+            {{- include "quickwit.environment" . | nindent 12 }}
             {{- range $key, $value := .Values.metastore.extraEnv }}
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+          {{- if or (.Values.environmentFrom) (.Values.metastore.extraEnvFrom) }}
+          envFrom:
+          {{- with .Values.environmentFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.metastore.extraEnvFrom }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
           ports:
             {{- include "quickwit.ports" . | nindent 12 }}
           startupProbe:
@@ -69,6 +86,9 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
+            {{- with .Values.metastore.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
           resources:
             {{- toYaml .Values.metastore.resources | nindent 14 }}
       volumes:
@@ -84,6 +104,9 @@ spec:
         - name: {{ .name }}
           configMap:
             name: {{ .name }}
+        {{- end }}
+        {{- with .Values.metastore.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.metastore.nodeSelector }}
       nodeSelector:
