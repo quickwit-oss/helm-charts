@@ -33,7 +33,6 @@ spec:
       labels:
         {{- include "quickwit.labels" . | nindent 8 }}
         {{- include "quickwit.control_plane.selectorLabels" . | nindent 8 }}
-        {{- include "quickwit.additionalLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
