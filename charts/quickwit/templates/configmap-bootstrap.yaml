@@ -5,6 +5,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-bootstrap
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: config
 data:
   {{- range .Values.config.indexes }}
