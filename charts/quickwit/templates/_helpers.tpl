@@ -200,6 +200,6 @@ Quickwit metastore environment
       name: {{ include "quickwit.fullname" . }}
       key: postgres.password
 - name: QW_METASTORE_URI
-  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"      
+  value: "postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)"
 {{- end }}
 {{- end }}
