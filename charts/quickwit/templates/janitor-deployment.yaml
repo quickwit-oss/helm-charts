@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-janitor
   labels:
-    {{- include "quickwit.labels" . | nindent 4 }}  
+    {{- include "quickwit.labels" . | nindent 4 }}
   annotations:
     {{- with .Values.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -122,4 +122,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- end }} 
+      {{- if .Values.janitor.runtimeClassName }}
+      runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
+      {{- end }}
+{{- end }}

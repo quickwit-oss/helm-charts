@@ -125,6 +125,8 @@ searcher:
 
   affinity: {}
 
+  runtimeClassName: ""
+
 indexer:
   replicaCount: 1
 
@@ -195,6 +197,8 @@ indexer:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
   persistentVolume:
     enabled: false
@@ -268,6 +272,8 @@ metastore:
 
   affinity: {}
 
+  runtimeClassName: ""
+
 control_plane:
   # Extra env for control plane
   extraEnv: {}
@@ -328,6 +334,8 @@ control_plane:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
 janitor:
   # Enable Janitor service
@@ -393,6 +401,8 @@ janitor:
 
   affinity: {}
 
+  runtimeClassName: ""
+
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
   # Enable bootstrap jobs
@@ -420,6 +430,8 @@ bootstrap:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
   sources:
     # Override command for starting container

@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-control-plane
   labels:
-    {{- include "quickwit.labels" . | nindent 4 }}  
+    {{- include "quickwit.labels" . | nindent 4 }}
   annotations:
     {{- with .Values.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -120,4 +120,7 @@ spec:
       {{- with .Values.control_plane.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.control_plane.runtimeClassName }}
+      runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}

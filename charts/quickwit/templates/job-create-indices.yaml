@@ -98,5 +98,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.bootstrap.runtimeClassName }}
+      runtimeClassName: {{ .Values.bootstrap.runtimeClassName | quote }}
+      {{- end }}
 {{- end }}
 {{- end }}
