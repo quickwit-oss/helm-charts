@@ -120,3 +120,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.metastore.runtimeClassName }}
+      runtimeClassName: {{ .Values.metastore.runtimeClassName | quote }}
+      {{- end }}

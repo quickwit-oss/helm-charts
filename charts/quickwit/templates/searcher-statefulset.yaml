@@ -127,6 +127,9 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.searcher.runtimeClassName }}
+      runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
+      {{- end }}
   {{- if .Values.searcher.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
