@@ -132,6 +132,9 @@ spec:
       lifecycle:
         {{- toYaml . | nindent 8 }}
       {{- end}}
+      {{- if .Values.indexer.runtimeClassName }}
+      runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
+      {{- end }}
   {{- if .Values.indexer.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
