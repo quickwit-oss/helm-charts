@@ -96,6 +96,7 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.indexer.resources | nindent 12 }}
+      terminationGracePeriodSeconds: {{ .Values.indexer.terminationGracePeriodSeconds }}
       volumes:
         - name: config
           configMap:
