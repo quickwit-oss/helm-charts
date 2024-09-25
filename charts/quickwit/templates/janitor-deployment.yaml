@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-janitor
   labels:
-    {{- include "quickwit.labels" . | nindent 4 }}  
+    {{- include "quickwit.labels" . | nindent 4 }}
   annotations:
     {{- with .Values.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -57,9 +57,8 @@ spec:
           {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.janitor.extraEnv }}
-            - name: "{{ $key }}"
-              value: "{{ $value }}"
+            {{- with .Values.janitor.extraEnv }}
+            {{- . | toYaml | nindent 12 }}
             {{- end }}
           {{- if or (.Values.environmentFrom) (.Values.janitor.extraEnvFrom) }}
           envFrom:
@@ -122,4 +121,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-{{- end }} 
+{{- end }}

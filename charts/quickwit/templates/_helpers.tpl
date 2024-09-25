@@ -155,8 +155,5 @@ Quickwit environment
   value: "$(POD_IP)"
 - name: QW_CLUSTER_ENDPOINT
   value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.cluster.local:7280
-{{- range $key, $value := .Values.environment }}
-- name: "{{ $key }}"
-  value: "{{ $value }}"
-{{- end }}
+{{ $.Values.environment | toYaml }}
 {{- end }}

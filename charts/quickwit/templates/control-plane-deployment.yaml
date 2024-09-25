@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-control-plane
   labels:
-    {{- include "quickwit.labels" . | nindent 4 }}  
+    {{- include "quickwit.labels" . | nindent 4 }}
   annotations:
     {{- with .Values.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -56,9 +56,8 @@ spec:
           {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.control_plane.extraEnv }}
-            - name: "{{ $key }}"
-              value: "{{ $value }}"
+            {{- with .Values.control_plane.extraEnv }}
+            {{- . | toYaml | nindent 12 }}
             {{- end }}
           {{- if or (.Values.environmentFrom) (.Values.control_plane.extraEnvFrom) }}
           envFrom:
