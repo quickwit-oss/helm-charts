@@ -37,8 +37,9 @@ securityContext:
   runAsUser: 1005
 
 # Additional global env
-environment: {}
-  # KEY: VALUE
+environment: []
+  # - name: KEY
+  #   value: VALUE
 environmentFrom: []
   # - secretRef:
   #     name: quickwit
@@ -53,8 +54,9 @@ searcher:
   replicaCount: 3
 
   # Extra env for searcher
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-searcher
@@ -129,8 +131,9 @@ indexer:
   replicaCount: 1
 
   # Extra env for indexer
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-indexer
@@ -209,8 +212,9 @@ metastore:
   replicaCount: 1
 
   # Extra env for metastore
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   # This is the recommended way to inject `QW_METASTORE_URI` when using the postgres metastore (see https://quickwit.io/docs/configuration/metastore-config)
   extraEnvFrom: []
     # - secretRef:
@@ -274,8 +278,9 @@ metastore:
 
 control_plane:
   # Extra env for control plane
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-control-plane
@@ -338,8 +343,9 @@ janitor:
   enabled: true
 
   # Extra env for janitor
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-janitor
@@ -403,8 +409,9 @@ bootstrap:
   enabled: false
 
   # Extra env for bootstrap jobs
-  extraEnv: {}
-    # KEY: VALUE
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
   extraEnvFrom: []
     # - secretRef:
     #     name: quickwit-bootstrap
