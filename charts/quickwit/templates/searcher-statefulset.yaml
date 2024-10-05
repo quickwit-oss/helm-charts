@@ -127,6 +127,10 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.indexer.lifecycle }}
+      lifecycle:
+        {{- toYaml . | nindent 8 }}
+      {{- end}}
   {{- if .Values.searcher.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
