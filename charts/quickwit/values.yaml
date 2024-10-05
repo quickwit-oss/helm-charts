@@ -106,6 +106,12 @@ searcher:
       port: rest
 
   lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
 
   # Override args for starting container
   args: []
