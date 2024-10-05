@@ -128,7 +128,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.indexer.lifecycle }}
+      {{- with .Values.indexer.lifecycleHooks }}
       lifecycle:
         {{- toYaml . | nindent 8 }}
       {{- end}}
