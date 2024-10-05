@@ -105,6 +105,14 @@ searcher:
       path: /health/readyz
       port: rest
 
+  lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
+
   # Override args for starting container
   args: []
 
@@ -195,6 +203,14 @@ indexer:
   tolerations: []
 
   affinity: {}
+
+  lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
 
   # Long grace period is recommended to wait for all index commit_timeout_secs and splits to be published
   # See https://quickwit.io/docs/configuration/index-config#indexing-settings
