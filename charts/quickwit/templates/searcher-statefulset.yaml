@@ -96,10 +96,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.searcher.resources | nindent 14 }}
-          {{- with .Values.searcher.lifecycleHooks }}
+          {{- if .Values.searcher.lifecycleHooks }}
           lifecycle:
-            {{- toYaml . | nindent 14 }}
-          {{- end}}
+            {{- toYaml .Values.searcher.lifecycleHooks | nindent 14 }}
+          {{- end }}
       volumes:
         - name: config
           configMap:

@@ -96,10 +96,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.indexer.resources | nindent 12 }}
-          {{- with .Values.searcher.lifecycleHooks }}
+          {{- if .Values.indexer.lifecycleHooks }}
           lifecycle:
-            {{- toYaml . | nindent 12 }}
-          {{- end}}
+            {{- toYaml .Values.indexer.lifecycleHooks | nindent 12 }}
+          {{- end }}
       terminationGracePeriodSeconds: {{ .Values.indexer.terminationGracePeriodSeconds }}
       volumes:
         - name: config
@@ -132,10 +132,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.indexer.lifecycleHooks }}
-      lifecycle:
-        {{- toYaml . | nindent 8 }}
-      {{- end}}
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
