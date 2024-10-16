@@ -96,6 +96,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.searcher.resources | nindent 14 }}
+          {{- with .Values.searcher.lifecycleHooks }}
+          lifecycle:
+            {{- toYaml . | nindent 14 }}
+          {{- end}}
       volumes:
         - name: config
           configMap:
@@ -127,10 +131,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.searcher.lifecycleHooks }}
-      lifecycle:
-        {{- toYaml . | nindent 8 }}
-      {{- end}}
       {{- if .Values.searcher.runtimeClassName }}
       runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}

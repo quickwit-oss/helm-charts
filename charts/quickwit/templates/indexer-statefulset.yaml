@@ -96,6 +96,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.indexer.resources | nindent 12 }}
+          {{- with .Values.searcher.lifecycleHooks }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end}}
       terminationGracePeriodSeconds: {{ .Values.indexer.terminationGracePeriodSeconds }}
       volumes:
         - name: config
