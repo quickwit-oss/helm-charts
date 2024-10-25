@@ -14,7 +14,7 @@ metadata:
 spec:
   replicas: {{ .Values.indexer.replicaCount }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
-  {{- if .Values.searcher.podManagementPolicy }}
+  {{- if .Values.indexer.podManagementPolicy }}
   podManagementPolicy: {{ .Values.indexer.podManagementPolicy }}
   {{- end }}
   selector:
