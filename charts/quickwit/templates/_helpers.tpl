@@ -154,7 +154,7 @@ Quickwit environment
 - name: QW_ADVERTISE_ADDRESS
   value: "$(POD_IP)"
 - name: QW_CLUSTER_ENDPOINT
-  value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.cluster.local:7280
+  value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.{{ .Values.clusterDomain }}:7280
 {{- range $key, $value := .Values.environment }}
 - name: "{{ $key }}"
   value: "{{ $value }}"
