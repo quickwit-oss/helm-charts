@@ -105,6 +105,11 @@ searcher:
       path: /health/readyz
       port: rest
 
+  # StatefulSet allows you to relax its ordering guarantees
+  #   - OrderedReady
+  #   - Parallel
+  podManagementPolicy: OrderedReady
+
   lifecycleHooks: {}
     # preStop:
     #   exec:
@@ -185,6 +190,11 @@ indexer:
     httpGet:
       path: /health/readyz
       port: rest
+
+  # StatefulSet allows you to relax its ordering guarantees
+  #   - OrderedReady
+  #   - Parallel
+  podManagementPolicy: OrderedReady
 
   # Override args for starting container
   args: []
