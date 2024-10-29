@@ -95,6 +95,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.searcher.resources | nindent 14 }}
+          {{- if .Values.searcher.lifecycleHooks }}
+          lifecycle:
+            {{- toYaml .Values.searcher.lifecycleHooks | nindent 14 }}
+          {{- end }}
       volumes:
         - name: config
           configMap:
@@ -125,6 +129,9 @@ spec:
       {{- with .Values.searcher.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.searcher.runtimeClassName }}
+      runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}
   {{- if .Values.searcher.persistentVolume.enabled }}
   volumeClaimTemplates:

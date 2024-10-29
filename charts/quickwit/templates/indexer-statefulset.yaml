@@ -14,7 +14,7 @@ metadata:
 spec:
   replicas: {{ .Values.indexer.replicaCount }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
-  {{- if .Values.searcher.podManagementPolicy }}
+  {{- if .Values.indexer.podManagementPolicy }}
   podManagementPolicy: {{ .Values.indexer.podManagementPolicy }}
   {{- end }}
   selector:
@@ -95,6 +95,10 @@ spec:
             {{- end }}
           resources:
             {{- toYaml .Values.indexer.resources | nindent 12 }}
+          {{- if .Values.indexer.lifecycleHooks }}
+          lifecycle:
+            {{- toYaml .Values.indexer.lifecycleHooks | nindent 12 }}
+          {{- end }}
       terminationGracePeriodSeconds: {{ .Values.indexer.terminationGracePeriodSeconds }}
       volumes:
         - name: config
@@ -126,6 +130,9 @@ spec:
       {{- with .Values.indexer.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.indexer.runtimeClassName }}
+      runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
   {{- if .Values.indexer.persistentVolume.enabled }}
   volumeClaimTemplates:

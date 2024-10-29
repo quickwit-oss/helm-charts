@@ -121,4 +121,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.janitor.runtimeClassName }}
+      runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
+      {{- end }}
 {{- end }}

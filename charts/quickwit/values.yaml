@@ -12,6 +12,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# Set the Kuberentes cluster domain if not default. It's used to build URLs for the services.
+clusterDomain: cluster.local
+
 # -- Additional labels to add to all resources
 additionalLabels: {}
   # app: quickwit
@@ -107,6 +110,19 @@ searcher:
       path: /health/readyz
       port: rest
 
+  # StatefulSet allows you to relax its ordering guarantees
+  #   - OrderedReady
+  #   - Parallel
+  podManagementPolicy: OrderedReady
+
+  lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
+
   # Override args for starting container
   args: []
 
@@ -126,6 +142,8 @@ searcher:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
 indexer:
   replicaCount: 1
@@ -179,6 +197,11 @@ indexer:
       path: /health/readyz
       port: rest
 
+  # StatefulSet allows you to relax its ordering guarantees
+  #   - OrderedReady
+  #   - Parallel
+  podManagementPolicy: OrderedReady
+
   # Override args for starting container
   args: []
 
@@ -199,9 +222,19 @@ indexer:
 
   affinity: {}
 
+  lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
+
   # Long grace period is recommended to wait for all index commit_timeout_secs and splits to be published
   # See https://quickwit.io/docs/configuration/index-config#indexing-settings
   terminationGracePeriodSeconds: 120
+
+  runtimeClassName: ""
 
   persistentVolume:
     enabled: false
@@ -276,6 +309,8 @@ metastore:
 
   affinity: {}
 
+  runtimeClassName: ""
+
 control_plane:
   # Extra env for control plane
   extraEnv: []
@@ -337,6 +372,8 @@ control_plane:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
 janitor:
   # Enable Janitor service
@@ -403,6 +440,8 @@ janitor:
 
   affinity: {}
 
+  runtimeClassName: ""
+
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
   # Enable bootstrap jobs
@@ -431,6 +470,8 @@ bootstrap:
   tolerations: []
 
   affinity: {}
+
+  runtimeClassName: ""
 
   sources:
     # Override command for starting container
