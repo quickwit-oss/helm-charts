@@ -124,4 +124,8 @@ spec:
       {{- if .Values.control_plane.runtimeClassName }}
       runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}
+      {{- with .Values.control_plane.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{ end }}
 {{- end }}
