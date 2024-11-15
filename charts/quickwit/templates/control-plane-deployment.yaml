@@ -122,3 +122,6 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- if .Values.control_plane.runtimeClassName }}
+      runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
+      {{- end }}
