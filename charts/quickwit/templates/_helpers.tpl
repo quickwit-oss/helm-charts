@@ -44,7 +44,6 @@ Common labels
 */}}
 {{- define "quickwit.labels" -}}
 helm.sh/chart: {{ include "quickwit.chart" . }}
-{{ include "quickwit.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}

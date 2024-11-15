@@ -4,6 +4,7 @@ metadata:
   name: {{ include "quickwit.fullname" . }}-control-plane
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
+    {{- include "quickwit.control_plane.selectorLabels" . | nindent 4 }}
   annotations:
     {{- with .Values.annotations }}
     {{- toYaml . | nindent 4 }}
@@ -29,7 +30,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "quickwit.additionalLabels" . | nindent 8 }}
+        {{- include "quickwit.labels" . | nindent 8 }}
         {{- include "quickwit.control_plane.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
