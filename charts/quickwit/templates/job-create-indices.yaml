@@ -60,8 +60,8 @@ spec:
         {{- end }}
         volumeMounts:
           - name: config
-            mountPath: /quickwit/node.yaml
-            subPath: node.yaml
+            mountPath: {{ .Values.configLocation }}
+            subPath: {{ base .Values.configLocation }}
           - name: index
             mountPath: /quickwit/{{ .index_id }}.yaml
             subPath: {{ .index_id }}.yaml
@@ -75,8 +75,8 @@ spec:
           configMap:
             name: {{ template "quickwit.fullname" $ }}
             items:
-              - key: node.yaml
-                path: node.yaml
+              - key: {{ base .Values.configLocation }}
+                path: {{ base .Values.configLocation }}
         - name: index
           configMap:
             name: {{ template "quickwit.fullname" $ }}-bootstrap
