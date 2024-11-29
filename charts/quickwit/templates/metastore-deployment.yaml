@@ -78,8 +78,8 @@ spec:
             {{- toYaml .Values.metastore.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: config
-              mountPath: /quickwit/node.yaml
-              subPath: node.yaml
+              mountPath: {{ .Values.configLocation }}
+              subPath: {{ base .Values.configLocation }}
             - name: data
               mountPath: /quickwit/qwdata
             {{- range .Values.configMaps }}
@@ -96,8 +96,8 @@ spec:
           configMap:
             name: {{ template "quickwit.fullname" . }}
             items:
-              - key: node.yaml
-                path: node.yaml
+              - key: {{ base .Values.configLocation }}
+                path: {{ base .Values.configLocation }}
         - name: data
           emptyDir: {}
         {{- range .Values.configMaps }}
