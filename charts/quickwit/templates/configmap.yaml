@@ -5,5 +5,5 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
-  node.yaml: |-
+  {{ base .Values.configLocation }}: |-
     {{- toYaml .Values.config | nindent 4 }}
