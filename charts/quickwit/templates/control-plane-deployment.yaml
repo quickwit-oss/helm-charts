@@ -113,14 +113,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.control_plane.affinity }}
+      {{- with merge .Values.affinity .Values.control_plane.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.control_plane.tolerations }}
+      {{- $tolerations := append .Values.tolerations .Values.control_plane.tolerations | compact | uniq }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $tolerations | nindent 8 }}
       {{- if .Values.control_plane.runtimeClassName }}
       runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}

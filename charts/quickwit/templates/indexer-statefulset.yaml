@@ -124,14 +124,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.indexer.affinity }}
+      {{- with merge .Values.affinity .Values.indexer.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.indexer.tolerations }}
+      {{- $tolerations := append .Values.tolerations .Values.indexer.tolerations | compact | uniq }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $tolerations | nindent 8 }}
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}

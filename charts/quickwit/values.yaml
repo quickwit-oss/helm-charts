@@ -52,6 +52,12 @@ configMaps: []
   # - name: configmap1
   #   mountPath: /quickwit/configmaps/
 
+# Global tolerations applied to all deployments
+tolerations: []
+
+# Global affinity settings applied to all deployments
+affinity: {}
+
 searcher:
   replicaCount: 3
 

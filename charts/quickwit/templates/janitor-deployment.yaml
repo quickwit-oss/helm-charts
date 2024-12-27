@@ -114,14 +114,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.janitor.affinity }}
+      {{- with  merge .Values.affinity .Values.janitor.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.janitor.tolerations }}
+      {{- $tolerations := append .Values.tolerations .Values.janitor.tolerations | compact | uniq }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $tolerations | nindent 8 }}
       {{- if .Values.janitor.runtimeClassName }}
       runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
       {{- end }}
