@@ -112,14 +112,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metastore.affinity }}
+      {{- with  merge .Values.affinity .Values.metastore.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.metastore.tolerations }}
+      {{- $tolerations := append .Values.tolerations .Values.metastore.tolerations | compact | uniq }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $tolerations | nindent 8 }}
       {{- if .Values.metastore.runtimeClassName }}
       runtimeClassName: {{ .Values.metastore.runtimeClassName | quote }}
       {{- end }}
