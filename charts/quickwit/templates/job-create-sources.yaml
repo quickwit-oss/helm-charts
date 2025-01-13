@@ -92,14 +92,13 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with $.Values.bootstrap.affinity }}
+      {{- with merge $.Values.affinity $.Values.bootstrap.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with $.Values.bootstrap.tolerations }}
+      {{- $tolerations := append .Values.tolerations .Values.bootstrap.tolerations | compact | uniq }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- toYaml $tolerations | nindent 8 }}
       {{- if $.Values.bootstrap.runtimeClassName }}
       runtimeClassName: {{ $.Values.bootstrap.runtimeClassName | quote }}
       {{- end }}
