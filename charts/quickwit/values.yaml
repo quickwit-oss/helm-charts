@@ -16,7 +16,8 @@ fullnameOverride: ""
 clusterDomain: cluster.local
 
 # -- Additional labels to add to all resources
-additionalLabels: {}
+additionalLabels:
+  {}
   # app: quickwit
 
 serviceAccount:
@@ -40,15 +41,18 @@ securityContext:
   runAsUser: 1005
 
 # Additional global env
-environment: {}
+environment:
+  {}
   # KEY: VALUE
-environmentFrom: []
+environmentFrom:
+  []
   # - secretRef:
   #     name: quickwit
   # - configMapRef:
   #     name: quickwit
 
-configMaps: []
+configMaps:
+  []
   # - name: configmap1
   #   mountPath: /quickwit/configmaps/
 
@@ -62,9 +66,11 @@ searcher:
   replicaCount: 3
 
   # Extra env for searcher
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-searcher
     # - configMapRef:
@@ -76,7 +82,8 @@ searcher:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -85,7 +92,8 @@ searcher:
     #   memory: 128Mi
 
   ## Pod distruption budget
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    {}
     # maxUnavailable: 1
     # minAvailable: 2
 
@@ -94,7 +102,8 @@ searcher:
     # storage: "1Gi"
     # storageClass: ""
 
-  updateStrategy: {}
+  updateStrategy:
+    {}
     # type: RollingUpdate
 
   startupProbe:
@@ -119,7 +128,8 @@ searcher:
   #   - Parallel
   podManagementPolicy: OrderedReady
 
-  lifecycleHooks: {}
+  lifecycleHooks:
+    {}
     # preStop:
     #   exec:
     #     command:
@@ -153,9 +163,11 @@ indexer:
   replicaCount: 1
 
   # Extra env for indexer
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-indexer
     # - configMapRef:
@@ -167,7 +179,8 @@ indexer:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -176,11 +189,13 @@ indexer:
     #   memory: 128Mi
 
   ## Pod distruption budget
-  podDisruptionBudget: {}
+  podDisruptionBudget:
+    {}
     # maxUnavailable: 1
     # minAvailable: 2
 
-  updateStrategy: {}
+  updateStrategy:
+    {}
     # type: RollingUpdate
 
   startupProbe:
@@ -225,7 +240,8 @@ indexer:
 
   affinity: {}
 
-  lifecycleHooks: {}
+  lifecycleHooks:
+    {}
     # preStop:
     #   exec:
     #     command:
@@ -248,10 +264,12 @@ metastore:
   replicaCount: 1
 
   # Extra env for metastore
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
   # This is the recommended way to inject `QW_METASTORE_URI` when using the postgres metastore (see https://quickwit.io/docs/configuration/metastore-config)
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-metastore
     # - configMapRef:
@@ -263,7 +281,8 @@ metastore:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -271,7 +290,8 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  updateStrategy: {}
+  updateStrategy:
+    {}
     # type: RollingUpdate
 
   startupProbe:
@@ -314,10 +334,15 @@ metastore:
   runtimeClassName: ""
 
 control_plane:
+  enabled: true
+
+  replicaCount: 1
   # Extra env for control plane
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-control-plane
     # - configMapRef:
@@ -329,7 +354,8 @@ control_plane:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -381,9 +407,11 @@ janitor:
   enabled: true
 
   # Extra env for janitor
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-janitor
     # - configMapRef:
@@ -395,7 +423,8 @@ janitor:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -448,15 +477,18 @@ bootstrap:
   enabled: false
 
   # Extra env for bootstrap jobs
-  extraEnv: {}
+  extraEnv:
+    {}
     # KEY: VALUE
-  extraEnvFrom: []
+  extraEnvFrom:
+    []
     # - secretRef:
     #     name: quickwit-bootstrap
     # - configMapRef:
     #     name: quickwit-bootstrap
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -512,16 +544,16 @@ config:
   #   max_num_connections: 50
 
   # storage:
-    # s3:
-      # endpoint: "http://custom-s3-endpoint"
-      # region: eu-east-1
-      # We recommend using IAM roles and permissions to access Amazon S3 resources,
-      # but you can specify a pair of access and secret keys if necessary.
-      # access_key_id: <my access key>
-      # secret_access_key: ${AWS_ACCESS_KEY_ID}
-    # azure:
-      # account: "<my account name>"
-      # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
+  # s3:
+  # endpoint: "http://custom-s3-endpoint"
+  # region: eu-east-1
+  # We recommend using IAM roles and permissions to access Amazon S3 resources,
+  # but you can specify a pair of access and secret keys if necessary.
+  # access_key_id: <my access key>
+  # secret_access_key: ${AWS_ACCESS_KEY_ID}
+  # azure:
+  # account: "<my account name>"
+  # access_key: ${QW_AZURE_STORAGE_ACCESS_KEY}
 
   # Indexer settings
   # indexer:
@@ -539,7 +571,8 @@ config:
 
 # Seed configuration
 seed:
-  indexes: []
+  indexes:
+    []
     # - version: 0.8
     #   index_id: my-index
     #   doc_mapping:
@@ -562,7 +595,8 @@ seed:
     #       merge_factor: 10
     #       max_merge_factor: 12
 
-  sources: []
+  sources:
+    []
     # - index: my-index
     #   source:
     #     version: 0.8
@@ -632,7 +666,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following

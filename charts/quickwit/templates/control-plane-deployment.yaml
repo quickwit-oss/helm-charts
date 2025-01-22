@@ -1,3 +1,4 @@
+{{- if .Values.control_plane.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,7 +13,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.control_plane.replicaCount }}
   selector:
     matchLabels:
       {{- include "quickwit.control_plane.selectorLabels" . | nindent 6 }}
@@ -123,3 +124,4 @@ spec:
       {{- if .Values.control_plane.runtimeClassName }}
       runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}
+{{- end }}
