@@ -315,8 +315,6 @@ metastore:
 
 control_plane:
   enabled: true
-
-  replicaCount: 1
   
   # Extra env for control plane
   extraEnv: {}
