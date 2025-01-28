@@ -315,7 +315,7 @@ metastore:
 
 control_plane:
   enabled: true
-  
+
   # Extra env for control plane
   extraEnv: {}
     # KEY: VALUE
