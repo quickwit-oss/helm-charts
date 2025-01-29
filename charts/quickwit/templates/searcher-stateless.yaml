@@ -1,4 +1,4 @@
-{{- if .Values.indexer.mode == "Deployment" }}
+{{- if .Values.searcher.mode == "Deployment" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:

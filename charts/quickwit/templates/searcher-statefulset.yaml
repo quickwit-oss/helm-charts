@@ -1,3 +1,4 @@
+{{- if or (not .Values.searcher.mode) (eq .Values.searcher.mode "StatefulSet") }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -147,3 +148,4 @@ spec:
         storageClassName: "{{ .Values.searcher.persistentVolume.storageClass }}"
       {{- end }}
   {{- end }}
+{{- end }}
