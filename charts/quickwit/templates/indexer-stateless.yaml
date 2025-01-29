@@ -1,5 +1,6 @@
+{{- if eq .Values.indexer.mode "Deployment" }}
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "quickwit.fullname" . }}-indexer
   labels:
@@ -13,14 +14,10 @@ metadata:
     {{- end }}
 spec:
   replicas: {{ .Values.indexer.replicaCount }}
-  serviceName: {{ include "quickwit.fullname" . }}-headless
-  {{- if .Values.indexer.podManagementPolicy }}
-  podManagementPolicy: {{ .Values.indexer.podManagementPolicy }}
-  {{- end }}
   selector:
     matchLabels:
       {{- include "quickwit.indexer.selectorLabels" . | nindent 6 }}
-  updateStrategy:
+  strategy:
     {{- toYaml .Values.indexer.updateStrategy | nindent 4 }}
   template:
     metadata:
@@ -113,6 +110,7 @@ spec:
             volumeClaimTemplate:
               spec:
                 accessModes: [ "ReadWriteOnce" ]
+                storageClassName: {{ .Values.indexer.persistentVolume.storageClass }}
                 resources:
                   requests:
                     storage: {{ .Values.indexer.persistentVolume.storage }}
@@ -138,17 +136,4 @@ spec:
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
-  {{- if .Values.indexer.persistentVolume.enabled }}
-  volumeClaimTemplates:
-    - metadata:
-        name: data
-      spec:
-        accessModes:
-          - ReadWriteOnce
-        resources:
-          requests:
-            storage: "{{ .Values.indexer.persistentVolume.storage }}"
-      {{- if .Values.indexer.persistentVolume.storageClass }}
-        storageClassName: "{{ .Values.indexer.persistentVolume.storageClass }}"
-      {{- end }}
-  {{- end }}
+{{- end }}
