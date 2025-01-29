@@ -12,7 +12,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  {{- if and (hasKey .Values.indexer "replicaCount") (.Values.indexer.replicaCount) }}
   replicas: {{ .Values.indexer.replicaCount }}
+  {{- end }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
   {{- if .Values.indexer.podManagementPolicy }}
   podManagementPolicy: {{ .Values.indexer.podManagementPolicy }}
