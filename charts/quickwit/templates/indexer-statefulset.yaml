@@ -1,4 +1,3 @@
-{{- if or (not .Values.indexer.mode) (eq .Values.indexer.mode "StatefulSet") }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -149,4 +148,3 @@ spec:
         storageClassName: "{{ .Values.indexer.persistentVolume.storageClass }}"
       {{- end }}
   {{- end }}
-{{- end }}
