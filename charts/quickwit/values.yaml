@@ -59,11 +59,6 @@ tolerations: []
 affinity: {}
 
 searcher:
-  # StatefulSet or Deployment: 
-  # StatefulSet persists cache across updates (because of consistent pod naming). However, they reject changes to their configuration.
-  # Deployments will not persist cache but allow frequent updates.
-  mode: StatefulSet
-
   replicaCount: 3
 
   # Extra env for searcher
@@ -155,11 +150,6 @@ searcher:
   runtimeClassName: ""
 
 indexer:
-  # StatefulSet or Deployment: 
-  # StatefulSet persists cache across updates (because of consistent pod naming). However, they reject changes to their configuration.
-  # Deployments will not persist cache but allow frequent updates.
-  mode: StatefulSet
-
   replicaCount: 1
 
   # Extra env for indexer
