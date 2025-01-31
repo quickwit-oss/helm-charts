@@ -150,6 +150,8 @@ searcher:
   runtimeClassName: ""
 
 indexer:
+  enabled: true
+
   replicaCount: 1
 
   # Extra env for indexer
