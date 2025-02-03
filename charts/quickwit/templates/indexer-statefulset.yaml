@@ -1,3 +1,4 @@
+{{- if .Values.indexer.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -12,7 +13,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- if .Values.indexer.replicaCount }}
+  {{- if hasKey .Values.indexer "replicaCount" }}
   replicas: {{ .Values.indexer.replicaCount }}
   {{- end }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
@@ -150,3 +151,4 @@ spec:
         storageClassName: "{{ .Values.indexer.persistentVolume.storageClass }}"
       {{- end }}
   {{- end }}
+{{- end }}

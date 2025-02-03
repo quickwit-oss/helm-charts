@@ -12,7 +12,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- if .Values.searcher.replicaCount }}
+  {{- if hasKey .Values.searcher "replicaCount" }}
   replicas: {{ .Values.searcher.replicaCount }}
   {{- end }}
   serviceName: {{ include "quickwit.fullname" . }}-headless
