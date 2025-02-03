@@ -102,6 +102,9 @@ spec:
           lifecycle:
             {{- toYaml .Values.searcher.lifecycleHooks | nindent 14 }}
           {{- end }}
+      {{- if .Values.searcher.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ .Values.searcher.terminationGracePeriodSeconds }}
+      {{- end }}
       volumes:
         - name: config
           configMap:
