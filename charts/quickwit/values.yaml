@@ -6,7 +6,7 @@ image:
   repository: quickwit/quickwit
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  # tag: v0.8.1
+  # tag: v0.8.2
 
 imagePullSecrets: []
 nameOverride: ""
@@ -625,12 +625,33 @@ ingress:
   className: nginx
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 10m
+    nginx.ingress.kubernetes.io/use-regex: "true"
   hosts:
-    # hostname required here.
-    - host: chart-example.local
+    - host: "*"
       paths:
+        # Ingest and ES bulk endpoints to quickwit-indexer
+        - path: /api/v1/.*/ingest
+          pathType: ImplementationSpecific
+          service: indexer
+          port: rest
+        - path: /api/v1/_elastic/bulk
+          pathType: ImplementationSpecific
+          service: indexer
+          port: rest
+        - path: /api/v1/_elastic/.*/_bulk
+          pathType: ImplementationSpecific
+          service: indexer
+          port: rest
+        # Indexes API endpoints to quickwit-metastore
+        - path: /api/v1/indexes
+          pathType: Prefix
+          service: metastore
+          port: rest
+        # Everything else to quickwit-searcher
         - path: /
           pathType: ImplementationSpecific
+          service: searcher
+          port: rest
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
