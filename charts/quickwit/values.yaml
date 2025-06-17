@@ -59,6 +59,7 @@ tolerations: []
 affinity: {}
 
 searcher:
+  enabled: true
   replicaCount: 3
 
   # Extra env for searcher
