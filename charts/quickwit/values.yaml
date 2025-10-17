@@ -274,11 +274,6 @@ metastore:
     #   cpu: 100m
     #   memory: 128Mi
 
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
-
   updateStrategy: {}
     # type: RollingUpdate
 
@@ -346,11 +341,6 @@ control_plane:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
-
-  ## Pod distruption budget
-  podDisruptionBudget: {}
-    # maxUnavailable: 1
-    # minAvailable: 2
 
   startupProbe:
     httpGet:
