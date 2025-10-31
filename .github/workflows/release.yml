@@ -5,12 +5,17 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2.7.0
         with:
           fetch-depth: 0
 
@@ -20,6 +25,6 @@ jobs:
           git config --global user.name "Quickwit Bot"
 
       - name: Run chart-releaser
-        uses: helm/chart-releaser-action@v1.4.1
+        uses: helm/chart-releaser-action@98bccfd32b0f76149d188912ac8e45ddd3f8695f # v1.4.1
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
