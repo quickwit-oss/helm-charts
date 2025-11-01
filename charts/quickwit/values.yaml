@@ -15,6 +15,9 @@ fullnameOverride: ""
 # Set the Kuberentes cluster domain if not default. It's used to build URLs for the services.
 clusterDomain: cluster.local
 
+# Override the default clusterId
+# clusterId: ""
+
 # -- Additional labels to add to all resources
 additionalLabels: {}
   # app: quickwit
