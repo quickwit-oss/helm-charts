@@ -150,6 +150,8 @@ searcher:
 
   runtimeClassName: ""
 
+  topologySpreadConstraints: {}
+
 indexer:
   enabled: true
 
@@ -247,6 +249,8 @@ indexer:
     # storage: "1Gi"
     # storageClass: ""
 
+  topologySpreadConstraints: {}
+
 metastore:
   replicaCount: 1
 
@@ -321,6 +325,8 @@ metastore:
 
   runtimeClassName: ""
 
+  topologySpreadConstraints: {}
+
 control_plane:
   enabled: true
 
@@ -391,6 +397,8 @@ control_plane:
 
   runtimeClassName: ""
 
+  topologySpreadConstraints: {}
+
 janitor:
   # Enable Janitor service
   enabled: true
@@ -456,6 +464,8 @@ janitor:
   affinity: {}
 
   runtimeClassName: ""
+
+  topologySpreadConstraints: {}
 
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
