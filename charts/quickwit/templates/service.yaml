@@ -24,9 +24,15 @@ spec:
       targetPort: rest
       protocol: TCP
       name: rest
+      {{- if and (or (eq (.Values.searcher.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.searcher.restNodePort }}
+      nodePort: {{ .Values.searcher.restNodePort }}
+      {{- end }}
     - port: 7281
       targetPort: grpc
       name: grpc
+      {{- if and (or (eq (.Values.searcher.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.searcher.grpcNodePort }}
+      nodePort: {{ .Values.searcher.restNodePort }}
+      {{- end }}
   selector:
     {{- include "quickwit.searcher.selectorLabels" . | nindent 4 }}
 ---
@@ -92,9 +98,15 @@ spec:
       targetPort: rest
       protocol: TCP
       name: rest
+      {{- if and (or (eq (.Values.indexer.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.indexer.restNodePort }}
+      nodePort: {{ .Values.indexer.restNodePort }}
+      {{- end }}
     - port: 7281
       targetPort: grpc
       name: grpc
+      {{- if and (or (eq (.Values.indexer.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.indexer.grpcNodePort }}
+      nodePort: {{ .Values.indexer.grpcNodePort }}
+      {{- end }}
   selector:
     {{- include "quickwit.indexer.selectorLabels" . | nindent 4 }}
 ---
@@ -124,9 +136,15 @@ spec:
       targetPort: rest
       protocol: TCP
       name: rest
+      {{- if and (or (eq (.Values.metastore.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.metastore.restNodePort }}
+      nodePort: {{ .Values.metastore.restNodePort }}
+      {{- end }}
     - port: 7281
       targetPort: grpc
       name: grpc
+      {{- if and (or (eq (.Values.metastore.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.metastore.grpcNodePort }}
+      nodePort: {{ .Values.metastore.grpcNodePort }}
+      {{- end }}
   selector:
     {{- include "quickwit.metastore.selectorLabels" . | nindent 4 }}
 ---
@@ -156,9 +174,15 @@ spec:
       targetPort: rest
       protocol: TCP
       name: rest
+      {{- if and (or (eq (.Values.control_plane.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.control_plane.restNodePort }}
+      nodePort: {{ .Values.control_plane.restNodePort }}
+      {{- end }}
     - port: 7281
       targetPort: grpc
       name: grpc
+      {{- if and (or (eq (.Values.control_plane.serviceType | default .Values.service.type) "NodePort") (eq .Values.service.type "NodePort")) .Values.control_plane.grpcNodePort }}
+      nodePort: {{ .Values.control_plane.grpcNodePort }}
+      {{- end }}
   selector:
     {{- include "quickwit.control_plane.selectorLabels" . | nindent 4 }}
 
