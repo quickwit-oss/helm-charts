@@ -127,7 +127,7 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge .Values.affinity .Values.indexer.affinity }}
+      {{- with merge (deepCopy .Values.affinity) .Values.indexer.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
