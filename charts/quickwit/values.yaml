@@ -141,6 +141,8 @@ searcher:
   serviceAnnotations: {}
 
   # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
 
   nodeSelector: {}
 
@@ -223,6 +225,8 @@ indexer:
   serviceAnnotations: {}
 
   # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
 
   nodeSelector: {}
 
@@ -316,6 +320,8 @@ metastore:
   serviceAnnotations: {}
 
   # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
 
   nodeSelector: {}
 
@@ -388,6 +394,8 @@ control_plane:
   serviceAnnotations: {}
 
   # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
 
   nodeSelector: {}
 
@@ -456,6 +464,8 @@ janitor:
   serviceAnnotations: {}
 
   # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
 
   nodeSelector: {}
 

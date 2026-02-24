@@ -1,0 +1,24 @@
+searcher:
+  serviceType: NodePort
+  restNodePort: 30280
+  grpcNodePort: 30281
+
+indexer:
+  serviceType: NodePort
+  restNodePort: 30283
+  grpcNodePort: 30284
+
+metastore:
+  serviceType: NodePort
+  restNodePort: 30285
+  grpcNodePort: 30286
+
+control_plane:
+  serviceType: NodePort
+  restNodePort: 30287
+  grpcNodePort: 30288
+
+janitor:
+  serviceType: NodePort
+  restNodePort: 30289
+  grpcNodePort: 30290
