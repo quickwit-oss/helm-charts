@@ -157,8 +157,28 @@ Quickwit environment
   value: "$(POD_IP)"
 - name: QW_CLUSTER_ENDPOINT
   value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.{{ .Values.clusterDomain }}:7280
-{{- range $key, $value := .Values.environment }}
-- name: "{{ $key }}"
-  value: "{{ $value }}"
+{{- with (include "quickwit.extraEnv" .Values.environment) }}
+{{ . }}
 {{- end }}
+{{- end }}
+
+{{/*
+Render extra environment variables supporting both map and list formats.
+Map format (legacy): { KEY: VALUE }
+List format (recommended): [{ name: KEY, value: VALUE, valueFrom: ... }]
+*/}}
+{{- define "quickwit.extraEnv" -}}
+{{- if kindIs "map" . -}}
+{{- $envList := list -}}
+{{- range $key, $value := . -}}
+{{- $envList = append $envList (dict "name" $key "value" ($value | toString)) -}}
+{{- end -}}
+{{- if $envList -}}
+{{- toYaml $envList -}}
+{{- end -}}
+{{- else -}}
+{{- with . -}}
+{{- toYaml . -}}
+{{- end -}}
+{{- end -}}
 {{- end }}
