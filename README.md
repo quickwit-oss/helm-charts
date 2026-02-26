@@ -58,3 +58,10 @@ The `jobs` and `bootstrap` sections got merged in 0.7.0:
 
 * `jobs.sources` section is now replaced by `bootstrap.sources`
 * `jobs.indexes` section is now replaced by `bootstrap.indexes`
+
+## Upgrade helm chart from 0.7.0 to 0.8.0
+
+The affinity merge order has changed. Previously, global `affinity` values took
+precedence over component-specific ones (e.g. `searcher.affinity`). In 0.8.0,
+component-specific affinity values now take precedence over the global `affinity`
+values.
