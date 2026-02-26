@@ -540,6 +540,9 @@ bootstrap:
     extraVolumeMounts: []
 
   indexes:
+    # Override command for starting container
+    command: []
+
     # initContainers -- Init containers to be executed before the index creation.
     initContainers: []
 
