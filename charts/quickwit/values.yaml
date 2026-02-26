@@ -300,7 +300,7 @@ metastore:
     # maxUnavailable: 1
     # minAvailable: 2
 
-  updateStrategy: {}
+  strategy: {}
     # type: RollingUpdate
 
   startupProbe:
