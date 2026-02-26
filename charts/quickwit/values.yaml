@@ -40,11 +40,6 @@ securityContext:
   runAsUser: 1005
   runAsGroup: 1005
   allowPrivilegeEscalation: false
-  capabilities:
-    drop:
-      - ALL
-  seccompProfile:
-    type: RuntimeDefault
 
 # Additional global env
 # Legacy map format (e.g. environment: { KEY: VALUE }) is also supported for backward compatibility.
