@@ -63,9 +63,8 @@ spec:
           {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.indexer.extraEnv }}
-            - name: "{{ $key }}"
-              value: "{{ $value }}"
+            {{- with (include "quickwit.extraEnv" .Values.indexer.extraEnv) }}
+            {{- . | nindent 12 }}
             {{- end }}
           {{- if or (.Values.environmentFrom) (.Values.indexer.extraEnvFrom) }}
           envFrom:

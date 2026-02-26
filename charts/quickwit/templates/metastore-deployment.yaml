@@ -55,9 +55,8 @@ spec:
           {{- end }}
           env:
             {{- include "quickwit.environment" . | nindent 12 }}
-            {{- range $key, $value := .Values.metastore.extraEnv }}
-            - name: "{{ $key }}"
-              value: "{{ $value }}"
+            {{- with (include "quickwit.extraEnv" .Values.metastore.extraEnv) }}
+            {{- . | nindent 12 }}
             {{- end }}
           {{- if or (.Values.environmentFrom) (.Values.metastore.extraEnvFrom) }}
           envFrom:
