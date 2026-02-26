@@ -111,7 +111,7 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with  merge .Values.affinity .Values.metastore.affinity }}
+      {{- with merge (dict) .Values.metastore.affinity .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
