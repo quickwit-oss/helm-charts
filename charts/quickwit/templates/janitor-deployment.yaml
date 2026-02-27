@@ -87,7 +87,7 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
-            {{- with .Values.indexer.extraVolumeMounts }}
+            {{- with .Values.janitor.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           resources:
@@ -106,7 +106,7 @@ spec:
           configMap:
             name: {{ .name }}
         {{- end }}
-        {{- with .Values.indexer.extraVolumes }}
+        {{- with .Values.janitor.extraVolumes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.janitor.nodeSelector }}
