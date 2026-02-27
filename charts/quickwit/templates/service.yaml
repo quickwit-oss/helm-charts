@@ -1,3 +1,4 @@
+{{- if .Values.searcher.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -37,6 +38,7 @@ spec:
       {{- end }}
   selector:
     {{- include "quickwit.searcher.selectorLabels" . | nindent 4 }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -74,6 +76,7 @@ spec:
   selector:
     {{- include "quickwit.selectorLabels" . | nindent 4 }}
 ---
+{{- if .Values.indexer.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -113,6 +116,7 @@ spec:
       {{- end }}
   selector:
     {{- include "quickwit.indexer.selectorLabels" . | nindent 4 }}
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -154,6 +158,7 @@ spec:
   selector:
     {{- include "quickwit.metastore.selectorLabels" . | nindent 4 }}
 ---
+{{- if .Values.control_plane.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -193,8 +198,9 @@ spec:
       {{- end }}
   selector:
     {{- include "quickwit.control_plane.selectorLabels" . | nindent 4 }}
-
+{{- end }}
 ---
+{{- if .Values.janitor.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -234,3 +240,4 @@ spec:
       {{- end }}
   selector:
     {{- include "quickwit.janitor.selectorLabels" . | nindent 4 }}
+{{- end }}
