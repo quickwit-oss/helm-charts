@@ -101,6 +101,7 @@ searcher:
 
   persistentVolume:
     enabled: false
+    annotations: {}
     # storage: "1Gi"
     # storageClass: ""
 
@@ -261,6 +262,7 @@ indexer:
 
   persistentVolume:
     enabled: false
+    annotations: {}
     # storage: "1Gi"
     # storageClass: ""
 
