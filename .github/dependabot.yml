@@ -10,3 +10,5 @@ updates:
         patterns:
           - "*"
     open-pull-requests-limit: 10
+    cooldown:
+      default-days: 2
