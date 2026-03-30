@@ -713,3 +713,54 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+
+# HTTPRoute configuration for Gateway API (alternative to Ingress). Only enable this if you have Gateway API CRDs installed and a Gateway controller.
+httproute:
+  enabled: false
+  # annotations: {}
+  # labels: {}
+  parentRefs: []
+  # - name: gateway-name
+  #   namespace: gateway-namespace
+  #   sectionName: http
+  hostnames:
+    - "*"
+  rules:
+    # Ingest and ES bulk endpoints to quickwit-indexer
+    - matches:
+        - path:
+            type: RegularExpression
+            value: /api/v1/.*/ingest
+      backendRefs:
+        - name: indexer
+          port: 7280
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v1/_elastic/bulk
+      backendRefs:
+        - name: indexer
+          port: 7280
+    - matches:
+        - path:
+            type: RegularExpression
+            value: /api/v1/_elastic/.*/_bulk
+      backendRefs:
+        - name: indexer
+          port: 7280
+    # Indexes API endpoints to quickwit-metastore
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api/v1/indexes
+      backendRefs:
+        - name: metastore
+          port: 7280
+    # Everything else to quickwit-searcher
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: searcher
+          port: 7280
