@@ -126,9 +126,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) .Values.indexer.affinity .Values.affinity }}
+      {{- $affinity := include "quickwit.componentAffinity" (list "indexer" .) }}
+      {{- with $affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.indexer.tolerations | compact | uniq }}
       tolerations:
@@ -136,10 +137,13 @@ spec:
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.indexer.topologySpreadConstraints }}
+      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "indexer" .) | fromYaml }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.indexer.topologySpreadConstraints | compact }}
+      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
   {{- if .Values.indexer.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:

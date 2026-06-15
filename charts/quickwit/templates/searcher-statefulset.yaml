@@ -128,9 +128,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) .Values.searcher.affinity .Values.affinity }}
+      {{- $affinity := include "quickwit.componentAffinity" (list "searcher" .) }}
+      {{- with $affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.searcher.tolerations | compact | uniq }}
       tolerations:
@@ -138,10 +139,13 @@ spec:
       {{- if .Values.searcher.runtimeClassName }}
       runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.searcher.topologySpreadConstraints }}
+      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "searcher" .) | fromYaml }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.searcher.topologySpreadConstraints | compact }}
+      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
   {{- if .Values.searcher.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:

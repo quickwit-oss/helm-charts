@@ -113,9 +113,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) .Values.control_plane.affinity .Values.affinity }}
+      {{- $affinity := include "quickwit.componentAffinity" (list "control_plane" .) }}
+      {{- with $affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.control_plane.tolerations | compact | uniq }}
       tolerations:
@@ -123,8 +124,11 @@ spec:
       {{- if .Values.control_plane.runtimeClassName }}
       runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.control_plane.topologySpreadConstraints }}
+      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "control_plane" .) | fromYaml }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.control_plane.topologySpreadConstraints | compact }}
+      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
 {{- end }}

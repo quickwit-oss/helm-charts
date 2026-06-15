@@ -163,6 +163,62 @@ Quickwit environment
 {{- end }}
 
 {{/*
+Auto-generate a podAntiAffinity rule preventing two pods of the same
+release+service from landing on the same node.
+Called as: include "quickwit.nodeAntiAffinity" (list "indexer" .)
+*/}}
+{{- define "quickwit.nodeAntiAffinity" -}}
+{{- $component := index . 0 -}}
+{{- $ctx := index . 1 -}}
+{{- if $ctx.Values.podAntiAffinity.enabled -}}
+podAntiAffinity:
+  requiredDuringSchedulingIgnoredDuringExecution:
+    - topologyKey: kubernetes.io/hostname
+      labelSelector:
+        matchLabels:
+          {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 10 }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Resolve the effective affinity for a component.
+Merges global affinity and per-service affinity on top of any auto-generated
+podAntiAffinity rule (same semantics as the existing merge pattern).
+Called as: include "quickwit.componentAffinity" (list "indexer" .)
+*/}}
+{{- define "quickwit.componentAffinity" -}}
+{{- $component := index . 0 -}}
+{{- $ctx := index . 1 -}}
+{{- $explicit := merge (dict) (index $ctx.Values $component).affinity $ctx.Values.affinity -}}
+{{- if $ctx.Values.podAntiAffinity.enabled -}}
+{{- $base := include "quickwit.nodeAntiAffinity" (list $component $ctx) | fromYaml -}}
+{{- toYaml (mergeOverwrite $base $explicit) -}}
+{{- else if $explicit -}}
+{{- toYaml $explicit -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Auto-generate a topologySpreadConstraints entry to spread pods across zones.
+Per-service Values.<component>.zoneSpreadConstraint takes precedence over
+the global Values.zoneSpreadConstraint.
+Called as: include "quickwit.zoneSpreadConstraint" (list "indexer" .)
+*/}}
+{{- define "quickwit.zoneSpreadConstraint" -}}
+{{- $component := index . 0 -}}
+{{- $ctx := index . 1 -}}
+{{- $zsc := (index $ctx.Values $component).zoneSpreadConstraint | default $ctx.Values.zoneSpreadConstraint -}}
+{{- if $zsc.enabled -}}
+maxSkew: {{ $zsc.maxSkew | default 1 }}
+topologyKey: {{ $zsc.topologyKey | default "topology.kubernetes.io/zone" | quote }}
+whenUnsatisfiable: {{ $zsc.whenUnsatisfiable | default "DoNotSchedule" | quote }}
+labelSelector:
+  matchLabels:
+    {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 4 }}
+{{- end -}}
+{{- end -}}
+
+{{/*
 Render extra environment variables supporting both map and list formats.
 Map format (legacy): { KEY: VALUE }
 List format (recommended): [{ name: KEY, value: VALUE, valueFrom: ... }]

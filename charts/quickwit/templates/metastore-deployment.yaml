@@ -111,9 +111,10 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) .Values.metastore.affinity .Values.affinity }}
+      {{- $affinity := include "quickwit.componentAffinity" (list "metastore" .) }}
+      {{- with $affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.metastore.tolerations | compact | uniq }}
       tolerations:
@@ -121,7 +122,10 @@ spec:
       {{- if .Values.metastore.runtimeClassName }}
       runtimeClassName: {{ .Values.metastore.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.metastore.topologySpreadConstraints }}
+      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "metastore" .) | fromYaml }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.metastore.topologySpreadConstraints | compact }}
+      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
