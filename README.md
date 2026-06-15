@@ -43,9 +43,9 @@ database: metastore
 username: quickwit
 assword: ""
 ```
-Configure `QW_METASTORE_URI` in `extraEnvFrom` instead (see
+You can use `config.metastore_uri` or `QW_METASTORE_URI` in `extraEnvFrom` instead (see
 [documentation](https://quickwit.io/docs/configuration/metastore-config) for
-more details).
+more details). `metastore_uri` can be built with the old variables like this: `postgres://$(POSTGRES_USERNAME):$(POSTGRES_PASSWORD)@$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DATABASE)`.
 
 - the seed configuration has moved from `config` to a dedicated attribute. The
   changes are:
