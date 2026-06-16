@@ -139,9 +139,7 @@ spec:
       {{- if .Values.searcher.runtimeClassName }}
       runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}
-      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "searcher" .) | fromYaml }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.searcher.topologySpreadConstraints | compact }}
-      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
       {{- if $tsc }}
       topologySpreadConstraints:
         {{- toYaml $tsc | nindent 8 }}

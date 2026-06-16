@@ -65,17 +65,15 @@ tolerations: []
 # Global affinity settings applied to all deployments
 affinity: {}
 
-# Auto-generate per-service podAntiAffinity (one pod per node per release+service).
+# -- Auto-generate per-service podAntiAffinity (one pod per node per release+service).
 podAntiAffinity:
+  # -- Enable podAntiAffinity rule.
   enabled: false
-
-# Auto-generate a topologySpreadConstraints entry to spread pods across zones per service.
-# Per-service values (e.g. indexer.zoneSpreadConstraint) override this global config.
-zoneSpreadConstraint:
-  enabled: false
-  topologyKey: topology.kubernetes.io/zone
-  whenUnsatisfiable: DoNotSchedule
-  maxSkew: 1
+  # -- Scheduling strictness. "hard" uses requiredDuringSchedulingIgnoredDuringExecution;
+  # "soft" uses preferredDuringSchedulingIgnoredDuringExecution (weight: 100).
+  preset: hard
+  # -- Topology key used for the anti-affinity rule.
+  topologyKey: kubernetes.io/hostname
 
 # topologySpreadConstraints -- Configure
 # [topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
@@ -180,8 +178,6 @@ searcher:
 
   topologySpreadConstraints: []
 
-  # searcher.zoneSpreadConstraint -- Overrides the global `zoneSpreadConstraint` for the searcher pods only.
-  zoneSpreadConstraint: {}
 
 indexer:
   enabled: true
@@ -287,8 +283,6 @@ indexer:
 
   topologySpreadConstraints: []
 
-  # indexer.zoneSpreadConstraint -- Overrides the global `zoneSpreadConstraint` for the indexer pods only.
-  zoneSpreadConstraint: {}
 
 metastore:
   replicaCount: 1
@@ -370,8 +364,6 @@ metastore:
 
   topologySpreadConstraints: []
 
-  # metastore.zoneSpreadConstraint -- Overrides the global `zoneSpreadConstraint` for the metastore pods only.
-  zoneSpreadConstraint: {}
 
 control_plane:
   enabled: true
@@ -449,8 +441,6 @@ control_plane:
 
   topologySpreadConstraints: []
 
-  # control_plane.zoneSpreadConstraint -- Overrides the global `zoneSpreadConstraint` for the control-plane pods only.
-  zoneSpreadConstraint: {}
 
 janitor:
   # Enable Janitor service
@@ -524,8 +514,6 @@ janitor:
 
   topologySpreadConstraints: []
 
-  # janitor.zoneSpreadConstraint -- Overrides the global `zoneSpreadConstraint` for the janitor pods only.
-  zoneSpreadConstraint: {}
 
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:

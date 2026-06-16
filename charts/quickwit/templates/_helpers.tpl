@@ -172,11 +172,21 @@ Called as: include "quickwit.nodeAntiAffinity" (list "indexer" .)
 {{- $ctx := index . 1 -}}
 {{- if $ctx.Values.podAntiAffinity.enabled -}}
 podAntiAffinity:
+  {{- if eq $ctx.Values.podAntiAffinity.preset "soft" }}
+  preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        topologyKey: {{ $ctx.Values.podAntiAffinity.topologyKey | quote }}
+        labelSelector:
+          matchLabels:
+            {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 12 }}
+  {{- else }}
   requiredDuringSchedulingIgnoredDuringExecution:
-    - topologyKey: kubernetes.io/hostname
+    - topologyKey: {{ $ctx.Values.podAntiAffinity.topologyKey | quote }}
       labelSelector:
         matchLabels:
           {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 10 }}
+  {{- end }}
 {{- end -}}
 {{- end -}}
 
@@ -195,26 +205,6 @@ Called as: include "quickwit.componentAffinity" (list "indexer" .)
 {{- toYaml (mergeOverwrite $base $explicit) -}}
 {{- else if $explicit -}}
 {{- toYaml $explicit -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Auto-generate a topologySpreadConstraints entry to spread pods across zones.
-Per-service Values.<component>.zoneSpreadConstraint takes precedence over
-the global Values.zoneSpreadConstraint.
-Called as: include "quickwit.zoneSpreadConstraint" (list "indexer" .)
-*/}}
-{{- define "quickwit.zoneSpreadConstraint" -}}
-{{- $component := index . 0 -}}
-{{- $ctx := index . 1 -}}
-{{- $zsc := (index $ctx.Values $component).zoneSpreadConstraint | default $ctx.Values.zoneSpreadConstraint -}}
-{{- if $zsc.enabled -}}
-maxSkew: {{ $zsc.maxSkew | default 1 }}
-topologyKey: {{ $zsc.topologyKey | default "topology.kubernetes.io/zone" | quote }}
-whenUnsatisfiable: {{ $zsc.whenUnsatisfiable | default "DoNotSchedule" | quote }}
-labelSelector:
-  matchLabels:
-    {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 4 }}
 {{- end -}}
 {{- end -}}
 

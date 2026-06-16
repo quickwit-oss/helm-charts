@@ -122,9 +122,7 @@ spec:
       {{- if .Values.metastore.runtimeClassName }}
       runtimeClassName: {{ .Values.metastore.runtimeClassName | quote }}
       {{- end }}
-      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "metastore" .) | fromYaml }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.metastore.topologySpreadConstraints | compact }}
-      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
       {{- if $tsc }}
       topologySpreadConstraints:
         {{- toYaml $tsc | nindent 8 }}

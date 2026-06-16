@@ -124,9 +124,7 @@ spec:
       {{- if .Values.janitor.runtimeClassName }}
       runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
       {{- end }}
-      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "janitor" .) | fromYaml }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.janitor.topologySpreadConstraints | compact }}
-      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
       {{- if $tsc }}
       topologySpreadConstraints:
         {{- toYaml $tsc | nindent 8 }}

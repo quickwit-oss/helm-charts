@@ -137,9 +137,7 @@ spec:
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
-      {{- $zscEntry := include "quickwit.zoneSpreadConstraint" (list "indexer" .) | fromYaml }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.indexer.topologySpreadConstraints | compact }}
-      {{- if $zscEntry }}{{- $tsc = append $tsc $zscEntry }}{{- end }}
       {{- if $tsc }}
       topologySpreadConstraints:
         {{- toYaml $tsc | nindent 8 }}
