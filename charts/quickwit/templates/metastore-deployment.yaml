@@ -121,7 +121,8 @@ spec:
       {{- if .Values.metastore.runtimeClassName }}
       runtimeClassName: {{ .Values.metastore.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.metastore.topologySpreadConstraints }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.metastore.topologySpreadConstraints | compact }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}

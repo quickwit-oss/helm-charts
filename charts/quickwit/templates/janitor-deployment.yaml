@@ -123,8 +123,9 @@ spec:
       {{- if .Values.janitor.runtimeClassName }}
       runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.janitor.topologySpreadConstraints }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.janitor.topologySpreadConstraints | compact }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
 {{- end }}

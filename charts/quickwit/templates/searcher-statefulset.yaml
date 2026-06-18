@@ -138,10 +138,11 @@ spec:
       {{- if .Values.searcher.runtimeClassName }}
       runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}
-      {{- with .Values.searcher.topologySpreadConstraints }}
+      {{- $tsc := concat .Values.topologySpreadConstraints .Values.searcher.topologySpreadConstraints | compact }}
+      {{- if $tsc }}
       topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-      {{ end }}
+        {{- toYaml $tsc | nindent 8 }}
+      {{- end }}
   {{- if .Values.searcher.persistentVolume.enabled }}
   volumeClaimTemplates:
     - metadata:
