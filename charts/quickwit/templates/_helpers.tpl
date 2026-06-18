@@ -163,52 +163,6 @@ Quickwit environment
 {{- end }}
 
 {{/*
-Auto-generate a podAntiAffinity rule preventing two pods of the same
-release+service from landing on the same node.
-Called as: include "quickwit.nodeAntiAffinity" (list "indexer" .)
-*/}}
-{{- define "quickwit.nodeAntiAffinity" -}}
-{{- $component := index . 0 -}}
-{{- $ctx := index . 1 -}}
-{{- if $ctx.Values.podAntiAffinity.enabled -}}
-podAntiAffinity:
-  {{- if eq $ctx.Values.podAntiAffinity.preset "soft" }}
-  preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 100
-      podAffinityTerm:
-        topologyKey: {{ $ctx.Values.podAntiAffinity.topologyKey | quote }}
-        labelSelector:
-          matchLabels:
-            {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 12 }}
-  {{- else }}
-  requiredDuringSchedulingIgnoredDuringExecution:
-    - topologyKey: {{ $ctx.Values.podAntiAffinity.topologyKey | quote }}
-      labelSelector:
-        matchLabels:
-          {{- include (printf "quickwit.%s.selectorLabels" $component) $ctx | nindent 10 }}
-  {{- end }}
-{{- end -}}
-{{- end -}}
-
-{{/*
-Resolve the effective affinity for a component.
-Merges global affinity and per-service affinity on top of any auto-generated
-podAntiAffinity rule (same semantics as the existing merge pattern).
-Called as: include "quickwit.componentAffinity" (list "indexer" .)
-*/}}
-{{- define "quickwit.componentAffinity" -}}
-{{- $component := index . 0 -}}
-{{- $ctx := index . 1 -}}
-{{- $explicit := merge (dict) (index $ctx.Values $component).affinity $ctx.Values.affinity -}}
-{{- if $ctx.Values.podAntiAffinity.enabled -}}
-{{- $base := include "quickwit.nodeAntiAffinity" (list $component $ctx) | fromYaml -}}
-{{- toYaml (mergeOverwrite $base $explicit) -}}
-{{- else if $explicit -}}
-{{- toYaml $explicit -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Render extra environment variables supporting both map and list formats.
 Map format (legacy): { KEY: VALUE }
 List format (recommended): [{ name: KEY, value: VALUE, valueFrom: ... }]

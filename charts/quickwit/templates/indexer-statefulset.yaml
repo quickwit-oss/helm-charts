@@ -126,10 +126,9 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- $affinity := include "quickwit.componentAffinity" (list "indexer" .) }}
-      {{- with $affinity }}
+      {{- with merge (dict) .Values.indexer.affinity .Values.affinity }}
       affinity:
-        {{- . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.indexer.tolerations | compact | uniq }}
       tolerations:

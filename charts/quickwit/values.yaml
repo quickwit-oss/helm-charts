@@ -59,24 +59,13 @@ configMaps: []
   # - name: configmap1
   #   mountPath: /quickwit/configmaps/
 
-# Global tolerations applied to all deployments
+# -- Global tolerations applied to all deployments.
 tolerations: []
 
-# Global affinity settings applied to all deployments
+# -- Global affinity settings applied to all deployments.
 affinity: {}
 
-# -- Auto-generate per-service podAntiAffinity (one pod per node per release+service).
-podAntiAffinity:
-  # -- Enable podAntiAffinity rule.
-  enabled: false
-  # -- Scheduling strictness. "hard" uses requiredDuringSchedulingIgnoredDuringExecution;
-  # "soft" uses preferredDuringSchedulingIgnoredDuringExecution (weight: 100).
-  preset: hard
-  # -- Topology key used for the anti-affinity rule.
-  topologyKey: kubernetes.io/hostname
-
-# topologySpreadConstraints -- Configure
-# [topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
+# -- Configure [topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 topologySpreadConstraints: []
 
 searcher:
@@ -177,7 +166,6 @@ searcher:
   runtimeClassName: ""
 
   topologySpreadConstraints: []
-
 
 indexer:
   enabled: true
@@ -283,7 +271,6 @@ indexer:
 
   topologySpreadConstraints: []
 
-
 metastore:
   replicaCount: 1
 
@@ -364,7 +351,6 @@ metastore:
 
   topologySpreadConstraints: []
 
-
 control_plane:
   enabled: true
 
@@ -441,7 +427,6 @@ control_plane:
 
   topologySpreadConstraints: []
 
-
 janitor:
   # Enable Janitor service
   enabled: true
@@ -513,7 +498,6 @@ janitor:
   runtimeClassName: ""
 
   topologySpreadConstraints: []
-
 
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:

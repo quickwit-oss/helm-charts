@@ -113,10 +113,9 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- $affinity := include "quickwit.componentAffinity" (list "control_plane" .) }}
-      {{- with $affinity }}
+      {{- with merge (dict) .Values.control_plane.affinity .Values.affinity }}
       affinity:
-        {{- . | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $tolerations := concat .Values.tolerations .Values.control_plane.tolerations | compact | uniq }}
       tolerations:
