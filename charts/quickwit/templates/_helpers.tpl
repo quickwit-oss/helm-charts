@@ -111,9 +111,6 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Quickwit ports
-*/}}
 {{- define "quickwit.ports" -}}
 - name: rest
   containerPort: 7280
@@ -124,6 +121,9 @@ Quickwit ports
 - name: discovery
   containerPort: 7282
   protocol: UDP
+- name: health
+  containerPort: 7283
+  protocol: TCP
 {{- end }}
 
 

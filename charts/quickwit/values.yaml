@@ -114,19 +114,19 @@ searcher:
   startupProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
     failureThreshold: 12
     periodSeconds: 5
 
   livenessProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
 
   readinessProbe:
     httpGet:
       path: /health/readyz
-      port: rest
+      port: health
 
   # StatefulSet allows you to relax its ordering guarantees
   #   - OrderedReady
@@ -208,19 +208,19 @@ indexer:
   startupProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
     failureThreshold: 12
     periodSeconds: 5
 
   livenessProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
 
   readinessProbe:
     httpGet:
       path: /health/readyz
-      port: rest
+      port: health
 
   # StatefulSet allows you to relax its ordering guarantees
   #   - OrderedReady
@@ -311,19 +311,19 @@ metastore:
   startupProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
     failureThreshold: 12
     periodSeconds: 5
 
   livenessProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
 
   readinessProbe:
     httpGet:
       path: /health/readyz
-      port: rest
+      port: health
 
   # Override args for starting container
   args: []
@@ -387,19 +387,19 @@ control_plane:
   startupProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
     failureThreshold: 12
     periodSeconds: 5
 
   livenessProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
 
   readinessProbe:
     httpGet:
       path: /health/readyz
-      port: rest
+      port: health
 
   # Override args for starting container
   args: []
@@ -459,19 +459,19 @@ janitor:
   startupProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
     failureThreshold: 12
     periodSeconds: 5
 
   livenessProbe:
     httpGet:
       path: /health/livez
-      port: rest
+      port: health
 
   readinessProbe:
     httpGet:
       path: /health/readyz
-      port: rest
+      port: health
 
   # Override args for starting container
   args: []
@@ -569,6 +569,9 @@ config:
   # cluster_id: my-cluster
   listen_address: 0.0.0.0
   gossip_listen_port: 7282
+  health:
+    # Dedicated plaintext health check server used by health checks.
+    listen_port: 7283
   data_dir: /quickwit/qwdata
   default_index_root_uri: s3://quickwit/indexes
 
