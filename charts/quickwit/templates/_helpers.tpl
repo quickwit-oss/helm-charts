@@ -101,6 +101,20 @@ app.kubernetes.io/component: indexer
 {{- end }}
 
 {{/*
+VolumeAttributesClass name for the indexer.
+*/}}
+{{- define "quickwit.indexer.vacName" -}}
+{{- printf "%s-indexer-vac" .Release.Name }}
+{{- end }}
+
+{{/*
+VolumeAttributesClass name for the searcher.
+*/}}
+{{- define "quickwit.searcher.vacName" -}}
+{{- printf "%s-searcher-vac" .Release.Name }}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "quickwit.serviceAccountName" -}}

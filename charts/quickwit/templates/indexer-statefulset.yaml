@@ -158,5 +158,8 @@ spec:
       {{- if .Values.indexer.persistentVolume.storageClass }}
         storageClassName: "{{ .Values.indexer.persistentVolume.storageClass }}"
       {{- end }}
+      {{- if and .Values.indexer.persistentVolume.volumeAttributesClassDriver (or .Values.indexer.persistentVolume.iops .Values.indexer.persistentVolume.throughput) }}
+        volumeAttributesClassName: {{ include "quickwit.indexer.vacName" . | quote }}
+      {{- end }}
   {{- end }}
 {{- end }}

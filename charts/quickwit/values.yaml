@@ -107,6 +107,9 @@ searcher:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
+    # iops: ""
+    # throughput: ""
+    # volumeAttributesClassDriver: ""
 
   updateStrategy: {}
     # type: RollingUpdate
@@ -268,6 +271,9 @@ indexer:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
+    # iops: ""
+    # throughput: ""
+    # volumeAttributesClassDriver: ""
 
   topologySpreadConstraints: []
 

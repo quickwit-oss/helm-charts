@@ -1,0 +1,29 @@
+{{- if and .Values.indexer.persistentVolume.volumeAttributesClassDriver (or .Values.indexer.persistentVolume.iops .Values.indexer.persistentVolume.throughput) }}
+apiVersion: storage.k8s.io/v1beta1
+kind: VolumeAttributesClass
+metadata:
+  name: {{ include "quickwit.indexer.vacName" . }}
+driverName: {{ .Values.indexer.persistentVolume.volumeAttributesClassDriver }}
+parameters:
+  {{- if .Values.indexer.persistentVolume.iops }}
+  iops: {{ .Values.indexer.persistentVolume.iops | quote }}
+  {{- end }}
+  {{- if .Values.indexer.persistentVolume.throughput }}
+  throughput: {{ .Values.indexer.persistentVolume.throughput | quote }}
+  {{- end }}
+{{- end }}
+{{- if and .Values.searcher.persistentVolume.volumeAttributesClassDriver (or .Values.searcher.persistentVolume.iops .Values.searcher.persistentVolume.throughput) }}
+---
+apiVersion: storage.k8s.io/v1beta1
+kind: VolumeAttributesClass
+metadata:
+  name: {{ include "quickwit.searcher.vacName" . }}
+driverName: {{ .Values.searcher.persistentVolume.volumeAttributesClassDriver }}
+parameters:
+  {{- if .Values.searcher.persistentVolume.iops }}
+  iops: {{ .Values.searcher.persistentVolume.iops | quote }}
+  {{- end }}
+  {{- if .Values.searcher.persistentVolume.throughput }}
+  throughput: {{ .Values.searcher.persistentVolume.throughput | quote }}
+  {{- end }}
+{{- end }}
