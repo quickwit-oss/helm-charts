@@ -65,6 +65,12 @@ tolerations: []
 # -- Global affinity settings applied to all deployments.
 affinity: {}
 
+# -- Global volumes added to all Pods. Merged with per-component `extraVolumes`.
+volumes: []
+
+# -- Global volume mounts added to all Quickwit containers. Merged with per-component `extraVolumeMounts`.
+volumeMounts: []
+
 # -- Configure [topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 topologySpreadConstraints: []
 

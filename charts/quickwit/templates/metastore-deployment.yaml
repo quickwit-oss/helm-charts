@@ -85,7 +85,7 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
-            {{- with .Values.metastore.extraVolumeMounts }}
+            {{- with concat (.Values.volumeMounts | default list) (.Values.metastore.extraVolumeMounts | default list) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           resources:
@@ -104,18 +104,18 @@ spec:
           configMap:
             name: {{ .name }}
         {{- end }}
-        {{- with .Values.metastore.extraVolumes }}
+        {{- with concat (.Values.volumes | default list) (.Values.metastore.extraVolumes | default list) }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.metastore.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) .Values.metastore.affinity .Values.affinity }}
+      {{- with merge (dict) (.Values.metastore.affinity | default dict) (.Values.affinity | default dict) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- $tolerations := concat .Values.tolerations .Values.metastore.tolerations | compact | uniq }}
+      {{- $tolerations := concat (.Values.tolerations | default list) (.Values.metastore.tolerations | default list) | compact | uniq }}
       tolerations:
         {{- toYaml $tolerations | nindent 8 }}
       {{- if .Values.metastore.runtimeClassName }}
