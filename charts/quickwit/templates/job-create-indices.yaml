@@ -71,7 +71,7 @@ spec:
           - name: index
             mountPath: /quickwit/{{ .index_id }}.yaml
             subPath: {{ .index_id }}.yaml
-          {{- with $.Values.bootstrap.indexes.extraVolumeMounts }}
+          {{- with concat ($.Values.volumeMounts | default list) ($.Values.bootstrap.indexes.extraVolumeMounts | default list) }}
             {{- toYaml . | nindent 10 }}
           {{- end }}
         resources:
@@ -89,18 +89,18 @@ spec:
             items:
               - key: {{ .index_id }}.yaml
                 path: {{ .index_id }}.yaml
-         {{- with $.Values.bootstrap.indexes.extraVolumes }}
+         {{- with concat ($.Values.volumes | default list) ($.Values.bootstrap.indexes.extraVolumes | default list) }}
            {{- toYaml . | nindent 8 }}
          {{- end }}
       {{- with $.Values.bootstrap.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with merge (dict) $.Values.bootstrap.affinity $.Values.affinity }}
+      {{- with merge (dict) ($.Values.bootstrap.affinity | default dict) ($.Values.affinity | default dict) }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- $tolerations := concat $.Values.tolerations $.Values.bootstrap.tolerations | compact | uniq }}
+      {{- $tolerations := concat ($.Values.tolerations | default list) ($.Values.bootstrap.tolerations | default list) | compact | uniq }}
       tolerations:
         {{- toYaml $tolerations | nindent 8 }}
       {{- if $.Values.bootstrap.runtimeClassName }}
