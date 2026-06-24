@@ -101,6 +101,14 @@ app.kubernetes.io/component: indexer
 {{- end }}
 
 {{/*
+Compactor Selector labels
+*/}}
+{{- define "quickwit.compactor.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: compactor
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "quickwit.serviceAccountName" -}}
@@ -157,6 +165,10 @@ Quickwit environment
   value: "$(POD_IP)"
 - name: QW_CLUSTER_ENDPOINT
   value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.{{ .Values.clusterDomain }}:7280
+{{- if .Values.enableStandaloneCompactors }}
+- name: QW_ENABLE_STANDALONE_COMPACTORS
+  value: "true"
+{{- end }}
 {{- with (include "quickwit.extraEnv" .Values.environment) }}
 {{ . }}
 {{- end }}

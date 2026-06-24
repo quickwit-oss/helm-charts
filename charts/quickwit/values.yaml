@@ -505,6 +505,112 @@ janitor:
 
   topologySpreadConstraints: []
 
+# -- Enable the standalone compactor topology.
+#
+# This is a CLUSTER-WIDE switch, not a per-pod one. When `true`:
+#   * `QW_ENABLE_STANDALONE_COMPACTORS=true` is injected into every Quickwit pod
+#     (indexers stop merging locally, the janitor starts the compaction planner).
+#   * the dedicated compactor Deployment / Service / PDB below are rendered.
+# When `false` (default), none of the compactor resources are created and merges
+# happen on the indexers exactly as before. Because the same value drives both
+# the env var and whether the workload is rendered, the compactor pods exist if
+# and only if this flag is true.
+enableStandaloneCompactors: false
+
+# Dedicated compactor workers. Only deployed when `enableStandaloneCompactors` is
+# true (there is intentionally no separate `compactor.enabled` toggle).
+compactor:
+  replicaCount: 1
+
+  # Extra env for compactor
+  # Legacy map format (e.g. extraEnv: { KEY: VALUE }) is also supported for backward compatibility.
+  extraEnv: []
+    # - name: KEY
+    #   value: VALUE
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-compactor
+    # - configMapRef:
+    #     name: quickwit-compactor
+
+  # extraVolumes -- Additional volumes to use with Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
+  extraVolumeMounts: []
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod distruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  strategy: {}
+    # type: RollingUpdate
+
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
+  livenessProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+
+  readinessProbe:
+    httpGet:
+      path: /health/readyz
+      port: rest
+
+  # Override args for starting container
+  args: []
+
+  # initContainers -- Init containers to be added to the pods
+  initContainers: []
+
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
+  # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  lifecycleHooks: {}
+    # preStop:
+    #   exec:
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - sleep 30
+
+  # Grace period to let in-flight merges finish publishing on shutdown. Unfinished
+  # merges are simply rescheduled by the planner after a heartbeat timeout, so this
+  # does not need to be as long as the indexer's.
+  terminationGracePeriodSeconds: 60
+
+  runtimeClassName: ""
+
+  topologySpreadConstraints: []
+
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
 bootstrap:
   # Enable bootstrap jobs
