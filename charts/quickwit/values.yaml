@@ -107,9 +107,13 @@ searcher:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
-    # iops: ""
-    # throughput: ""
-    # volumeAttributesClassDriver: ""
+
+  volumeAttributesClass:
+    enabled: false
+    # driverName: ebs.csi.aws.com
+    # parameters:
+    #   iops: "3000"
+    #   throughput: "125"
 
   updateStrategy: {}
     # type: RollingUpdate
@@ -271,9 +275,13 @@ indexer:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
-    # iops: ""
-    # throughput: ""
-    # volumeAttributesClassDriver: ""
+
+  volumeAttributesClass:
+    enabled: false
+    # driverName: ebs.csi.aws.com
+    # parameters:
+    #   iops: "3000"
+    #   throughput: "125"
 
   topologySpreadConstraints: []
 

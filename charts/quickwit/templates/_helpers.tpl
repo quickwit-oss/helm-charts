@@ -115,6 +115,19 @@ VolumeAttributesClass name for the searcher.
 {{- end }}
 
 {{/*
+VolumeAttributesClass apiVersion, auto-detected from cluster capabilities.
+*/}}
+{{- define "quickwit.volumeAttributesClass.apiVersion" -}}
+{{- if .Capabilities.APIVersions.Has "storage.k8s.io/v1/VolumeAttributesClass" -}}
+storage.k8s.io/v1
+{{- else if .Capabilities.APIVersions.Has "storage.k8s.io/v1beta1/VolumeAttributesClass" -}}
+storage.k8s.io/v1beta1
+{{- else -}}
+{{- fail "VolumeAttributesClass is not available on this cluster (requires Kubernetes >= 1.31)" }}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "quickwit.serviceAccountName" -}}
