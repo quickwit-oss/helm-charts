@@ -116,6 +116,7 @@ searcher:
 
   volumeAttributesClass:
     enabled: false
+    # driverName is mandatory when volumeAttributesClass is enabled.
     # driverName: ebs.csi.aws.com
     # parameters:
     #   iops: "3000"
@@ -284,6 +285,7 @@ indexer:
 
   volumeAttributesClass:
     enabled: false
+    # driverName is mandatory when volumeAttributesClass is enabled.
     # driverName: ebs.csi.aws.com
     # parameters:
     #   iops: "3000"

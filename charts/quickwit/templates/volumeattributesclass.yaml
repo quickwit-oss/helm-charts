@@ -1,4 +1,4 @@
-{{- if and .Values.indexer.volumeAttributesClass.enabled .Values.indexer.volumeAttributesClass.driverName }}
+{{- if .Values.indexer.volumeAttributesClass.enabled }}
 apiVersion: {{ include "quickwit.volumeAttributesClass.apiVersion" . }}
 kind: VolumeAttributesClass
 metadata:
@@ -9,7 +9,7 @@ parameters:
   {{- toYaml . | nindent 2 }}
 {{- end }}
 {{- end }}
-{{- if and .Values.searcher.volumeAttributesClass.enabled .Values.searcher.volumeAttributesClass.driverName }}
+{{- if .Values.searcher.volumeAttributesClass.enabled }}
 ---
 apiVersion: {{ include "quickwit.volumeAttributesClass.apiVersion" . }}
 kind: VolumeAttributesClass
