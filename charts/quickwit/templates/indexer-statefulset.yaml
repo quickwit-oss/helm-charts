@@ -137,9 +137,14 @@ spec:
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.indexer.topologySpreadConstraints | compact }}
-      {{- if $tsc }}
+      {{- if or $tsc .Values.azAwareness.enabled }}
       topologySpreadConstraints:
-        {{- toYaml $tsc | nindent 8 }}
+        {{- if .Values.azAwareness.enabled }}
+        {{- include "quickwit.azTopologySpreadConstraint" (include "quickwit.indexer.selectorLabels" .) | nindent 8 }}
+        {{- end }}
+        {{- with $tsc }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- end }}
   {{- if .Values.indexer.persistentVolume.enabled }}
   volumeClaimTemplates:

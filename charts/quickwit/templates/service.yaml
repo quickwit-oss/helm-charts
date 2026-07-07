@@ -84,6 +84,9 @@ metadata:
   labels:
     {{- include "quickwit.labels" . | nindent 4 }}
   annotations:
+    {{- if .Values.azAwareness.enabled }}
+    service.kubernetes.io/topology-mode: Auto
+    {{- end }}
     {{- with .Values.service.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
