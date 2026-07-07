@@ -86,7 +86,7 @@ spec:
             - name: {{ .name }}
               mountPath: {{ .mountPath }}
             {{- end }}
-            {{- with .Values.compactor.extraVolumeMounts }}
+            {{- with concat (.Values.volumeMounts | default list) (.Values.compactor.extraVolumeMounts | default list) }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           resources:
@@ -110,7 +110,7 @@ spec:
           configMap:
             name: {{ .name }}
         {{- end }}
-        {{- with .Values.compactor.extraVolumes }}
+        {{- with concat (.Values.volumes | default list) (.Values.compactor.extraVolumes | default list) }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- with .Values.compactor.nodeSelector }}

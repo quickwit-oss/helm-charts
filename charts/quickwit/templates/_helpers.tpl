@@ -127,6 +127,7 @@ storage.k8s.io/v1beta1
 {{- end -}}
 {{- end }}
 
+{{/*
 Compactor Selector labels
 */}}
 {{- define "quickwit.compactor.selectorLabels" -}}
