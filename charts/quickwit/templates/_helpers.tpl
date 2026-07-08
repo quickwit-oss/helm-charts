@@ -221,3 +221,16 @@ List format (recommended): [{ name: KEY, value: VALUE, valueFrom: ... }]
 {{- end -}}
 {{- end -}}
 {{- end }}
+
+{{/*
+AZ awareness topology spread constraint for a component.
+Accepts the component's selector labels YAML string as its argument.
+*/}}
+{{- define "quickwit.azTopologySpreadConstraint" -}}
+- maxSkew: 1
+  topologyKey: topology.kubernetes.io/zone
+  whenUnsatisfiable: ScheduleAnyway
+  labelSelector:
+    matchLabels:
+      {{- . | nindent 6 }}
+{{- end }}

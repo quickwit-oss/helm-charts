@@ -74,6 +74,14 @@ volumeMounts: []
 # -- Configure [topology spread constraints](https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/).
 topologySpreadConstraints: []
 
+# Availability Zone awareness
+azAwareness:
+  # -- Enable AZ awareness. Adds a topology spread constraint to distribute indexer pods
+  # evenly across zones, and enables topology-aware routing on the indexer service so
+  # traffic prefers same-zone endpoints. Uses the node-level `topology.kubernetes.io/zone`
+  # label.
+  enabled: false
+
 searcher:
   enabled: true
   replicaCount: 3
