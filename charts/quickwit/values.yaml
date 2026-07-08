@@ -521,21 +521,20 @@ janitor:
 
   topologySpreadConstraints: []
 
-# -- Enable the standalone compactor topology.
-#
-# This is a CLUSTER-WIDE switch, not a per-pod one. When `true`:
-#   * `QW_ENABLE_STANDALONE_COMPACTORS=true` is injected into every Quickwit pod
-#     (indexers stop merging locally, the janitor starts the compaction planner).
-#   * the dedicated compactor Deployment / Service / PDB below are rendered.
-# When `false` (default), none of the compactor resources are created and merges
-# happen on the indexers exactly as before. Because the same value drives both
-# the env var and whether the workload is rendered, the compactor pods exist if
-# and only if this flag is true.
-enableStandaloneCompactors: false
-
-# Dedicated compactor workers. Only deployed when `enableStandaloneCompactors` is
-# true (there is intentionally no separate `compactor.enabled` toggle).
+# Dedicated compactor workers.
 compactor:
+  # -- Enable the standalone compactor topology.
+  #
+  # This is a CLUSTER-WIDE switch, not a per-pod one. When `true`:
+  #   * `QW_ENABLE_STANDALONE_COMPACTORS=true` is injected into every Quickwit pod
+  #     (indexers stop merging locally, the janitor starts the compaction planner).
+  #   * the dedicated compactor Deployment / Service / PDB below are rendered.
+  # When `false` (default), none of the compactor resources are created and merges
+  # happen on the indexers exactly as before. Because the same value drives both
+  # the env var and whether the workload is rendered, the compactor pods exist if
+  # and only if this flag is true.
+  enabled: false
+
   replicaCount: 1
 
   # Extra env for compactor

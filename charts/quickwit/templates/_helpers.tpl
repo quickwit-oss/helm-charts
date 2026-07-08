@@ -192,7 +192,7 @@ Quickwit environment
   value: "$(POD_IP)"
 - name: QW_CLUSTER_ENDPOINT
   value: http://{{ include "quickwit.fullname" $ }}-metastore.{{ $.Release.Namespace }}.svc.{{ .Values.clusterDomain }}:7280
-{{- if .Values.enableStandaloneCompactors }}
+{{- if .Values.compactor.enabled }}
 - name: QW_ENABLE_STANDALONE_COMPACTORS
   value: "true"
 {{- end }}
