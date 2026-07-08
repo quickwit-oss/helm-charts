@@ -3,6 +3,31 @@ entries:
   quickwit:
   - apiVersion: v2
     appVersion: v0.8.2
+    created: "2026-07-08T13:15:00.403536218Z"
+    description: Sub-second search & analytics engine on cloud storage.
+    digest: 98a4dea82857da73349d2e972d05846b5816156c99f1630a9cbb762b32a416da
+    home: https://quickwit.io/
+    icon: https://avatars.githubusercontent.com/u/98504233?s=200&v=4
+    keywords:
+    - quickwit
+    - search
+    - analytics
+    - tracing
+    - logs
+    maintainers:
+    - email: hello@quickwit.io
+      name: Quickwit
+    - email: mkhpalm@gmail.com
+      name: mkhpalm
+    name: quickwit
+    sources:
+    - https://github.com/quickwit-oss/quickwit/
+    type: application
+    urls:
+    - https://github.com/quickwit-oss/helm-charts/releases/download/quickwit-0.8.8/quickwit-0.8.8.tgz
+    version: 0.8.8
+  - apiVersion: v2
+    appVersion: v0.8.2
     created: "2026-06-30T09:42:57.24218966Z"
     description: Sub-second search & analytics engine on cloud storage.
     digest: b04b00fbd216a88e0c8e01cd56d7d6012c33ee994c74ebe5e7d0c9e23edb4142
@@ -1814,4 +1839,4 @@ entries:
     urls:
     - https://helm.quickwit.io/quickwit-0.1.0.tgz
     version: 0.1.0
-generated: "2026-06-30T09:42:57.242778397Z"
+generated: "2026-07-08T13:15:00.403717008Z"
