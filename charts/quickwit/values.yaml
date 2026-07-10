@@ -536,6 +536,7 @@ enableStandaloneCompactors: false
 # Dedicated compactor workers. Only deployed when `enableStandaloneCompactors` is
 # true (there is intentionally no separate `compactor.enabled` toggle).
 compactor:
+  # When autoscaling is enabled, replicaCount is ignored.
   replicaCount: 1
 
   # Extra env for compactor
@@ -555,13 +556,13 @@ compactor:
   # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
   extraVolumeMounts: []
 
-  resources: {}
-    # limits:
-    #   cpu: 100m
-    #   memory: 128Mi
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
+  # A CPU request is set by default (rather than `{}`) because
+  # `compactor.autoscaling`'s default metric scales on CPU utilization, which
+  # Kubernetes cannot compute without a CPU request.
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
   ## Pod distruption budget
   podDisruptionBudget: {}
@@ -617,6 +618,27 @@ compactor:
     #       - /bin/sh
     #       - -c
     #       - sleep 30
+
+  # Enable and configure autoscaling using Horizontal Pod Autoscaler (HPA).
+  # Only takes effect when `enableStandaloneCompactors` is also true.
+  autoscaling:
+    enabled: false
+    annotations: {}
+    minReplicas: 1
+    maxReplicas: 10
+    metrics:
+      # Compaction is a "throughput game", so we aim for high CPU utilization
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 80
+    behavior:
+      scaleUp:
+        stabilizationWindowSeconds: 60
+      scaleDown:
+        stabilizationWindowSeconds: 300
 
   # Grace period to let in-flight merges finish publishing on shutdown. Unfinished
   # merges are simply rescheduled by the planner after a heartbeat timeout, so this
