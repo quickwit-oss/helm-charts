@@ -85,6 +85,14 @@ app.kubernetes.io/component: metastore
 {{- end }}
 
 {{/*
+Read-only metastore Selector labels
+*/}}
+{{- define "quickwit.metastore_ro.selectorLabels" -}}
+{{ include "quickwit.selectorLabels" . }}
+app.kubernetes.io/component: metastore-ro
+{{- end }}
+
+{{/*
 Control Plane Selector labels
 */}}
 {{- define "quickwit.control_plane.selectorLabels" -}}
