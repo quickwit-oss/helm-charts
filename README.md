@@ -21,6 +21,27 @@ To uninstall the chart:
 
     helm delete my-quickwit
 
+## Read-only metastore replicas
+
+A standalone read-only metastore backed by a PostgreSQL read replica can be
+enabled with `metastore_ro.enabled`. Enabling it also configures searchers to
+route read-only metastore requests to the replica nodes.
+
+The read replica URI must be supplied through the
+`QW_METASTORE_READ_REPLICA_URI` environment variable, preferably from a
+Kubernetes Secret:
+
+```yaml
+metastore_ro:
+  enabled: true
+  extraEnvFrom:
+    - secretRef:
+        name: quickwit-metastore-read-replica
+```
+
+The referenced Secret must contain a `QW_METASTORE_READ_REPLICA_URI` key. The
+primary metastore remains deployed and continues to handle write requests.
+
 ## Upgrade helm chart from 0.4.0 to 0.5.0
 
 The way storage config is defined changed and you have to update your helm values to upgrade to 0.5.0.

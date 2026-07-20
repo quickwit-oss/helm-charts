@@ -1,3 +1,9 @@
+{{- $config := deepCopy .Values.config -}}
+{{- if .Values.metastore_ro.enabled -}}
+{{- $searcherConfig := $config.searcher | default dict -}}
+{{- $_ := set $searcherConfig "use_metastore_read_replica" true -}}
+{{- $_ := set $config "searcher" $searcherConfig -}}
+{{- end -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,4 +12,4 @@ metadata:
     {{- include "quickwit.labels" . | nindent 4 }}
 data:
   node.yaml: |-
-    {{- toYaml .Values.config | nindent 4 }}
+    {{- toYaml $config | nindent 4 }}

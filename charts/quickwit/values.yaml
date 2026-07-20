@@ -373,6 +373,89 @@ metastore:
 
   topologySpreadConstraints: []
 
+# Read-only metastore backed by a PostgreSQL read replica. When enabled, searchers are
+# automatically configured to route read-only metastore requests to this component.
+metastore_ro:
+  enabled: false
+  replicaCount: 1
+
+  # Extra env for the read-only metastore.
+  # QW_METASTORE_READ_REPLICA_URI must be provided, usually through extraEnvFrom.
+  # Legacy map format (e.g. extraEnv: { KEY: VALUE }) is also supported for backward compatibility.
+  extraEnv: []
+    # - name: QW_METASTORE_READ_REPLICA_URI
+    #   value: postgres://username:password@read-replica-host:5432/metastore
+  extraEnvFrom: []
+    # - secretRef:
+    #     name: quickwit-metastore-read-replica
+    # - configMapRef:
+    #     name: quickwit-metastore-read-replica
+
+  # extraVolumes -- Additional volumes to use with Pods.
+  extraVolumes: []
+
+  # extraVolumeMounts -- Additional volumes to mount into Quickwit containers.
+  extraVolumeMounts: []
+
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  ## Pod disruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
+    # minAvailable: 2
+
+  strategy: {}
+    # type: RollingUpdate
+
+  startupProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+    failureThreshold: 12
+    periodSeconds: 5
+
+  livenessProbe:
+    httpGet:
+      path: /health/livez
+      port: rest
+
+  readinessProbe:
+    httpGet:
+      path: /health/readyz
+      port: rest
+
+  # Override args for starting the container.
+  args: []
+
+  # initContainers -- Init containers to be added to the pods.
+  initContainers: []
+
+  annotations: {}
+
+  podAnnotations: {}
+
+  serviceAnnotations: {}
+
+  # serviceType: ClusterIP
+  # restNodePort:
+  # grpcNodePort:
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  runtimeClassName: ""
+
+  topologySpreadConstraints: []
+
 control_plane:
   enabled: true
 
