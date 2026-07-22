@@ -13,7 +13,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- if not .Values.compactor.autoscaling.enabled }}
+  {{- if and (hasKey .Values.compactor "replicaCount") (not .Values.compactor.autoscaling.enabled) }}
   replicas: {{ .Values.compactor.replicaCount }}
   {{- end }}
   selector:
