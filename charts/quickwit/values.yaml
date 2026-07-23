@@ -97,8 +97,6 @@ searcher:
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
-      # scaleDown:
-      #   stabilizationWindowSeconds: 300
 
   # Extra env for searcher
   # Legacy map format (e.g. extraEnv: { KEY: VALUE }) is also supported for backward compatibility.
@@ -222,12 +220,7 @@ indexer:
           name: cpu
           target:
             type: Utilization
-            averageUtilization: 80
-    behavior:
-      scaleUp:
-        stabilizationWindowSeconds: 60
-      # scaleDown:
-      #   stabilizationWindowSeconds: 300
+            averageUtilization: 70
 
   # Extra env for indexer
   # Legacy map format (e.g. extraEnv: { KEY: VALUE }) is also supported for backward compatibility.
@@ -683,8 +676,6 @@ compactor:
     behavior:
       scaleUp:
         stabilizationWindowSeconds: 60
-      # scaleDown:
-      #   stabilizationWindowSeconds: 300
 
   # Extra env for compactor
   # Legacy map format (e.g. extraEnv: { KEY: VALUE }) is also supported for backward compatibility.
