@@ -839,9 +839,6 @@ config:
   data_dir: /quickwit/qwdata
   default_index_root_uri: s3://quickwit/indexes
 
-  # postgres:
-  #   max_num_connections: 50
-
   # storage:
     # s3:
       # endpoint: "http://custom-s3-endpoint"
@@ -867,6 +864,10 @@ config:
   #   fast_field_cache_capacity: 10G
   #   split_footer_cache_capacity: 1G
   #   max_num_concurrent_split_streams: 100
+  # Metastore settings
+  # metastore:
+  #   postgres:
+  #     max_num_connections: 50
 
 # Seed configuration
 seed:
