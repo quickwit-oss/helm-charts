@@ -307,7 +307,9 @@ indexer:
     #       - -c
     #       - sleep 30
 
-  # Long grace period is recommended to wait for all index commit_timeout_secs and splits to be published
+  # Long grace period is recommended to wait for all index commit_timeout_secs and splits to be published.
+  # With Quickwit edge or the upcoming 0.10 release, the ingester decommission timeout
+  # is set to 90% of this value.
   # See https://quickwit.io/docs/configuration/index-config#indexing-settings
   terminationGracePeriodSeconds: 120
 
@@ -759,7 +761,8 @@ compactor:
 
   # Grace period to let in-flight merges finish publishing on shutdown. Unfinished
   # merges are simply rescheduled by the planner after a heartbeat timeout, so this
-  # does not need to be as long as the indexer's.
+  # does not need to be as long as the indexer's. With Quickwit edge or the upcoming
+  # 0.10 release, the compactor decommission timeout is set to 90% of this value.
   terminationGracePeriodSeconds: 60
 
   runtimeClassName: ""
