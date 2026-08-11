@@ -142,9 +142,15 @@ spec:
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.indexer.topologySpreadConstraints | compact }}
-      {{- if or $tsc .Values.azAwareness.enabled }}
+      {{- $addAzConstraint := .Values.azAwareness.enabled }}
+      {{- range $tsc }}
+      {{- if eq (.topologyKey | toString) "topology.kubernetes.io/zone" }}
+      {{- $addAzConstraint = false }}
+      {{- end }}
+      {{- end }}
+      {{- if or $tsc $addAzConstraint }}
       topologySpreadConstraints:
-        {{- if .Values.azAwareness.enabled }}
+        {{- if $addAzConstraint }}
         {{- include "quickwit.azTopologySpreadConstraint" (include "quickwit.indexer.selectorLabels" .) | nindent 8 }}
         {{- end }}
         {{- with $tsc }}

@@ -81,7 +81,8 @@ azAwareness:
   # -- Enable AZ awareness. Adds a topology spread constraint to distribute indexer pods
   # evenly across zones, and enables topology-aware routing on the indexer service so
   # traffic prefers same-zone endpoints. Uses the node-level `topology.kubernetes.io/zone`
-  # label.
+  # label. If a `topologySpreadConstraints` entry already targets that key, the generated
+  # constraint is skipped to avoid a duplicate that Kubernetes would reject.
   enabled: false
 
 searcher:
