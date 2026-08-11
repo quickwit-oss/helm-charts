@@ -147,7 +147,7 @@ searcher:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -156,11 +156,7 @@ searcher:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # StatefulSet allows you to relax its ordering guarantees
   #   - OrderedReady
@@ -257,7 +253,7 @@ indexer:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -266,11 +262,7 @@ indexer:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # StatefulSet allows you to relax its ordering guarantees
   #   - OrderedReady
@@ -370,7 +362,7 @@ metastore:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -379,11 +371,7 @@ metastore:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # Override args for starting container
   args: []
@@ -453,7 +441,7 @@ metastore_ro:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -462,11 +450,7 @@ metastore_ro:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # Override args for starting the container.
   args: []
@@ -529,7 +513,7 @@ control_plane:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -538,11 +522,7 @@ control_plane:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # Override args for starting container
   args: []
@@ -601,7 +581,7 @@ janitor:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -610,11 +590,7 @@ janitor:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # Override args for starting container
   args: []
@@ -714,7 +690,7 @@ compactor:
 
   startupProbe:
     httpGet:
-      path: /health/livez
+      path: /health/readyz
       port: rest
     failureThreshold: 12
     periodSeconds: 5
@@ -723,11 +699,7 @@ compactor:
     httpGet:
       path: /health/livez
       port: rest
-
-  readinessProbe:
-    httpGet:
-      path: /health/readyz
-      port: rest
+    timeoutSeconds: 5
 
   # Override args for starting container
   args: []
