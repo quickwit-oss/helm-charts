@@ -133,6 +133,8 @@ searcher:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
+    # -- Name of an externally managed VolumeAttributesClass to use for the persistent volume.
+    volumeAttributesClassName: ""
 
   volumeAttributesClass:
     enabled: false
@@ -320,6 +322,8 @@ indexer:
     annotations: {}
     # storage: "1Gi"
     # storageClass: ""
+    # -- Name of an externally managed VolumeAttributesClass to use for the persistent volume.
+    volumeAttributesClassName: ""
 
   volumeAttributesClass:
     enabled: false
