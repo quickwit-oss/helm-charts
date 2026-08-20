@@ -6,6 +6,18 @@ Expand the name of the chart.
 {{- end }}
 
 {{/*
+Create the Quickwit image reference. An immutable digest takes precedence over
+the configured tag and the chart appVersion.
+*/}}
+{{- define "quickwit.image" -}}
+{{- if .Values.image.digest -}}
+{{- printf "%s@%s" .Values.image.repository .Values.image.digest -}}
+{{- else -}}
+{{- printf "%s:%s" .Values.image.repository (.Values.image.tag | default .Chart.AppVersion) -}}
+{{- end -}}
+{{- end }}
+
+{{/*
 Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.

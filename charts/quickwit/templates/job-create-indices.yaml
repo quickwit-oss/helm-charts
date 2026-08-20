@@ -43,7 +43,7 @@ spec:
       - name: {{ $.Chart.Name }}
         securityContext:
           {{- toYaml $.Values.securityContext | nindent 10 }}
-        image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+        image: {{ include "quickwit.image" $ | quote }}
         imagePullPolicy: {{ $.Values.image.pullPolicy }}
         {{- if $.Values.bootstrap.indexes.command }}
         command: {{- toYaml $.Values.bootstrap.indexes.command | nindent 8 }}
