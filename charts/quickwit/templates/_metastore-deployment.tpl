@@ -62,7 +62,7 @@ spec:
         - name: {{ $root.Chart.Name }}
           securityContext:
             {{- toYaml $root.Values.securityContext | nindent 12 }}
-          image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag | default $root.Chart.AppVersion }}"
+          image: {{ include "quickwit.image" $root | quote }}
           imagePullPolicy: {{ $root.Values.image.pullPolicy }}
           {{- if $values.args }}
           args: {{- toYaml $values.args | nindent 10 }}
