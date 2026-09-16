@@ -89,8 +89,10 @@ spec:
             {{- toYaml $values.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml $values.livenessProbe | nindent 12 }}
+          {{- with $values.readinessProbe }}
           readinessProbe:
-            {{- toYaml $values.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: config
               mountPath: /quickwit/node.yaml
