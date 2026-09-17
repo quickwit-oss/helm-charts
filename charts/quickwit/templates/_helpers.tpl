@@ -206,6 +206,12 @@ Quickwit environment
 {{- end }}
 - name: QW_NODE_ID
   value: "$(POD_NAME)"
+{{ if semverCompare ">=1.33.0-0" .Capabilities.KubeVersion.Version }}
+- name: QW_AVAILABILITY_ZONE
+  valueFrom:
+    fieldRef:
+      fieldPath: metadata.labels['topology.kubernetes.io/zone']
+{{- end }}
 - name: QW_PEER_SEEDS
   value: {{ include "quickwit.fullname" . }}-headless
 - name: QW_ADVERTISE_ADDRESS
