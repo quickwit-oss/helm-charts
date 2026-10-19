@@ -39,7 +39,7 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "quickwit.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- include "quickwit.podSecurityContext" . | nindent 8 }}
       {{- with .Values.control_plane.initContainers }}
       initContainers:
         {{- toYaml . | nindent 8 }}
@@ -47,7 +47,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- include "quickwit.securityContext" . | nindent 12 }}
           image: {{ include "quickwit.image" . | quote }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if $.Values.control_plane.args }}

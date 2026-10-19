@@ -41,6 +41,17 @@ securityContext:
   runAsNonRoot: true
   runAsUser: 1005
 
+# OpenShift support. OpenShift assigns the user ID (UID) and fsGroup from the namespace
+# range, and its default Security Context Constraint (SCC), restricted-v2, rejects pods
+# that set other values. This setting removes podSecurityContext.fsGroup and
+# securityContext.runAsUser on OpenShift. The other security settings stay unchanged.
+openshift:
+  # auto: adapt when the cluster has the security.openshift.io/v1 API.
+  # force: always adapt. Use this when the chart is rendered without cluster access,
+  #   for example with `helm template` or a GitOps tool.
+  # disabled: never adapt.
+  adaptSecurityContext: auto
+
 # Additional global env
 # Legacy map format (e.g. environment: { KEY: VALUE }) is also supported for backward compatibility.
 environment: []

@@ -42,6 +42,24 @@ metastore_ro:
 The referenced Secret must contain a `QW_METASTORE_READ_REPLICA_URI` key. The
 primary metastore remains deployed and continues to handle write requests.
 
+## OpenShift
+
+OpenShift assigns the user ID (UID) and fsGroup of each pod from the namespace
+range. Its default Security Context Constraint (SCC), `restricted-v2`, rejects
+pods that set other values. The chart defaults (`runAsUser: 1005` and
+`fsGroup: 1005`) are outside that range.
+
+The `openshift.adaptSecurityContext` value controls this:
+
+- `auto` (default): when the cluster has the `security.openshift.io/v1` API, the
+  chart removes `podSecurityContext.fsGroup` and `securityContext.runAsUser`.
+  OpenShift then assigns them. On other clusters, nothing changes.
+- `force`: always remove them. Use this on OpenShift when the chart is rendered
+  without cluster access, for example with `helm template` or a GitOps tool.
+- `disabled`: never remove them.
+
+The other security settings, such as `runAsNonRoot`, stay unchanged.
+
 ## Upgrade helm chart from 0.4.0 to 0.5.0
 
 The way storage config is defined changed and you have to update your helm values to upgrade to 0.5.0.

@@ -241,3 +241,46 @@ List format (recommended): [{ name: KEY, value: VALUE, valueFrom: ... }]
 {{- end -}}
 {{- end -}}
 {{- end }}
+
+{{/*
+Return "true" when the chart must adapt the security context for OpenShift.
+OpenShift assigns the user ID (UID) and fsGroup from the namespace range. Its default
+Security Context Constraint (SCC), restricted-v2, rejects pods that set other values.
+Modes (openshift.adaptSecurityContext):
+- auto: adapt when the cluster has the security.openshift.io/v1 API.
+- force: always adapt. Use this when the chart is rendered without cluster access.
+- disabled: never adapt.
+*/}}
+{{- define "quickwit.openshift.adaptSecurityContext" -}}
+{{- $mode := (.Values.openshift | default dict).adaptSecurityContext | default "auto" -}}
+{{- if not (has $mode (list "auto" "force" "disabled")) -}}
+{{- fail (printf "openshift.adaptSecurityContext must be auto, force or disabled, got %q" $mode) -}}
+{{- end -}}
+{{- if or (eq $mode "force") (and (eq $mode "auto") (.Capabilities.APIVersions.Has "security.openshift.io/v1")) -}}
+true
+{{- end -}}
+{{- end }}
+
+{{/*
+Pod security context. On OpenShift, fsGroup is removed so that OpenShift assigns it.
+On other clusters, the output is .Values.podSecurityContext unchanged.
+*/}}
+{{- define "quickwit.podSecurityContext" -}}
+{{- if include "quickwit.openshift.adaptSecurityContext" . -}}
+{{- toYaml (omit (.Values.podSecurityContext | default dict) "fsGroup") -}}
+{{- else -}}
+{{- toYaml .Values.podSecurityContext -}}
+{{- end -}}
+{{- end }}
+
+{{/*
+Container security context. On OpenShift, runAsUser is removed so that OpenShift assigns it.
+On other clusters, the output is .Values.securityContext unchanged.
+*/}}
+{{- define "quickwit.securityContext" -}}
+{{- if include "quickwit.openshift.adaptSecurityContext" . -}}
+{{- toYaml (omit (.Values.securityContext | default dict) "runAsUser") -}}
+{{- else -}}
+{{- toYaml .Values.securityContext -}}
+{{- end -}}
+{{- end }}
