@@ -106,5 +106,8 @@ spec:
       {{- if $.Values.bootstrap.runtimeClassName }}
       runtimeClassName: {{ $.Values.bootstrap.runtimeClassName | quote }}
       {{- end }}
+      {{- if $.Values.bootstrap.priorityClassName }}
+      priorityClassName: {{ $.Values.bootstrap.priorityClassName | quote }}
+      {{- end }}
 {{- end }}
 {{- end }}

@@ -134,6 +134,9 @@ spec:
       {{- if .Values.compactor.runtimeClassName }}
       runtimeClassName: {{ .Values.compactor.runtimeClassName | quote }}
       {{- end }}
+      {{- if .Values.compactor.priorityClassName }}
+      priorityClassName: {{ .Values.compactor.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.compactor.topologySpreadConstraints | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:

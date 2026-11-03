@@ -125,6 +125,9 @@ spec:
       {{- if .Values.control_plane.runtimeClassName }}
       runtimeClassName: {{ .Values.control_plane.runtimeClassName | quote }}
       {{- end }}
+      {{- if .Values.control_plane.priorityClassName }}
+      priorityClassName: {{ .Values.control_plane.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.control_plane.topologySpreadConstraints | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:

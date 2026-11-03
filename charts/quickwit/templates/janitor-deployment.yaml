@@ -125,6 +125,9 @@ spec:
       {{- if .Values.janitor.runtimeClassName }}
       runtimeClassName: {{ .Values.janitor.runtimeClassName | quote }}
       {{- end }}
+      {{- if .Values.janitor.priorityClassName }}
+      priorityClassName: {{ .Values.janitor.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.janitor.topologySpreadConstraints | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:

@@ -139,6 +139,9 @@ spec:
       {{- if $values.runtimeClassName }}
       runtimeClassName: {{ $values.runtimeClassName | quote }}
       {{- end }}
+      {{- if $values.priorityClassName }}
+      priorityClassName: {{ $values.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat ($root.Values.topologySpreadConstraints | default list) ($values.topologySpreadConstraints | default list) | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:
