@@ -140,6 +140,9 @@ spec:
       {{- if .Values.searcher.runtimeClassName }}
       runtimeClassName: {{ .Values.searcher.runtimeClassName | quote }}
       {{- end }}
+      {{- if .Values.searcher.priorityClassName }}
+      priorityClassName: {{ .Values.searcher.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.searcher.topologySpreadConstraints | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:

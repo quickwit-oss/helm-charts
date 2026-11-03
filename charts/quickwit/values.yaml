@@ -199,6 +199,8 @@ searcher:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   topologySpreadConstraints: []
 
 indexer:
@@ -311,6 +313,8 @@ indexer:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   persistentVolume:
     enabled: false
     annotations: {}
@@ -403,6 +407,8 @@ metastore:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   topologySpreadConstraints: []
 
 # Read-only metastore backed by a PostgreSQL read replica. When enabled, searchers are
@@ -482,6 +488,8 @@ metastore_ro:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   topologySpreadConstraints: []
 
 control_plane:
@@ -554,6 +562,8 @@ control_plane:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   topologySpreadConstraints: []
 
 janitor:
@@ -621,6 +631,8 @@ janitor:
   affinity: {}
 
   runtimeClassName: ""
+
+  priorityClassName: ""
 
   topologySpreadConstraints: []
 
@@ -745,6 +757,8 @@ compactor:
 
   runtimeClassName: ""
 
+  priorityClassName: ""
+
   topologySpreadConstraints: []
 
 # Deploy jobs to bootstrap creation of indexes and sources for quickwit clusters
@@ -778,6 +792,8 @@ bootstrap:
   affinity: {}
 
   runtimeClassName: ""
+
+  priorityClassName: ""
 
   sources:
     # Override command for starting container

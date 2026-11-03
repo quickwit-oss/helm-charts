@@ -141,6 +141,9 @@ spec:
       {{- if .Values.indexer.runtimeClassName }}
       runtimeClassName: {{ .Values.indexer.runtimeClassName | quote }}
       {{- end }}
+      {{- if .Values.indexer.priorityClassName }}
+      priorityClassName: {{ .Values.indexer.priorityClassName | quote }}
+      {{- end }}
       {{- $tsc := concat .Values.topologySpreadConstraints .Values.indexer.topologySpreadConstraints | compact }}
       {{- if $tsc }}
       topologySpreadConstraints:
